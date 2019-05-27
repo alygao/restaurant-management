@@ -44,9 +44,7 @@ Basics (Restaurant Layout, Reservations, Orders, Billing & Payment)
 - Display most popular orders
 - Analysis can then be downloaded as excel
 - Ordering new materials (kitchen supplies/food) // inventory management
-- The ability to manage multiple restaurants???
-- https://peachworks.com/ ← check this out for other functions
-- Daily log of tasks
+- The ability to manage multiple restaurants???- Daily log of tasks
 - Take-out / delivery options
 - Student discounts for Wloo kids 😂
 
