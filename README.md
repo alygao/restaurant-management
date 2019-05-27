@@ -1,7 +1,3 @@
-Restaurant Planner
-
-Features/Functions
-
 # Restaurant Planner
 
 ## Features/Functions
