@@ -1,10 +1,11 @@
 /**
- * Project - TournamentManager
+ * Project - RestaurantManagement
  * Queue.java
  * A File to make the queue
  * @author Zaid Omer
- * @version May 12, 2019
+ * @version June 14, 2019
  */
+
 class Queue<T>{
     private QueueNode<T> root;
 
@@ -20,6 +21,23 @@ class Queue<T>{
      * @param nodeToAdd the node to add to the queue, of type QueueNode
      */
     public void enqueue(QueueNode<T> nodeToAdd){
+        if(root.getItem() == null){
+            root = nodeToAdd;
+        }else{
+            QueueNode<T> tempNode = root;
+            while(tempNode.getNext() != null){
+                tempNode = tempNode.getNext();
+            }
+            tempNode.setNext(nodeToAdd);
+        }
+    }
+
+    /**
+     * adds the item passed through to the queue (as a node)
+     * @param item , the item to add to the queue, of type T
+     */
+    public void enqueue(T item){
+        QueueNode<T> nodeToAdd = new QueueNode<T>(item);
         if(root.getItem() == null){
             root = nodeToAdd;
         }else{

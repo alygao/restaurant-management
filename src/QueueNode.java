@@ -1,9 +1,9 @@
 /**
- * Project - TournamentManager
+ * Project - RestaurantManagement
  * QueueNode.java
  * A File outlining the node for a queue
  * @author Zaid Omer
- * @version May 12, 2019
+ * @version June 14, 2019
  */
 class QueueNode<T>{
     private T item;
