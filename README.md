@@ -1,6 +1,12 @@
+<<<<<<< Updated upstream
 Restaurant Planner
 
 Features/Functions
+=======
+# Restaurant Planner
+
+## Features/Functions
+>>>>>>> Stashed changes
 
 Basics (Restaurant Layout, Reservations, Orders, Billing & Payment)
 
