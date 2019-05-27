@@ -1,8 +1,8 @@
-#Restaurant Planner
+Restaurant Planner
 
-##Features/Functions
+Features/Functions
 
-**Basics (Restaurant Layout, Reservations, Orders, Billing & Payment)**
+Basics (Restaurant Layout, Reservations, Orders, Billing & Payment)
 
 **Reservation Management**
 - A calendar to organize reservations for different dates (set a limit to how far they can reserve // maybe a month)
@@ -44,6 +44,7 @@
 - Analysis can then be downloaded as excel
 - Ordering new materials (kitchen supplies/food) // inventory management
 - The ability to manage multiple restaurants???
+- https://peachworks.com/ ← check this out for other functions
 - Daily log of tasks
 - Take-out / delivery options
 - Student discounts for Wloo kids 😂
