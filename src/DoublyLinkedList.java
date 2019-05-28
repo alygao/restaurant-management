@@ -111,19 +111,22 @@ public class DoublyLinkedList<T> {
      * @return int the index number
      */
     public int indexOf(T item) {
-        int index = -1;
+        int index = 0;
+        int indexToReturn = 0;
+        boolean itemFound = false;
         DoublyLinkedListNode<T> tempNode = head;
-        do{
-            if(tempNode.getItem() == item){
-                return index;
+        while(tempNode.getNext()!=null){
+            if(tempNode.getItem().equals(item)){
+                itemFound = true;
+                indexToReturn = index;
             }
             tempNode = tempNode.getNext();
             index++;
-        }while(tempNode.getNext() != item && tempNode.getNext() != null);
-        if(index == -1){
-            return index;
+        }
+        if(itemFound){
+            return indexToReturn;
         }else {
-            return index+1;
+            return -1;
         }
     }
 
