@@ -18,13 +18,11 @@ public class DoublyLinkedList<T> {
         if(head == null){
             head = nodeToAdd;
         }else{
-            DoublyLinkedListNode<T> previousNode = head;
             DoublyLinkedListNode<T> tempNode = head;
             while(tempNode.getNext() != null){
-                previousNode = tempNode;
                 tempNode = tempNode.getNext();
             }
-            nodeToAdd.setPrevious(previousNode);
+            nodeToAdd.setPrevious(tempNode);
             tempNode.setNext(nodeToAdd);
         }
     }
