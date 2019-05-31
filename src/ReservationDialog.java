@@ -41,6 +41,7 @@ public class ReservationDialog extends JDialog {
 	private JPanel panel;
 	private JButton findAvailabilityButton;
 	private JButton bookReservationButton;
+	private JButton claimReservationButton;
 	private JButton returnButton;
 
 	private ReserveTableModel reserveTableModel;
@@ -148,7 +149,7 @@ public class ReservationDialog extends JDialog {
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == findAvailabilityButton) {
-
+				
 				if (restaurant.getTables().size() == 0) {
 					JOptionPane.showMessageDialog(null, "Your restaurant currently has no tables.", "Error",
 							JOptionPane.ERROR_MESSAGE);
@@ -175,6 +176,7 @@ public class ReservationDialog extends JDialog {
 
 			} else if (press.getSource() == returnButton) {
 				dispose();
+			
 			}
 		}
 	}
@@ -198,7 +200,7 @@ public class ReservationDialog extends JDialog {
 		@Override
 		/**
 		 * getColumnCount the number of columns in the table
-		 *
+		 * 
 		 * @return the number of columns
 		 */
 		public int getColumnCount() {
@@ -208,7 +210,7 @@ public class ReservationDialog extends JDialog {
 		@Override
 		/**
 		 * getRowCount the number of rows in the table
-		 *
+		 * 
 		 * @return the number of rows
 		 */
 		public int getRowCount() {
@@ -218,7 +220,7 @@ public class ReservationDialog extends JDialog {
 		@Override
 		/**
 		 * getColumnName
-		 *
+		 * 
 		 * @param col the column number
 		 * @return the name of the column
 		 */
@@ -229,7 +231,7 @@ public class ReservationDialog extends JDialog {
 		@Override
 		/**
 		 * getValueAt finds the value at the specific row and column number
-		 *
+		 * 
 		 * @param row the row number
 		 * @param col the column number
 		 * @return the value at the specific row and column
@@ -248,7 +250,7 @@ public class ReservationDialog extends JDialog {
 		@Override
 		/**
 		 * getColumnClass finds the class type for a specific column
-		 *
+		 * 
 		 * @param col the column number
 		 * @return the class type for the specific column
 		 */
@@ -259,7 +261,7 @@ public class ReservationDialog extends JDialog {
 		@Override
 		/**
 		 * isCellEditable checks if the user can edit the cell
-		 *
+		 * 
 		 * @param row the row number
 		 * @param col the column number
 		 * @return whether or not the cell is editable
@@ -271,7 +273,7 @@ public class ReservationDialog extends JDialog {
 		@Override
 		/**
 		 * setValueAt sets a value at the specific row and column
-		 *
+		 * 
 		 * @param value the value to be set
 		 * @param row   the row number
 		 * @param col   the column number
@@ -291,7 +293,7 @@ public class ReservationDialog extends JDialog {
 
 		/**
 		 * updateRow when an table is modified, the row must be then updated
-		 *
+		 * 
 		 * @param table the recipe to place in the table and add to the current list of
 		 *              tables
 		 * @param row   the row that needs to be updated due to a change in the table
@@ -303,7 +305,7 @@ public class ReservationDialog extends JDialog {
 
 		/**
 		 * insertRow inserts a row in the table with a table
-		 *
+		 * 
 		 * @param position the position to put the row
 		 * @param table    the table to place in the table and add to the current list
 		 *                 of tables
@@ -315,7 +317,7 @@ public class ReservationDialog extends JDialog {
 
 		/**
 		 * addRow adds a row at the bottom of the table with a new recipe
-		 *
+		 * 
 		 * @param table the table to be placed in the table
 		 */
 		public void addRow(Table table) {
@@ -324,7 +326,7 @@ public class ReservationDialog extends JDialog {
 
 		/**
 		 * addRows adds 2+ rows into the table
-		 *
+		 * 
 		 * @param tableList the list of tables that are to be put into the table
 		 */
 		public void addRows(List<Table> tableList) {
@@ -335,7 +337,7 @@ public class ReservationDialog extends JDialog {
 
 		/**
 		 * removeRow removes a specific row in the table
-		 *
+		 * 
 		 * @param position the position of the recipe to be removed
 		 */
 		public void removeRow(int position) {
@@ -345,7 +347,7 @@ public class ReservationDialog extends JDialog {
 
 		/**
 		 * getData gets the list of tables
-		 *
+		 * 
 		 * @return the list of tables
 		 */
 		public List<Table> getData() {
@@ -354,7 +356,7 @@ public class ReservationDialog extends JDialog {
 
 		/**
 		 * setData gets the list of tables
-		 *
+		 * 
 		 * @param data the list of tables
 		 */
 		public void setData(List<Table> tablesData) {

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -27,6 +28,7 @@ public class Restaurant extends JFrame {
 	private JButton menuButton;
 	private JButton tableLayoutButton;
 	private JButton employeeButton;
+	private ImageIcon homepageBackground;
 
 
 	public static void main(String[] args) {
@@ -44,6 +46,7 @@ public class Restaurant extends JFrame {
 	}
 
 	private void initUI() {
+
 		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
 		getContentPane().add(mainPanel);
@@ -94,11 +97,13 @@ public class Restaurant extends JFrame {
 		setTitle("Restaurant Management");
 		setSize(1000, 600);
 		setResizable(false);
+		setUndecorated(false); // TODO: change to true
 		setLocationRelativeTo(null);
 
-		// background image
-//		menuBackground = new ImageIcon(getClass().getResource("menu background.JPG"));
+	}
 
+	public List<Table> getTables() {
+		return tables;
 	}
 
 	public List<Table> getTables() {
