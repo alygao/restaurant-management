@@ -16,6 +16,12 @@ public class Reservation {
 		this.reserveTimePeriod = new ReserveTimePeriod (date, time);
 	}
 	
+	public Reservation (Table table, String name, int numPeople, ReserveTimePeriod reserveTimePeriod) {
+		this.table = table;
+		this.customer = new Customer (name, numPeople);
+		this.reserveTimePeriod = reserveTimePeriod;
+	}
+	
 	public Table getTable() {
 		return table;
 	}
