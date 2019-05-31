@@ -43,6 +43,7 @@ public class ReservationDialog extends JDialog {
 	private JPanel panel;
 	private JButton findAvailabilityButton;
 	private JButton bookReservationButton;
+	private JButton claimReservationButton;
 	private JButton returnButton;
 
 	private ReserveTableModel reserveTableModel;
@@ -177,6 +178,7 @@ public class ReservationDialog extends JDialog {
 
 			} else if (press.getSource() == returnButton) {
 				dispose();
+			
 			}
 		}
 	}

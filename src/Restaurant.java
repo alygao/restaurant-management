@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -29,7 +30,7 @@ public class Restaurant extends JFrame {
 	private JButton menuButton;
 	private JButton tableLayoutButton;
 	private JButton employeeButton;
-
+	private ImageIcon homepageBackground;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -46,46 +47,53 @@ public class Restaurant extends JFrame {
 	}
 
 	private void initUI() {
+
 		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
 		getContentPane().add(mainPanel);
 
-		orderButton = new JButton(new ImageIcon (getClass().getResource("orders button.JPG")));
+		// background image
+		homepageBackground = new ImageIcon(getClass().getResource("freshqo homepage.JPG"));
+		JLabel homepageBackgroundLabel = new JLabel(homepageBackground);
+		homepageBackgroundLabel.setBounds(0,0,1000,600);		
+		mainPanel.add(homepageBackgroundLabel);
+
+		orderButton = new JButton(new ImageIcon(getClass().getResource("orders button.JPG")));
 		orderButton.setBounds(50, 150, 125, 125);
 		orderButton.addActionListener(new ButtonListener());
 		mainPanel.add(orderButton);
 
-		transactionButton = new JButton(new ImageIcon (getClass().getResource("transactions button.JPG")));
+		transactionButton = new JButton(new ImageIcon(getClass().getResource("transactions button.JPG")));
 		transactionButton.setBounds(200, 150, 125, 125);
 		transactionButton.addActionListener(new ButtonListener());
 		mainPanel.add(transactionButton);
 
-		tipButton = new JButton(new ImageIcon (getClass().getResource("tips button.JPG")));
+		tipButton = new JButton(new ImageIcon(getClass().getResource("tips button.JPG")));
 		tipButton.setBounds(350, 150, 125, 125);
 		tipButton.addActionListener(new ButtonListener());
 		mainPanel.add(tipButton);
 
-		menuButton = new JButton(new ImageIcon (getClass().getResource("menu button.JPG")));
+		menuButton = new JButton(new ImageIcon(getClass().getResource("menu button.JPG")));
 		menuButton.setBounds(500, 150, 125, 125);
 		menuButton.addActionListener(new ButtonListener());
 		mainPanel.add(menuButton);
-		
-		reservationButton = new JButton(new ImageIcon (getClass().getResource("reservations button.JPG")));
+
+		reservationButton = new JButton(new ImageIcon(getClass().getResource("reservations button.JPG")));
 		reservationButton.setBounds(50, 300, 125, 125);
 		reservationButton.addActionListener(new ButtonListener());
 		mainPanel.add(reservationButton);
 
-		tableLayoutButton = new JButton(new ImageIcon (getClass().getResource("general button.JPG")));
+		tableLayoutButton = new JButton(new ImageIcon(getClass().getResource("general button.JPG")));
 		tableLayoutButton.setBounds(200, 300, 125, 125);
 		tableLayoutButton.addActionListener(new ButtonListener());
 		mainPanel.add(tableLayoutButton);
 
-		employeeButton = new JButton(new ImageIcon (getClass().getResource("employee button.JPG")));
+		employeeButton = new JButton(new ImageIcon(getClass().getResource("employee button.JPG")));
 		employeeButton.setBounds(350, 300, 125, 125);
 		employeeButton.addActionListener(new ButtonListener());
 		mainPanel.add(employeeButton);
 
-		reportingButton = new JButton(new ImageIcon (getClass().getResource("reporting button.JPG")));
+		reportingButton = new JButton(new ImageIcon(getClass().getResource("reporting button.JPG")));
 		reportingButton.setBounds(500, 300, 125, 125);
 		reportingButton.addActionListener(new ButtonListener());
 		mainPanel.add(reportingButton);
@@ -96,10 +104,8 @@ public class Restaurant extends JFrame {
 		setTitle("Restaurant Management");
 		setSize(1000, 600);
 		setResizable(false);
+		setUndecorated(false); // TODO: change to true
 		setLocationRelativeTo(null);
-
-		// background image
-//		menuBackground = new ImageIcon(getClass().getResource("menu background.JPG"));
 
 	}
 
@@ -143,8 +149,9 @@ public class Restaurant extends JFrame {
 			if (reservationBook.get(i).getReserveTimePeriod().getDate()
 					.getDay() == (reserveTimePeriod.getDate().getDay())
 					&& reservationBook.get(i).getReserveTimePeriod().getDate()
-							.getMonth() == (reserveTimePeriod.getDate().getMonth()) && reservationBook.get(i).getReserveTimePeriod().getDate()
-									.getYear() == (reserveTimePeriod.getDate().getYear())) {
+							.getMonth() == (reserveTimePeriod.getDate().getMonth())
+					&& reservationBook.get(i).getReserveTimePeriod().getDate()
+							.getYear() == (reserveTimePeriod.getDate().getYear())) {
 				savedReservationsForDate.add(reservationBook.get(i));
 			}
 		}
@@ -168,6 +175,27 @@ public class Restaurant extends JFrame {
 	public void bookReservation(Reservation reservation) {
 		reservationBook.add(reservation);
 		JOptionPane.showMessageDialog(null, "Reservation has been added.");
+	}
+
+	public void claimReservation(String customerName) {
+		boolean found = false;
+		int reservationIndex = -1;
+		for (int i = 0; i < reservationBook.size(); i++) {
+			if (reservationBook.get(i).getCustomer().getName().equals(customerName)) {
+				found = true;
+				reservationIndex = i;
+				break;
+			}
+		}
+		if (!found) {
+			JOptionPane.showMessageDialog(null, "There is no reservation under that name", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		JOptionPane.showMessageDialog(null,
+				"Reservation has been claimed. Under 'Orders,' the table is now claimed by " + customerName);
+		reservationBook.remove(reservationIndex);
+		// TODO : change table now to claimed under orders dialog
 	}
 
 	class ButtonListener implements ActionListener {
