@@ -1,4 +1,3 @@
-package restaurantManagement1;
 
 public class TableOrderItem {
 	

@@ -1,4 +1,3 @@
-package restaurantManagement1;
 
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;

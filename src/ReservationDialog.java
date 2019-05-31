@@ -1,5 +1,3 @@
-package restaurantManagement1;
-
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +11,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -24,11 +23,15 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.AbstractTableModel;
 
-import restaurantManagement1.TableLayoutDialog.TableLayoutTableModel;
+//import restaurantManagement1.TableLayoutDialog.TableLayoutTableModel;
 
 public class ReservationDialog extends JDialog {
 
 	private Restaurant restaurant;
+	private List<Table> availableTableForReservation;
+	private ReserveTimePeriod reserveTimePeriod;
+	private Reservation reservation;
+
 	private JTextField reserveNameTextField;
 	private JSpinner numPeopleSpinner;
 	private JSpinner dateSpinner;
@@ -39,10 +42,10 @@ public class ReservationDialog extends JDialog {
 	private JButton findAvailabilityButton;
 	private JButton bookReservationButton;
 	private JButton returnButton;
-	
+
 	private ReserveTableModel reserveTableModel;
 	private JTable possibleReserveTablesTable;
-	
+
 	private ReservationDialog self = this;
 
 	public ReservationDialog(Restaurant restaurant) {
@@ -85,15 +88,15 @@ public class ReservationDialog extends JDialog {
 		dateLabel.setBounds(25, 150, 300, 30);
 		panel.add(dateLabel);
 
-		dateSpinner = new JSpinner(new SpinnerDateModel()); 
-		dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner,"dd/MM/yyyy"));
+		dateSpinner = new JSpinner(new SpinnerDateModel());
+		dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy"));
 		dateSpinner.setBounds(150, 150, 200, 30);
 		panel.add(dateSpinner);
 
 		JLabel timeLabel = new JLabel("Time:                                                 :");
 		timeLabel.setBounds(25, 200, 200, 30);
 		panel.add(timeLabel);
-		SpinnerModel hourTimeSpinnerModel = new SpinnerNumberModel(0, 0, 24, 1);
+		SpinnerModel hourTimeSpinnerModel = new SpinnerNumberModel(0, 0, 23, 1);
 		hourTimeSpinner = new JSpinner(hourTimeSpinnerModel);
 		hourTimeSpinner.setBounds(150, 200, 50, 30);
 		panel.add(hourTimeSpinner);
@@ -111,10 +114,18 @@ public class ReservationDialog extends JDialog {
 		returnButton.setBounds(100, 350, 200, 30);
 		returnButton.addActionListener(new ButtonListener());
 		panel.add(returnButton);
+
 		setVisible(true);
+
 	}
-	
+
 	public void displayAvailableTables(List<Table> availableTableForReservation) {
+
+		bookReservationButton = new JButton("Book Reservation");
+		bookReservationButton.setBounds(800, 200, 150, 30);
+		bookReservationButton.addActionListener(new ButtonListener());
+		panel.add(bookReservationButton);
+
 		reserveTableModel = new ReserveTableModel();
 		possibleReserveTablesTable = new JTable(reserveTableModel);
 		possibleReserveTablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -124,6 +135,7 @@ public class ReservationDialog extends JDialog {
 		JScrollPane tableListScrollPane = new JScrollPane(possibleReserveTablesTable);
 		tableListScrollPane.setBounds(500, 50, 200, 400);
 		panel.add(tableListScrollPane);
+
 	}
 
 	class ButtonListener implements ActionListener {
@@ -131,46 +143,62 @@ public class ReservationDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 * 
+		 *
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == findAvailabilityButton) {
-				double time = (Integer) hourTimeSpinner.getValue() + ((Integer) minTimeSpinner.getValue())*0.01;
+
+				if (restaurant.getTables().size() == 0) {
+					JOptionPane.showMessageDialog(null, "Your restaurant currently has no tables.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				double time = (Integer) hourTimeSpinner.getValue() + ((Integer) minTimeSpinner.getValue()) * 0.01;
 				Date date = (Date) dateSpinner.getValue();
-				
-				ReserveTimePeriod reserveTimePeriod = new ReserveTimePeriod(date, time);
-				List<Table> availableTableForReservation = restaurant.findAvailableTableForReservation(reserveNameTextField.getText(),
-						(int) numPeopleSpinner.getValue(), reserveTimePeriod);
+
+				reserveTimePeriod = new ReserveTimePeriod(date, time);
+				availableTableForReservation = restaurant.findAvailableTableForReservation((int) numPeopleSpinner.getValue(), reserveTimePeriod);
 				self.displayAvailableTables(availableTableForReservation);
-						
+			} else if (press.getSource() == bookReservationButton) {
+				int selectedRow = possibleReserveTablesTable.getSelectedRow();
+				if (selectedRow < 0) {
+					JOptionPane.showMessageDialog(null, "Please choose a table to book a reservation.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				reservation = new Reservation(availableTableForReservation.get(selectedRow), reserveNameTextField.getText(), (int) numPeopleSpinner.getValue(),
+						reserveTimePeriod);
+				restaurant.bookReservation(reservation);
+				dispose();
 
 			} else if (press.getSource() == returnButton) {
 				dispose();
 			}
 		}
 	}
-	
-	class ReserveTableModel extends AbstractTableModel{
+
+	class ReserveTableModel extends AbstractTableModel {
 		/**
 		 * the names of each column in the table
 		 */
 		private final String[] tableLayoutListColumns = { "Table Num.", "Num. of Seats" };
-	
+
 		/**
 		 * the class type for each column
 		 */
-		private final Class[] columnClasses = { int.class, int.class};
-	
+		private final Class[] columnClasses = { int.class, int.class };
+
 		/**
 		 * the list of tables that are to be displayed within the table
 		 */
 		private List<Table> reserveTablesData = new ArrayList<>();
-		
+
 		@Override
 		/**
-		 * getColumnCount
-		 * the number of columns in the table
+		 * getColumnCount the number of columns in the table
+		 *
 		 * @return the number of columns
 		 */
 		public int getColumnCount() {
@@ -179,8 +207,8 @@ public class ReservationDialog extends JDialog {
 
 		@Override
 		/**
-		 * getRowCount
-		 * the number of rows in the table
+		 * getRowCount the number of rows in the table
+		 *
 		 * @return the number of rows
 		 */
 		public int getRowCount() {
@@ -190,6 +218,7 @@ public class ReservationDialog extends JDialog {
 		@Override
 		/**
 		 * getColumnName
+		 *
 		 * @param col the column number
 		 * @return the name of the column
 		 */
@@ -199,8 +228,8 @@ public class ReservationDialog extends JDialog {
 
 		@Override
 		/**
-		 * getValueAt
-		 * finds the value at the specific row and column number
+		 * getValueAt finds the value at the specific row and column number
+		 *
 		 * @param row the row number
 		 * @param col the column number
 		 * @return the value at the specific row and column
@@ -209,17 +238,17 @@ public class ReservationDialog extends JDialog {
 
 			Table table = this.reserveTablesData.get(row);
 			switch (col) {
-			case 0:
-				return table.getTableNum();
-			default:
-				return table.getNumSeats();
+				case 0:
+					return table.getTableNum();
+				default:
+					return table.getNumSeats();
 			}
 		}
 
 		@Override
 		/**
-		 * getColumnClass
-		 * finds the class type for a specific column
+		 * getColumnClass finds the class type for a specific column
+		 *
 		 * @param col the column number
 		 * @return the class type for the specific column
 		 */
@@ -229,8 +258,8 @@ public class ReservationDialog extends JDialog {
 
 		@Override
 		/**
-		 * isCellEditable
-		 * checks if the user can edit the cell
+		 * isCellEditable checks if the user can edit the cell
+		 *
 		 * @param row the row number
 		 * @param col the column number
 		 * @return whether or not the cell is editable
@@ -241,41 +270,43 @@ public class ReservationDialog extends JDialog {
 
 		@Override
 		/**
-		 * setValueAt
-		 * sets a value at the specific row and column
+		 * setValueAt sets a value at the specific row and column
+		 *
 		 * @param value the value to be set
-		 * @param row the row number
-		 * @param col the column number
+		 * @param row   the row number
+		 * @param col   the column number
 		 */
 		public void setValueAt(Object value, int row, int col) {
 			Table table = this.reserveTablesData.get(row);
 			switch (col) {
-			case 0:
-				table.setTableNum((int) value);
-				break;
-			default:
-				table.setNumSeats((int) value);
+				case 0:
+					table.setTableNum((int) value);
+					break;
+				default:
+					table.setNumSeats((int) value);
 			}
 
 			fireTableCellUpdated(row, col);
 		}
-		
+
 		/**
-		 * updateRow
-		 * when an table is modified, the row must be then updated
-		 * @param table the recipe to place in the table and add to the current list of tables
-		 * @param row the row that needs to be updated due to a change in the table
+		 * updateRow when an table is modified, the row must be then updated
+		 *
+		 * @param table the recipe to place in the table and add to the current list of
+		 *              tables
+		 * @param row   the row that needs to be updated due to a change in the table
 		 */
-		public void updateRow ( Table table, int row ) {
-			this.reserveTablesData.set( row, table );
-			fireTableRowsUpdated( row, row );
+		public void updateRow(Table table, int row) {
+			this.reserveTablesData.set(row, table);
+			fireTableRowsUpdated(row, row);
 		}
 
 		/**
-		 * insertRow
-		 * inserts a row in the table with a table
-		 * @param position the position to put the row 
-		 * @param table the table to place in the table and add to the current list of tables
+		 * insertRow inserts a row in the table with a table
+		 *
+		 * @param position the position to put the row
+		 * @param table    the table to place in the table and add to the current list
+		 *                 of tables
 		 */
 		public void insertRow(int position, Table table) {
 			this.reserveTablesData.add(table);
@@ -283,8 +314,8 @@ public class ReservationDialog extends JDialog {
 		}
 
 		/**
-		 * addRow
-		 * adds a row at the bottom of the table with a new recipe
+		 * addRow adds a row at the bottom of the table with a new recipe
+		 *
 		 * @param table the table to be placed in the table
 		 */
 		public void addRow(Table table) {
@@ -292,8 +323,8 @@ public class ReservationDialog extends JDialog {
 		}
 
 		/**
-		 * addRows
-		 * adds 2+ rows into the table
+		 * addRows adds 2+ rows into the table
+		 *
 		 * @param tableList the list of tables that are to be put into the table
 		 */
 		public void addRows(List<Table> tableList) {
@@ -303,8 +334,8 @@ public class ReservationDialog extends JDialog {
 		}
 
 		/**
-		 * removeRow
-		 * removes a specific row in the table
+		 * removeRow removes a specific row in the table
+		 *
 		 * @param position the position of the recipe to be removed
 		 */
 		public void removeRow(int position) {
@@ -313,8 +344,8 @@ public class ReservationDialog extends JDialog {
 		}
 
 		/**
-		 * getData
-		 * gets the list of tables
+		 * getData gets the list of tables
+		 *
 		 * @return the list of tables
 		 */
 		public List<Table> getData() {
@@ -322,8 +353,8 @@ public class ReservationDialog extends JDialog {
 		}
 
 		/**
-		 * setData
-		 * gets the list of tables
+		 * setData gets the list of tables
+		 *
 		 * @param data the list of tables
 		 */
 		public void setData(List<Table> tablesData) {

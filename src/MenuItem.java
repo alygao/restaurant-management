@@ -1,4 +1,3 @@
-package restaurantManagement1;
 
 import javax.swing.ImageIcon;
 
