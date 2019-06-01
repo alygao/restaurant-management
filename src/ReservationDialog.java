@@ -1,11 +1,12 @@
-import java.awt.Dialog.ModalityType;
+package restaurantManagement1;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -18,12 +19,15 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.AbstractTableModel;
 
-//import restaurantManagement1.TableLayoutDialog.TableLayoutTableModel;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 
 public class ReservationDialog extends JDialog {
 
@@ -34,14 +38,12 @@ public class ReservationDialog extends JDialog {
 
 	private JTextField reserveNameTextField;
 	private JSpinner numPeopleSpinner;
-	private JSpinner dateSpinner;
-	private JSpinner hourTimeSpinner;
-	private JSpinner minTimeSpinner;
+	private DatePicker datePicker;
+	private TimePicker timePicker;
 
 	private JPanel panel;
 	private JButton findAvailabilityButton;
 	private JButton bookReservationButton;
-	private JButton claimReservationButton;
 	private JButton returnButton;
 
 	private ReserveTableModel reserveTableModel;
@@ -84,27 +86,32 @@ public class ReservationDialog extends JDialog {
 		numPeopleSpinner = new JSpinner(tableSpinnerModel);
 		numPeopleSpinner.setBounds(150, 100, 50, 30);
 		panel.add(numPeopleSpinner);
-
+		
+		// Date
 		JLabel dateLabel = new JLabel("Date:");
 		dateLabel.setBounds(25, 150, 300, 30);
 		panel.add(dateLabel);
-
-		dateSpinner = new JSpinner(new SpinnerDateModel());
-		dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy"));
-		dateSpinner.setBounds(150, 150, 200, 30);
-		panel.add(dateSpinner);
-
-		JLabel timeLabel = new JLabel("Time:                                                 :");
+		DatePickerSettings dateSettings = new DatePickerSettings();
+		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+		DatePicker datePicker = new DatePicker(dateSettings);
+		dateSettings.setDateRangeLimits( LocalDate.now(), LocalDate.now().plusDays( 60 ) );
+		datePicker.setBounds( 150, 150, 200, 30 );
+		datePicker.setDateToToday();
+		datePicker.getComponentDateTextField().setEditable(false);
+		panel.add( datePicker );
+		
+		// Time
+		JLabel timeLabel = new JLabel("Time:");
 		timeLabel.setBounds(25, 200, 200, 30);
 		panel.add(timeLabel);
-		SpinnerModel hourTimeSpinnerModel = new SpinnerNumberModel(0, 0, 23, 1);
-		hourTimeSpinner = new JSpinner(hourTimeSpinnerModel);
-		hourTimeSpinner.setBounds(150, 200, 50, 30);
-		panel.add(hourTimeSpinner);
-		SpinnerModel minTimeSpinnerModel = new SpinnerNumberModel(00, 00, 45, 15);
-		minTimeSpinner = new JSpinner(minTimeSpinnerModel);
-		minTimeSpinner.setBounds(210, 200, 60, 30);
-		panel.add(minTimeSpinner);
+        TimePickerSettings timeSettings = new TimePickerSettings();
+        timeSettings.setColor(TimeArea.TimePickerTextValidTime, Color.black);
+        timeSettings.initialTime = LocalTime.now();
+        TimePicker timePicker = new TimePicker(timeSettings);
+        timePicker.setBounds(150, 200, 150, 30);
+        timePicker.getComponentTimeTextField().setEditable(false);
+//        timePicker.setTimeToNow();
+        panel.add( timePicker );
 
 		findAvailabilityButton = new JButton("Find Availability");
 		findAvailabilityButton.setBounds(100, 300, 200, 30);
@@ -144,7 +151,7 @@ public class ReservationDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 *
+		 * 
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
@@ -155,10 +162,8 @@ public class ReservationDialog extends JDialog {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				double time = (Integer) hourTimeSpinner.getValue() + ((Integer) minTimeSpinner.getValue()) * 0.01;
-				Date date = (Date) dateSpinner.getValue();
-
-				reserveTimePeriod = new ReserveTimePeriod(date, time);
+				
+				reserveTimePeriod = new ReserveTimePeriod(datePicker.getText(), timePicker.getText());
 				availableTableForReservation = restaurant.findAvailableTableForReservation((int) numPeopleSpinner.getValue(), reserveTimePeriod);
 				self.displayAvailableTables(availableTableForReservation);
 			} else if (press.getSource() == bookReservationButton) {
@@ -240,10 +245,10 @@ public class ReservationDialog extends JDialog {
 
 			Table table = this.reserveTablesData.get(row);
 			switch (col) {
-				case 0:
-					return table.getTableNum();
-				default:
-					return table.getNumSeats();
+			case 0:
+				return table.getTableNum();
+			default:
+				return table.getNumSeats();
 			}
 		}
 
@@ -281,11 +286,11 @@ public class ReservationDialog extends JDialog {
 		public void setValueAt(Object value, int row, int col) {
 			Table table = this.reserveTablesData.get(row);
 			switch (col) {
-				case 0:
-					table.setTableNum((int) value);
-					break;
-				default:
-					table.setNumSeats((int) value);
+			case 0:
+				table.setTableNum((int) value);
+				break;
+			default:
+				table.setNumSeats((int) value);
 			}
 
 			fireTableCellUpdated(row, col);
