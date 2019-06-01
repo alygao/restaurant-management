@@ -21,6 +21,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 public class EmployeeDialog extends JDialog{
+    private Restaurant restaurant;
     private JPanel viewEmployeesPanel;
     private JPanel addEmployeesPanel;
     private JTextField employeeNameTextField;
@@ -35,8 +36,12 @@ public class EmployeeDialog extends JDialog{
     private DatePicker datePicker;
     private JRadioButton chefRadioButton;
     private JRadioButton waiterRadioButton;
+    private boolean numeric = true;
+    private Chef newChef;
+    private Waiter newWaiter;
 
-    EmployeeDialog(){
+    EmployeeDialog(Restaurant restaurant){
+        this.restaurant = restaurant;
         initUI();
     }
 
@@ -175,18 +180,52 @@ public class EmployeeDialog extends JDialog{
                 }else if(!chefRadioButton.isSelected() && !waiterRadioButton.isSelected()){
                     JOptionPane.showMessageDialog(null, "Please select the employee type.", "Error", JOptionPane.ERROR_MESSAGE);
                 }else{
-                    String employeeName = employeeNameTextField.getText();
-                    double pay = Double.parseDouble(payTextField.getText());
-                    String userID = userIDTextField.getText();
-                    String password = passwordTextField.getText();
+                    try {
+                        double pay = Double.parseDouble(payTextField.getText());
+                    } catch (NumberFormatException excption) {
+                        JOptionPane.showMessageDialog(null, "Please enter a numeric value for pay.", "Error", JOptionPane.ERROR_MESSAGE);
+                        numeric = false;
+                    }
+                    if(numeric){
+                        String employeeName = employeeNameTextField.getText();
+                        double pay = Double.parseDouble(payTextField.getText());
+                        String userID = userIDTextField.getText();
+                        String password = passwordTextField.getText();
 
-                    String dateHired = datePicker.getText();
-                    String phoneNumber = phoneNumberTextField.getText();
-                    String email = emailTextField.getText();
-                    String SINNumber = SINNumberTextField.getText();
+                        String dateHired = datePicker.getText();
+                        String phoneNumber = phoneNumberTextField.getText();
+                        String email = emailTextField.getText();
+                        String SINNumber = SINNumberTextField.getText();
+
+                        if(chefRadioButton.isSelected()){
+                            newChef = new Chef(employeeName, pay, userID, password, dateHired, email, SINNumber);
+                            restaurant.addChef(newChef);
+                        }else{
+                            newWaiter = new Waiter(employeeName, pay, userID, password, dateHired, email, SINNumber);
+                            restaurant.addWaiter(newWaiter);
+                        }
+                    }
                 }
             }
         }
+    }
+
+    //Getters
+    public Chef getChef(){
+        return newChef;
+    }
+
+    public Waiter getNewWaiter(){
+        return newWaiter;
+    }
+
+    //Setters
+    public void setNewChef(Chef newChef){
+        this.newChef = newChef;
+    }
+
+    public void setNewWaiter(Waiter newWaiter){
+        this.newWaiter = newWaiter;
     }
 }
 

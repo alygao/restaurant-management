@@ -21,6 +21,8 @@ public class Restaurant extends JFrame {
 	private List<Table> tables = new ArrayList<>();
 	private List<Reservation> reservationBook = new ArrayList<>();
 	private List<MenuItem> menu = new ArrayList<>();
+	private DoublyLinkedList<Chef> chefs = new DoublyLinkedList<>();
+	private DoublyLinkedList<Waiter> waiters = new DoublyLinkedList<>();
 	private Queue<Customer> waitingList = new Queue<>();
 	private Restaurant self = this;
 	private JPanel mainPanel;
@@ -219,6 +221,16 @@ public class Restaurant extends JFrame {
 		JOptionPane.showMessageDialog(null, "Reservation has been added.");
 	}
 
+	public void addChef(Chef chefToAdd){
+		chefs.add(chefToAdd);
+		JOptionPane.showMessageDialog(null, "Chef successfully added.");
+	}
+
+	public void addWaiter(Waiter waiterToAdd){
+		waiters.add(waiterToAdd);
+		JOptionPane.showMessageDialog(null, "Waiter successfully added.");
+	}
+
 	public void claimReservation(String customerName) {
 		boolean found = false;
 		int reservationIndex = -1;
@@ -265,7 +277,7 @@ public class Restaurant extends JFrame {
 				ReservationDialog reservationDialog = new ReservationDialog(self);
 
 			}else if (press.getSource() == employeeButton) {
-				EmployeeDialog employeeDialog = new EmployeeDialog();
+				EmployeeDialog employeeDialog = new EmployeeDialog(self);
 			}
 		}
 	}
