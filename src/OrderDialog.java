@@ -1,5 +1,3 @@
-package restaurantManagement1;
-
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,7 +52,7 @@ public class OrderDialog extends JDialog {
 				String customerNameUnderReservation = JOptionPane
 						.showInputDialog("Please input the name under reservation: ");
 				if (customerNameUnderReservation != null) {
-					restaurant.claimReservation(customerNameUnderReservation.toUpperCase());
+					//restaurant.claimReservation(customerNameUnderReservation.toUpperCase());
 				}
 			}
 		}

@@ -106,10 +106,6 @@ public class Restaurant extends JFrame {
 		return tables;
 	}
 
-	public List<Table> getTables() {
-		return tables;
-	}
-
 	public List<Table> getReservableTables() {
 		List<Table> reservableTables = new ArrayList<>();
 		for (int i = 0; i < tables.size(); i++) {
