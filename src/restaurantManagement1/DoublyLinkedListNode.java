@@ -1,3 +1,5 @@
+package restaurantManagement1;
+
 /**
  * Project - RestaurantManagement
  * DoublyLinkedListNode.java
@@ -5,8 +7,6 @@
  * @author Zaid Omer
  * @version June 14, 2019
  */
-package restaurantManagement1;
-
 class DoublyLinkedListNode<T>{
     private T item;
     private DoublyLinkedListNode<T> next;

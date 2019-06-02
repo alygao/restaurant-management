@@ -1,17 +1,20 @@
 package restaurantManagement1;
-import javax.swing.ImageIcon;
 
-public class MenuItem {
+import java.io.Serializable;
+
+import javax.swing.Icon;
+
+public class MenuItem implements Serializable {
 	
 	private String name;
 	private double price;
 	private String description;
-	private ImageIcon image;
+	private Icon image;
 	private String category;
 	
 	
-	public MenuItem(String name, double price, String description, ImageIcon image, String category) {
-		this.name = name;
+	public MenuItem(String name, double price, String description, Icon image, String category) {
+		this.name = name.toUpperCase();
 		this.price = price;
 		this.description = description;
 		this.image = image;
@@ -21,7 +24,7 @@ public class MenuItem {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.toUpperCase();
 	}
 	public double getPrice() {
 		return price;
@@ -35,10 +38,10 @@ public class MenuItem {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public ImageIcon getImage() {
+	public Icon getImage() {
 		return image;
 	}
-	public void setImage(ImageIcon image) {
+	public void setImage(Icon image) {
 		this.image = image;
 	}
 	public String getCategory() {

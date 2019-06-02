@@ -1,6 +1,8 @@
 package restaurantManagement1;
 
-public class Bill {
+import java.io.Serializable;
+
+public class Bill implements Serializable{
 	private Customer customer;
 	private TableOrder tableOrder;
 	private String date;

@@ -1,3 +1,7 @@
+package restaurantManagement1;
+
+import java.io.Serializable;
+
 /**
  * Project - RestaurantManagement
  * Queue.java
@@ -6,9 +10,7 @@
  * @version June 14, 2019
  */
 
-package restaurantManagement1;
-
-class Queue<T>{
+class Queue<T> implements Serializable{
     private QueueNode<T> root;
 
     /**

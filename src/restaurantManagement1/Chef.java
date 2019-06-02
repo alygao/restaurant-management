@@ -1,9 +1,10 @@
 package restaurantManagement1;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chef extends Employee {
+public class Chef extends Employee implements Serializable {
 
 	private TableOrderItem currentOrderItem;
 	private List<TableOrderItem> completedOrders = new ArrayList<>();
@@ -14,14 +15,12 @@ public class Chef extends Employee {
 	private String userID;
 	private String password;
 	private String dateHired;
-	private  String email;
+	private String email;
 	private String SINNumber;
 
-	Chef(String name, double pay, String userID, String password, String dateHired, String email, String SINNumber){
-		this.name = name;
-		this.pay = pay;
-		this.userID = userID;
-		this.password = password;
+	public Chef(String name, double pay, String userID, String password, String dateHired, String email,
+			String SINNumber) {
+		super(name, pay, userID, password);
 		this.dateHired = dateHired;
 		this.email = email;
 		this.SINNumber = SINNumber;
@@ -58,6 +57,5 @@ public class Chef extends Employee {
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
-	
-	
+
 }

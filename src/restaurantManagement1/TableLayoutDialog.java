@@ -1,5 +1,5 @@
 package restaurantManagement1;
-import java.awt.Dialog.ModalityType;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -28,6 +28,7 @@ public class TableLayoutDialog extends JDialog {
 
 	private JPanel addTablePanel;
 	private JPanel viewTablesPanel;
+	private JPanel restaurantFeaturesPanel; // restaurant name, store hours
 	private JSpinner numSeatsSpinner;
 	private JCheckBox canBeReservedCheckBox;
 	private JButton addTableButton;
@@ -66,10 +67,7 @@ public class TableLayoutDialog extends JDialog {
 		JLabel numSeatsLabel = new JLabel("Number of Seats:");
 		numSeatsLabel.setBounds(25, 50, 300, 30);
 
-//		this.numSeatsTextField = new JTextField();
-//		this.numSeatsTextField.setBounds(150, 50, 300, 30);
 		addTablePanel.add(numSeatsLabel);
-//		addTablePanel.add(numSeatsTextField);
 
 		SpinnerModel tableSpinnerModel = new SpinnerNumberModel(2, 2, 10, 2);
 		numSeatsSpinner = new JSpinner(tableSpinnerModel);
@@ -117,7 +115,7 @@ public class TableLayoutDialog extends JDialog {
 			if (press.getSource() == addTableButton) {
 				Table table = new Table ((int)numSeatsSpinner.getValue(),canBeReservedCheckBox.isSelected());
 				tables.add(table);
-				table.setTableNum(tables.indexOf(table));
+				table.setTableNum(tables.indexOf(table) + 1);
 				tableLayoutTableModel.addRow(table);
 			}else if (press.getSource() == deleteTableButton) {
 				int selectedRow = tableLayoutTable.getSelectedRow();
@@ -131,7 +129,7 @@ public class TableLayoutDialog extends JDialog {
 					
 					//re-organize table numbers
 					for (int i = 0; i < tables.size(); i++) {
-						tables.get(i).setTableNum(i);
+						tables.get(i).setTableNum(i + 1);
 					}
 				}
 			}

@@ -1,12 +1,14 @@
 package restaurantManagement1;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable{
 	
 	private String name;
 	private int numPeople;
 
 	public Customer(String name, int numPeople) {
-		this.name = name;
+		this.name = name.toUpperCase();
 		this.numPeople = numPeople;
 	}
 

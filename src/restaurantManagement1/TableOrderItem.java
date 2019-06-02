@@ -1,5 +1,8 @@
 package restaurantManagement1;
-public class TableOrderItem {
+
+import java.io.Serializable;
+
+public class TableOrderItem implements Serializable{
 	
 	private MenuItem menuItem;
 	private int quantity;

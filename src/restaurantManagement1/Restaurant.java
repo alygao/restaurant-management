@@ -1,12 +1,23 @@
 package restaurantManagement1;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -15,15 +26,21 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Restaurant extends JFrame {
+import test.Chef;
+import test.Waiter;
+
+
+public class Restaurant extends JFrame  {
 
 	private List<Table> tables = new ArrayList<>();
 	private List<Reservation> reservationBook = new ArrayList<>();
 	private List<MenuItem> menu = new ArrayList<>();
+	private Queue<Customer> waitingList = new Queue<>();
 	private DoublyLinkedList<Chef> chefs = new DoublyLinkedList<>();
 	private DoublyLinkedList<Waiter> waiters = new DoublyLinkedList<>();
-	private Queue<Customer> waitingList = new Queue<>();
 	private Restaurant self = this;
 	private JPanel mainPanel;
 	private JButton orderButton;
@@ -56,11 +73,7 @@ public class Restaurant extends JFrame {
 		mainPanel.setLayout(null);
 		getContentPane().add(mainPanel);
 
-		// background image
-		homepageBackground = new ImageIcon(getClass().getResource("freshqo homepage.JPG"));
-		JLabel homepageBackgroundLabel = new JLabel(homepageBackground);
-		homepageBackgroundLabel.setBounds(0,0,1000,600);		
-		mainPanel.add(homepageBackgroundLabel);
+		setJMenuBar(createMenu());
 
 		orderButton = new JButton(new ImageIcon(getClass().getResource("orders button.JPG")));
 		orderButton.setBounds(50, 150, 125, 125);
@@ -102,21 +115,241 @@ public class Restaurant extends JFrame {
 		reportingButton.addActionListener(new ButtonListener());
 		mainPanel.add(reportingButton);
 
+		// background image
+		homepageBackground = new ImageIcon(getClass().getResource("freshqo homepage.JPG"));
+		JLabel homepageBackgroundLabel = new JLabel(homepageBackground);
+		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
+		mainPanel.add(homepageBackgroundLabel);
+
 		// icon image and size
 		setDefaultLookAndFeelDecorated(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("freshqo icon.JPG")));
 		setTitle("Freshqo Management");
 		setSize(1000, 600);
 		setResizable(false);
-		setUndecorated(false); // TODO: change to true
+		setUndecorated(true); // TODO: change to true
 		setLocationRelativeTo(null);
+//		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	}
+
+	private JMenuBar createMenu() {
+		JMenuBar menubar = new JMenuBar();
+
+		JMenu file = new JMenu("File");
+
+		// Open File
+		JMenuItem fileOpen = new JMenuItem("Open");
+		fileOpen.setMnemonic(KeyEvent.VK_O);
+		fileOpen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openDataFile();
+			}
+		});
+
+		// Save File
+		JMenuItem fileSave = new JMenuItem("Save");
+		fileSave.setMnemonic(KeyEvent.VK_S);
+		fileSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveDataFile();
+			}
+		});
+
+		// Exit File
+		JMenuItem eMenuItem = new JMenuItem("Exit");
+		eMenuItem.setMnemonic(KeyEvent.VK_E);
+		eMenuItem.setToolTipText("Exit application");
+		eMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				closeApplication();
+			}
+		});
+
+		file.add(fileOpen);
+		file.add(fileSave);
+		file.add(eMenuItem);
+		menubar.add(file);
+
+		return menubar;
+	}
+	/**
+	 * closeApplication 
+	 * Asks if the user is sure they want to close the program. If
+	 * yes, it will automatically save the data.
+	 */
+	protected void closeApplication() {
+		int ret = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to close the application?",
+				"Close Application", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (ret == JOptionPane.YES_OPTION) {
+			saveConfigurationAndData();
+			System.exit(0);
+		}
+	}
+
+	/**
+	 * openDataFile 
+	 * Opens user's own file explorer and allows user to choose a data
+	 * file the file to be opened that was previously saved from before
+	 */
+	protected void openDataFile() {
+		JFileChooser fileopen = new JFileChooser();
+		FileFilter filter = new FileNameExtensionFilter("Application data files", ".fqo");
+		fileopen.addChoosableFileFilter(filter);
+
+		int ret = fileopen.showDialog(mainPanel, "Open file");
+		if (ret == JFileChooser.APPROVE_OPTION) {
+			File file = fileopen.getSelectedFile();
+			try {
+				loadDataFile(file);
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "The file name could not be found.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "The file cannot be used with this program.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+	}
+
+	/**
+	 * loadDataFile 
+	 * load the RecipeDatabase from the file specified by the filename.
+	 * @param filename the file name of the database file.
+	 * @throws FileNotFoundException if the file cannot be found
+	 * @throws IOException if there is an error in reading the file
+	 * @throws ClassNotFoundException the RecipeDatabase class cannot be found.
+	 * @throws ClassCastException the data stored in the file is not a RecipeDatabase object
+	 */
+	private void loadDataFile(String filename) throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
+		loadDataFile(new File(filename));
+	}
+
+	/**
+	 * loadDataFile 
+	 * load the RecipeDatabase from the file specified.
+	 * @param file the File object defining the database file.
+	 * @throws FileNotFoundException if the file cannot be found
+	 * @throws IOException if there is an error in reading the file
+	 * @throws ClassNotFoundException the RecipeDatabase class cannot be found.
+	 * @throws ClassCastException the data stored in the file is not a RecipeDatabase object
+	 */
+	@SuppressWarnings("unchecked")
+	private void loadDataFile(File file) throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
+		this.configuration.setProperty("database.filename", file.getAbsolutePath());
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+//			self = (Restaurant) ois.readObject(); //TODO: fix
+			tables = (List<Table>) ois.readObject();
+			reservationBook = (List<Reservation>) ois.readObject();
+			menu = (List<MenuItem>) ois.readObject();
+			waitingList = (Queue<Customer>) ois.readObject();
+		}
+	}
+
+	/**
+	 * saveDataFile 
+	 * save data file saves the file under its own unique extension
+	 */
+	protected void saveDataFile() {
+		JFileChooser filesave = new JFileChooser();
+		FileFilter filter = new FileNameExtensionFilter("Application data files", ".fqo");
+		filesave.addChoosableFileFilter(filter);
+
+		int ret = filesave.showDialog(mainPanel, "Save file");
+		if (ret == JFileChooser.APPROVE_OPTION) {
+			File file = filesave.getSelectedFile();
+			saveDataFile(file);
+		}
+	}
+
+	/**
+	 * saveDataFile
+	 * converts the String filename into a file
+	 * @param filename the name of the file to be saved
+	 */
+	private void saveDataFile(String filename) {
+		saveDataFile(new File(filename));
+	}
+
+	/**
+	 * saveDataFile
+	 * saves the data into a file
+	 * @param file the file which will hold the saved data
+	 */
+	private void saveDataFile(File file) {
+		this.configuration.setProperty("database.filename", file.getAbsolutePath());
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+			oos.writeObject(tables);
+			oos.writeObject(reservationBook);
+			oos.writeObject(menu);
+			oos.writeObject(waitingList);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "The file cannot be used with this program.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
 	
+	protected Properties configuration = new Properties();
+	public static final String CONFIGURATION_FILENAME = "restaurant.properties";
+	public static final String DEFAULT_DATABASE_FILENAME = "restaurant.fqo";
+
+	/**
+	 * saveConfigurationAndData
+	 * saves configuration and data under the file
+	 */
+	protected void saveConfigurationAndData() {
+
+		String dbFilename = this.configuration.getProperty("database.filename", DEFAULT_DATABASE_FILENAME);
+		this.saveDataFile(dbFilename);
+		this.configuration.setProperty("database.filename", dbFilename);
+		try {
+			this.configuration.store(new FileOutputStream(CONFIGURATION_FILENAME), "");
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "The file type cannot be used to save your data.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+	}
+
+	/**
+	 * loadConfigurationAndData
+	 * loads configuration and data from a saved file
+	 */
+	protected void loadConfigurationAndData() {
+		try {
+			this.configuration.load(new FileInputStream(CONFIGURATION_FILENAME));
+			String dbFilename = this.configuration.getProperty("database.filename", DEFAULT_DATABASE_FILENAME);
+			try {
+				this.loadDataFile(dbFilename);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,
+						"The data file cannot be open or does not exist. A default one will be created on the exit of the application.",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+			} catch (ClassNotFoundException | ClassCastException e) {
+				JOptionPane.showMessageDialog(null,
+						"The data file is corrupt and hence cannot be used. A new data file will be created on the exit of the application.",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+			}
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null,
+					"The configuration file does not exist or is corrupt. The default value will be used.", "Warning",
+					JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
 	public List<MenuItem> getMenu() {
 		return menu;
 	}
-	
+
 	public List<MenuItem> getAppetizerMenu() {
 		List<MenuItem> appetizerMenu = new ArrayList<>();
 		for (int i = 0; i < menu.size(); i++) {
@@ -126,7 +359,7 @@ public class Restaurant extends JFrame {
 		}
 		return appetizerMenu;
 	}
-	
+
 	public List<MenuItem> getEntreeMenu() {
 		List<MenuItem> entreeMenu = new ArrayList<>();
 		for (int i = 0; i < menu.size(); i++) {
@@ -136,7 +369,7 @@ public class Restaurant extends JFrame {
 		}
 		return entreeMenu;
 	}
-	
+
 	public List<MenuItem> getDessertMenu() {
 		List<MenuItem> dessertMenu = new ArrayList<>();
 		for (int i = 0; i < menu.size(); i++) {
@@ -146,7 +379,7 @@ public class Restaurant extends JFrame {
 		}
 		return dessertMenu;
 	}
-	
+
 	public List<MenuItem> getBeverageMenu() {
 		List<MenuItem> beverageMenu = new ArrayList<>();
 		for (int i = 0; i < menu.size(); i++) {
@@ -155,6 +388,10 @@ public class Restaurant extends JFrame {
 			}
 		}
 		return beverageMenu;
+	}
+	
+	public List<Reservation> getReservationBook(){
+		return reservationBook;
 	}
 
 	public List<Table> getTables() {
@@ -193,19 +430,18 @@ public class Restaurant extends JFrame {
 
 //		System.out.println("Reserve date is " + reserveTimePeriod.getDate());
 		for (int i = 0; i < reservationBook.size(); i++) {
-			System.out.println("date of reservation: " + reservationBook.get(i).getReserveTimePeriod().getDate());
-			if (reservationBook.get(i).getReserveTimePeriod().getDate()
-					.equals (reserveTimePeriod.getDate())) {
+//			System.out.println("date of reservation: " + reservationBook.get(i).getReserveTimePeriod().getDate());
+			if (reservationBook.get(i).getReserveTimePeriod().getDate().equals(reserveTimePeriod.getDate())) {
 				savedReservationsForDate.add(reservationBook.get(i));
 			}
 		}
-		System.out.println(savedReservationsForDate.size());
+//		System.out.println(savedReservationsForDate.size());
 		for (int i = 0; i < savedReservationsForDate.size(); i++) {
 			if (availableTableForReservation.contains(savedReservationsForDate.get(i).getTable())) {
-				if ((savedReservationsForDate.get(i).getReserveTimePeriod().getTime() - 2 <= reserveTimePeriod
-						.getTime())
-						&& (savedReservationsForDate.get(i).getReserveTimePeriod().getTime() + 2 >= reserveTimePeriod
-								.getTime())) {
+				if ((savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble() - 2 <= reserveTimePeriod
+						.getTimeInDouble())
+						&& (savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble() + 2 >= reserveTimePeriod
+								.getTimeInDouble())) {
 					availableTableForReservation.remove(savedReservationsForDate.get(i).getTable());
 				}
 			}
@@ -219,16 +455,6 @@ public class Restaurant extends JFrame {
 	public void bookReservation(Reservation reservation) {
 		reservationBook.add(reservation);
 		JOptionPane.showMessageDialog(null, "Reservation has been added.");
-	}
-
-	public void addChef(Chef chefToAdd){
-		chefs.add(chefToAdd);
-		JOptionPane.showMessageDialog(null, "Chef successfully added.");
-	}
-
-	public void addWaiter(Waiter waiterToAdd){
-		waiters.add(waiterToAdd);
-		JOptionPane.showMessageDialog(null, "Waiter successfully added.");
 	}
 
 	public void claimReservation(String customerName) {
@@ -252,6 +478,16 @@ public class Restaurant extends JFrame {
 		// TODO : change table now to claimed under orders dialog
 	}
 
+	public void addChef(Chef chefToAdd){
+		chefs.add(chefToAdd);
+		JOptionPane.showMessageDialog(null, "Chef successfully added.");
+	}
+
+	public void addWaiter(Waiter waiterToAdd){
+		waiters.add(waiterToAdd);
+		JOptionPane.showMessageDialog(null, "Waiter successfully added.");
+	}
+	
 	class ButtonListener implements ActionListener {
 
 		/**
@@ -263,21 +499,21 @@ public class Restaurant extends JFrame {
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == orderButton) {
 				OrderDialog orderDialog = new OrderDialog(self);
-			}else if (press.getSource() == transactionButton) {
-			
+			} else if (press.getSource() == transactionButton) {
+
 			} else if (press.getSource() == tipButton) {
-				
-			}else if (press.getSource() == menuButton) {
-				MenuDialog menuDialog = new MenuDialog (self);
+
+			} else if (press.getSource() == menuButton) {
+				MenuDialog menuDialog = new MenuDialog(self);
 
 			} else if (press.getSource() == tableLayoutButton) {
 				TableLayoutDialog tableLayoutDialog = new TableLayoutDialog(tables);
 
 			} else if (press.getSource() == reservationButton) {
-				ReservationDialog reservationDialog = new ReservationDialog(self);
+				ReservationBookDialog reservationBookDialog = new ReservationBookDialog(self);
 
-			}else if (press.getSource() == employeeButton) {
-				EmployeeDialog employeeDialog = new EmployeeDialog(self);
+			} else if (press.getSource() == employeeButton) {
+				EmployeeDialog employeeDialog = new EmployeeDialog();
 			}
 		}
 	}

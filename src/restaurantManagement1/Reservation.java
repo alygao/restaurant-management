@@ -1,8 +1,8 @@
 package restaurantManagement1;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class Reservation {
+public class Reservation implements Serializable {
 	
 	private Table table;
 	private Customer customer;

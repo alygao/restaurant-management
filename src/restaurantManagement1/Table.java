@@ -1,7 +1,9 @@
 package restaurantManagement1;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Table {
+public class Table implements Serializable{
 
 	private int tableNum;
 	private int numSeats;

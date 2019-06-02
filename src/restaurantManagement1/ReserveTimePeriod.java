@@ -1,13 +1,16 @@
 package restaurantManagement1;
 
-public class ReserveTimePeriod {
+import java.io.Serializable;
+
+public class ReserveTimePeriod implements Serializable {
 	
 	private String date;
-	private double time;
+	private String time;
 	
 	public ReserveTimePeriod(String date, String time) {
 		this.date = date;
-		this.time = convertTimeToDouble(time);
+		this.time = time;
+//		this.time = convertTimeToDouble(time);
 	}
 	// Methods
 	public String getDate() {
@@ -16,13 +19,14 @@ public class ReserveTimePeriod {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public double getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(String time) {
-		this.time = convertTimeToDouble(time);
+	
+	public double getTimeInDouble() {
+		return convertTimeToDouble(time);
 	}
-	public void setTime(double time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	
