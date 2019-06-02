@@ -1,5 +1,6 @@
 package restaurantManagement1;
 
+import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +12,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,11 +35,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import test.Chef;
-import test.Waiter;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 
-
-public class Restaurant extends JFrame  {
+public class Restaurant extends JFrame {
 
 	private List<Table> tables = new ArrayList<>();
 	private List<Reservation> reservationBook = new ArrayList<>();
@@ -127,7 +132,7 @@ public class Restaurant extends JFrame  {
 		setTitle("Freshqo Management");
 		setSize(1000, 600);
 		setResizable(false);
-		setUndecorated(true); // TODO: change to true
+		setUndecorated(false); // TODO: change to true
 		setLocationRelativeTo(null);
 //		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -175,9 +180,9 @@ public class Restaurant extends JFrame  {
 
 		return menubar;
 	}
+
 	/**
-	 * closeApplication 
-	 * Asks if the user is sure they want to close the program. If
+	 * closeApplication Asks if the user is sure they want to close the program. If
 	 * yes, it will automatically save the data.
 	 */
 	protected void closeApplication() {
@@ -190,8 +195,7 @@ public class Restaurant extends JFrame  {
 	}
 
 	/**
-	 * openDataFile 
-	 * Opens user's own file explorer and allows user to choose a data
+	 * openDataFile Opens user's own file explorer and allows user to choose a data
 	 * file the file to be opened that was previously saved from before
 	 */
 	protected void openDataFile() {
@@ -220,29 +224,33 @@ public class Restaurant extends JFrame  {
 	}
 
 	/**
-	 * loadDataFile 
-	 * load the RecipeDatabase from the file specified by the filename.
+	 * loadDataFile load the RecipeDatabase from the file specified by the filename.
+	 * 
 	 * @param filename the file name of the database file.
-	 * @throws FileNotFoundException if the file cannot be found
-	 * @throws IOException if there is an error in reading the file
+	 * @throws FileNotFoundException  if the file cannot be found
+	 * @throws IOException            if there is an error in reading the file
 	 * @throws ClassNotFoundException the RecipeDatabase class cannot be found.
-	 * @throws ClassCastException the data stored in the file is not a RecipeDatabase object
+	 * @throws ClassCastException     the data stored in the file is not a
+	 *                                RecipeDatabase object
 	 */
-	private void loadDataFile(String filename) throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
+	private void loadDataFile(String filename)
+			throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
 		loadDataFile(new File(filename));
 	}
 
 	/**
-	 * loadDataFile 
-	 * load the RecipeDatabase from the file specified.
+	 * loadDataFile load the RecipeDatabase from the file specified.
+	 * 
 	 * @param file the File object defining the database file.
-	 * @throws FileNotFoundException if the file cannot be found
-	 * @throws IOException if there is an error in reading the file
+	 * @throws FileNotFoundException  if the file cannot be found
+	 * @throws IOException            if there is an error in reading the file
 	 * @throws ClassNotFoundException the RecipeDatabase class cannot be found.
-	 * @throws ClassCastException the data stored in the file is not a RecipeDatabase object
+	 * @throws ClassCastException     the data stored in the file is not a
+	 *                                RecipeDatabase object
 	 */
 	@SuppressWarnings("unchecked")
-	private void loadDataFile(File file) throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
+	private void loadDataFile(File file)
+			throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
 		this.configuration.setProperty("database.filename", file.getAbsolutePath());
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
 //			self = (Restaurant) ois.readObject(); //TODO: fix
@@ -254,8 +262,7 @@ public class Restaurant extends JFrame  {
 	}
 
 	/**
-	 * saveDataFile 
-	 * save data file saves the file under its own unique extension
+	 * saveDataFile save data file saves the file under its own unique extension
 	 */
 	protected void saveDataFile() {
 		JFileChooser filesave = new JFileChooser();
@@ -270,8 +277,8 @@ public class Restaurant extends JFrame  {
 	}
 
 	/**
-	 * saveDataFile
-	 * converts the String filename into a file
+	 * saveDataFile converts the String filename into a file
+	 * 
 	 * @param filename the name of the file to be saved
 	 */
 	private void saveDataFile(String filename) {
@@ -279,8 +286,8 @@ public class Restaurant extends JFrame  {
 	}
 
 	/**
-	 * saveDataFile
-	 * saves the data into a file
+	 * saveDataFile saves the data into a file
+	 * 
 	 * @param file the file which will hold the saved data
 	 */
 	private void saveDataFile(File file) {
@@ -296,14 +303,13 @@ public class Restaurant extends JFrame  {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 	protected Properties configuration = new Properties();
 	public static final String CONFIGURATION_FILENAME = "restaurant.properties";
 	public static final String DEFAULT_DATABASE_FILENAME = "restaurant.fqo";
 
 	/**
-	 * saveConfigurationAndData
-	 * saves configuration and data under the file
+	 * saveConfigurationAndData saves configuration and data under the file
 	 */
 	protected void saveConfigurationAndData() {
 
@@ -321,8 +327,7 @@ public class Restaurant extends JFrame  {
 	}
 
 	/**
-	 * loadConfigurationAndData
-	 * loads configuration and data from a saved file
+	 * loadConfigurationAndData loads configuration and data from a saved file
 	 */
 	protected void loadConfigurationAndData() {
 		try {
@@ -389,8 +394,8 @@ public class Restaurant extends JFrame  {
 		}
 		return beverageMenu;
 	}
-	
-	public List<Reservation> getReservationBook(){
+
+	public List<Reservation> getReservationBook() {
 		return reservationBook;
 	}
 
@@ -440,8 +445,8 @@ public class Restaurant extends JFrame  {
 			if (availableTableForReservation.contains(savedReservationsForDate.get(i).getTable())) {
 				if ((savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble() - 2 <= reserveTimePeriod
 						.getTimeInDouble())
-						&& (savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble() + 2 >= reserveTimePeriod
-								.getTimeInDouble())) {
+						&& (savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble()
+								+ 2 >= reserveTimePeriod.getTimeInDouble())) {
 					availableTableForReservation.remove(savedReservationsForDate.get(i).getTable());
 				}
 			}
@@ -478,16 +483,16 @@ public class Restaurant extends JFrame  {
 		// TODO : change table now to claimed under orders dialog
 	}
 
-	public void addChef(Chef chefToAdd){
+	public void addChef(Chef chefToAdd) {
 		chefs.add(chefToAdd);
 		JOptionPane.showMessageDialog(null, "Chef successfully added.");
 	}
 
-	public void addWaiter(Waiter waiterToAdd){
+	public void addWaiter(Waiter waiterToAdd) {
 		waiters.add(waiterToAdd);
 		JOptionPane.showMessageDialog(null, "Waiter successfully added.");
 	}
-	
+
 	class ButtonListener implements ActionListener {
 
 		/**
@@ -507,14 +512,80 @@ public class Restaurant extends JFrame  {
 				MenuDialog menuDialog = new MenuDialog(self);
 
 			} else if (press.getSource() == tableLayoutButton) {
-				TableLayoutDialog tableLayoutDialog = new TableLayoutDialog(tables);
+				SetupDialog tableLayoutDialog = new SetupDialog(tables);
 
 			} else if (press.getSource() == reservationButton) {
 				ReservationBookDialog reservationBookDialog = new ReservationBookDialog(self);
 
 			} else if (press.getSource() == employeeButton) {
-				EmployeeDialog employeeDialog = new EmployeeDialog();
+				EmployeeDialog employeeDialog = new EmployeeDialog(self);
 			}
 		}
+	}
+
+	public static String getCurrentTime() {
+		Date date = new Date();
+		String strDateFormat = "hh:mma";
+		DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+		String formattedDate = dateFormat.format(date);
+		return formattedDate;
+	}
+
+	public double convertTimeToDouble(String time) {
+		double convertedTime = 0;
+		convertedTime = Double.parseDouble(time.substring(0, time.indexOf(":")));
+		convertedTime += Double.parseDouble(time.substring(time.indexOf(":")+1, time.indexOf(":") + 3)) / 60;
+		if (time.substring(time.indexOf(":") + 4).equals("PM")) {
+			convertedTime += 12;
+		}
+		return convertedTime;
+	}
+
+	public String getCurrentDate() {
+		DatePickerSettings dateSettings = new DatePickerSettings();
+		DatePicker datePicker = new DatePicker(dateSettings);
+		datePicker.setDateToToday();
+		return datePicker.getText();
+	}
+
+	public Table findAvailableTableForWalkInCustomer(Customer customer) {
+		List<Table> availableTables = new ArrayList<>();
+		double currentTime = convertTimeToDouble(getCurrentTime());
+		for (int i = 0; i < tables.size(); i++) {
+			if (!tables.get(i).isOccupied()) {
+				availableTables.add(tables.get(i));
+			}
+		}
+		for (int i = 0; i < reservationBook.size(); i++) {
+			if (reservationBook.get(i).getReserveTimePeriod().getDate().equals(getCurrentDate())
+					&& convertTimeToDouble(
+							getCurrentTime()) < reservationBook.get(i).getReserveTimePeriod().getTimeInDouble() + 2
+					&& convertTimeToDouble(
+							getCurrentTime()) > reservationBook.get(i).getReserveTimePeriod().getTimeInDouble() - 2) {
+				availableTables.remove(reservationBook.get(i).getTable());
+			}
+		}
+		if (availableTables.size() > 0) {
+			return getAppropriateTable(availableTables, customer.getNumPeople()); // TODO: change so its more efficient (doesnt return a 10seat
+															// table for 2 people)
+		} else {
+			return null;
+		}
+	}
+
+	private Table getAppropriateTable(List<Table> availableTables, int numPeople) {
+		int minDifference = Integer.MAX_VALUE;
+		Table bestTable = null;
+		for (int i = 0; i < availableTables.size(); i++) {
+			if (availableTables.get(i).getNumSeats() - numPeople > 0 && availableTables.get(i).getNumSeats() - numPeople < minDifference ) {
+				bestTable = availableTables.get(i);
+				minDifference = availableTables.get(i).getNumSeats();
+			}
+		}
+		return bestTable;
+	}
+
+	public Queue<Customer> getWaitingList() {
+		return waitingList;
 	}
 }

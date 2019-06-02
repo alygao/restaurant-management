@@ -12,9 +12,11 @@ public class Table implements Serializable{
 	private Bill bill;
 	private boolean canBeReserved;
 	private Waiter currentAssignedWaiter;
+	private boolean occupied;
 
 	
 	
+
 	public Table(int numSeats, boolean canBeReserved) {
 		this.numSeats = numSeats;
 		this.canBeReserved = canBeReserved;
@@ -26,6 +28,14 @@ public class Table implements Serializable{
 		
 		
 		
+	}
+	
+	public boolean isOccupied() {
+		return occupied;
+	}
+
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
 	}
 
 	public int getTableNum() {

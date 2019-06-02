@@ -11,12 +11,29 @@ package restaurantManagement1;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+
 public class EmployeeDialog extends JDialog{
+    private Restaurant restaurant;
     private JPanel viewEmployeesPanel;
     private JPanel addEmployeesPanel;
     private JTextField employeeNameTextField;
@@ -28,8 +45,15 @@ public class EmployeeDialog extends JDialog{
     private JTextField phoneNumberTextField;
     private JTextField emailTextField;
     private JTextField SINNumberTextField;
+    private DatePicker datePicker;
+    private JRadioButton chefRadioButton;
+    private JRadioButton waiterRadioButton;
+    private boolean numeric = true;
+    private Chef newChef;
+    private Waiter newWaiter;
 
-    EmployeeDialog(){
+    EmployeeDialog(Restaurant restaurant){
+        this.restaurant = restaurant;
         initUI();
     }
 
@@ -97,11 +121,11 @@ public class EmployeeDialog extends JDialog{
         employeeTypeLabel.setBounds(25, 300, 300, 30);
         addEmployeesPanel.add(employeeTypeLabel);
 
-        JRadioButton chefRadioButton = new JRadioButton("Chef");
+        chefRadioButton = new JRadioButton("Chef");
         chefRadioButton.setBounds(150, 300, 300, 30);
         addEmployeesPanel.add(chefRadioButton);
 
-        JRadioButton waiterRadioButton = new JRadioButton("Waiter");
+        waiterRadioButton = new JRadioButton("Waiter");
         waiterRadioButton.setBounds(150, 330, 300, 30);
         addEmployeesPanel.add(waiterRadioButton);
 
@@ -109,21 +133,19 @@ public class EmployeeDialog extends JDialog{
         employeeTypeGroup.add(chefRadioButton);
         employeeTypeGroup.add(waiterRadioButton);
 
-        //Submit data, make employee
-        createEmployee = new JButton("Add Employee");
-        createEmployee.setBounds(25, 400, 150, 30);
-        //createEmployee.addActionListener(new ReservationDialog.ButtonListener());
-        addEmployeesPanel.add(createEmployee);
-
         //Date Added
         JLabel dateLabel = new JLabel("Date Hired:");
         dateLabel.setBounds(500, 100, 300, 30);
         addEmployeesPanel.add(dateLabel);
 
-        dateSpinner = new JSpinner(new SpinnerDateModel());
-        dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy"));
-        dateSpinner.setBounds(625, 100, 200, 30);
-        addEmployeesPanel.add(dateSpinner);
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        datePicker = new DatePicker(dateSettings);
+        dateSettings.setDateRangeLimits(null, LocalDate.now().plusDays( 60 ));
+        datePicker.setBounds( 625, 100, 200, 30 );
+        datePicker.setDateToToday();
+        datePicker.getComponentDateTextField().setEditable(false);
+        addEmployeesPanel.add( datePicker );
 
         //Phone Number
         JLabel phoneNumberLabel = new JLabel ("Phone Number:");
@@ -152,10 +174,71 @@ public class EmployeeDialog extends JDialog{
         SINNumberTextField.setBounds(625, 250, 300, 30);
         addEmployeesPanel.add(SINNumberTextField);
 
+        //Submit data, make employee
+        createEmployee = new JButton("Add Employee");
+        createEmployee.setBounds(25, 400, 150, 30);
+        createEmployee.addActionListener(new EmployeeDialog.ButtonListener());
+        addEmployeesPanel.add(createEmployee);
+
         //Set Visible
         setVisible(true);
     }
-}
 
+    class ButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent press){
+            if (press.getSource() == createEmployee) {
+                if((employeeNameTextField.getText().isEmpty()) || (payTextField.getText().isEmpty()) || (userIDTextField.getText().isEmpty()) || (passwordTextField.getText().isEmpty()) || (datePicker.getText().isEmpty()) || (phoneNumberTextField.getText().isEmpty()) || (emailTextField.getText().isEmpty()) || (SINNumberTextField.getText().isEmpty())){
+                    JOptionPane.showMessageDialog(null, "Please enter all required info.", "Error", JOptionPane.ERROR_MESSAGE);
+                }else if(!chefRadioButton.isSelected() && !waiterRadioButton.isSelected()){
+                    JOptionPane.showMessageDialog(null, "Please select the employee type.", "Error", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    try {
+                        double pay = Double.parseDouble(payTextField.getText());
+                    } catch (NumberFormatException excption) {
+                        JOptionPane.showMessageDialog(null, "Please enter a numeric value for pay.", "Error", JOptionPane.ERROR_MESSAGE);
+                        numeric = false;
+                    }
+                    if(numeric){
+                        String employeeName = employeeNameTextField.getText();
+                        double pay = Double.parseDouble(payTextField.getText());
+                        String userID = userIDTextField.getText();
+                        String password = passwordTextField.getText();
+
+                        String dateHired = datePicker.getText();
+                        String phoneNumber = phoneNumberTextField.getText();
+                        String email = emailTextField.getText();
+                        String SINNumber = SINNumberTextField.getText();
+
+                        if(chefRadioButton.isSelected()){
+                            newChef = new Chef(employeeName, pay, userID, password, dateHired, email, SINNumber);
+                            restaurant.addChef(newChef);
+                        }else{
+                            newWaiter = new Waiter(employeeName, pay, userID, password, dateHired, email, SINNumber);
+                            restaurant.addWaiter(newWaiter);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //Getters
+    public Chef getChef(){
+        return newChef;
+    }
+
+    public Waiter getNewWaiter(){
+        return newWaiter;
+    }
+
+    //Setters
+    public void setNewChef(Chef newChef){
+        this.newChef = newChef;
+    }
+
+    public void setNewWaiter(Waiter newWaiter){
+        this.newWaiter = newWaiter;
+    }
+}
 
 

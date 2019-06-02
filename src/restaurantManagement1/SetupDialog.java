@@ -6,37 +6,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.AbstractTableModel;
 
-import restaurantManagement1.SetupDialog.TableLayoutTableModel;
+/**
+ * @author Alyssa Gao
+ *
+ */
+public class SetupDialog extends JDialog {
 
-public class OrderDialog extends JDialog {
-	private Restaurant restaurant;
-	private JPanel panel;
-	private RestaurantTablesTableModel restaurantTablesTableModel;
-	private JTable restaurantTablesTable;
-	
-	//view tables panel components
-	private JButton claimReservationButton;
-	private JButton findTableButton;
-	private JButton viewTableButton;
-	
-	//view specific table panel components
-	private JButton fireOrderButton;
-	private JButton payButton;
-	private JButton releaseTableButton;
-	private JButton reprintReceiptButton;
-	private JButton returnButton;
-	
+	private List<Table> tables;
+	private String numPeople;
+	private boolean canBeReserved;
 
-	public OrderDialog(Restaurant restaurant) {
-		this.restaurant = restaurant;
+	private JPanel addTablePanel;
+	private JPanel viewTablesPanel;
+	private JPanel restaurantFeaturesPanel; // restaurant name, store hours
+	private JSpinner numSeatsSpinner;
+	private JCheckBox canBeReservedCheckBox;
+	private JButton addTableButton;
+	private JButton deleteTableButton;
+	private TableLayoutTableModel tableLayoutTableModel;
+	private JTable tableLayoutTable;
+
+	public SetupDialog(List<Table> tables) {
+		this.tables = tables;
 		initUI();
 	}
 
@@ -44,78 +49,107 @@ public class OrderDialog extends JDialog {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
-		setUndecorated(false); // TODO change to true
+//		setUndecorated(true);
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setResizable(false);
 
-		panel = new JPanel();
-		panel.setLayout(null);
-		getContentPane().add(panel);
+		addTablePanel = new JPanel();
+		addTablePanel.setLayout(null);
+		getContentPane().add(addTablePanel);
 
-		claimReservationButton = new JButton("Claim Reservation");
-		claimReservationButton.setBounds(865, 75, 120, 75);
-		claimReservationButton.addActionListener(new ButtonListener());
-		panel.add(claimReservationButton);
+		viewTablesPanel = new JPanel();
+		viewTablesPanel.setLayout(null);
+		getContentPane().add(viewTablesPanel);
 
-		findTableButton = new JButton("Find a Table");
-		findTableButton.setBounds(865, 175, 120, 75);
-		findTableButton.addActionListener(new ButtonListener());
-		panel.add(findTableButton);
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.addTab("Add Table", null, addTablePanel);
+		tabbedPane.addTab("View Tables", null, viewTablesPanel);
+		getContentPane().add(tabbedPane);
 
-		viewTableButton = new JButton("View Table");
-		viewTableButton.setBounds(865, 275, 120, 75);
-		viewTableButton.addActionListener(new ButtonListener());
-		panel.add(viewTableButton);
-		
-		restaurantTablesTableModel = new RestaurantTablesTableModel();
-		restaurantTablesTable = new JTable(restaurantTablesTableModel);
-		restaurantTablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		restaurantTablesTable.setBounds(25, 50, 400, 400);
-		restaurantTablesTableModel.addRows(restaurant.getTables());
+		// Add Table Panel
+		JLabel numSeatsLabel = new JLabel("Number of Seats:");
+		numSeatsLabel.setBounds(25, 50, 300, 30);
 
-		JScrollPane tableListScrollPane = new JScrollPane(restaurantTablesTable);
+		addTablePanel.add(numSeatsLabel);
+
+		SpinnerModel tableSpinnerModel = new SpinnerNumberModel(2, 2, 10, 2);
+		numSeatsSpinner = new JSpinner(tableSpinnerModel);
+		numSeatsSpinner.setBounds(150, 50, 50, 30);
+		addTablePanel.add(numSeatsSpinner);
+
+		canBeReservedCheckBox = new JCheckBox("Reservable", false);
+		canBeReservedCheckBox.setBounds(25, 100, 100, 30);
+		addTablePanel.add(canBeReservedCheckBox);
+
+		addTableButton = new JButton("Add");
+		addTableButton.setBounds(50, 300, 125, 50);
+		addTableButton.addActionListener(new ButtonListener());
+		addTablePanel.add(addTableButton);
+
+		// View Table Panel
+		tableLayoutTableModel = new TableLayoutTableModel();
+		tableLayoutTable = new JTable(tableLayoutTableModel);
+		tableLayoutTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableLayoutTable.setBounds(25, 50, 400, 400);
+		tableLayoutTableModel.addRows(tables);
+
+		JScrollPane tableListScrollPane = new JScrollPane(tableLayoutTable);
 		tableListScrollPane.setBounds(25, 50, 400, 400);
-		panel.add(tableListScrollPane);
+		viewTablesPanel.add(tableListScrollPane);
+		
+		deleteTableButton = new JButton("Delete");
+		deleteTableButton.setBounds(150, 475, 100, 50);
+		deleteTableButton.addActionListener(new ButtonListener());
+		viewTablesPanel.add(deleteTableButton);
+		
+		
 		
 		setVisible(true);
 	}
-
+	
 	class ButtonListener implements ActionListener {
 
 		/**
-		 * actionPerformed performs the action that is needed to be performed from
-		 * clicking a button
-		 * 
+		 * actionPerformed 
+		 * performs the action that is needed to be performed from clicking a button
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
-			if (press.getSource() == claimReservationButton) {
-				// claim only for the current date
-				String customerNameUnderReservation = JOptionPane
-						.showInputDialog("Please input the name under reservation: ");
-				if (customerNameUnderReservation != null) {
-					restaurant.claimReservation(customerNameUnderReservation.toUpperCase());
+			if (press.getSource() == addTableButton) {
+				Table table = new Table ((int)numSeatsSpinner.getValue(),canBeReservedCheckBox.isSelected());
+				tables.add(table);
+				table.setTableNum(tables.indexOf(table) + 1);
+				tableLayoutTableModel.addRow(table);
+			}else if (press.getSource() == deleteTableButton) {
+				int selectedRow = tableLayoutTable.getSelectedRow();
+				if (selectedRow < 0) {
+					JOptionPane.showMessageDialog(null, "Please choose a table to delete.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}else {
+					tableLayoutTableModel.removeRow(selectedRow);
+					tables.remove(selectedRow); 
+					
+					//re-organize table numbers
+					for (int i = 0; i < tables.size(); i++) {
+						tables.get(i).setTableNum(i + 1);
+					}
 				}
-			}else if (press.getSource() == viewTableButton) {
-				FindTableDialog findTableDialog = new FindTableDialog (restaurant);
-				restaurantTablesTableModel.fireTableRowsUpdated(0, restaurant.getTables().size());
-			}else if (press.getSource() == findTableButton) {
-				
 			}
 		}
 	}
 	
-	class RestaurantTablesTableModel extends AbstractTableModel{
+	class TableLayoutTableModel extends AbstractTableModel{
 		/**
 		 * the names of each column in the table
 		 */
-		private final String[] tableListColumns = { "Table Num.", "Occupied" };
+		private final String[] tableLayoutListColumns = { "Table Num.", "Num. of Seats", "Reservable" };
 	
 		/**
 		 * the class type for each column
 		 */
-		private final Class[] columnClasses = { int.class, boolean.class};
+		private final Class[] columnClasses = { int.class, int.class, boolean.class};
 	
 		/**
 		 * the list of recipes that are to be displayed within the table
@@ -129,7 +163,7 @@ public class OrderDialog extends JDialog {
 		 * @return the number of columns
 		 */
 		public int getColumnCount() {
-			return this.tableListColumns.length;
+			return this.tableLayoutListColumns.length;
 		}
 
 		@Override
@@ -149,7 +183,7 @@ public class OrderDialog extends JDialog {
 		 * @return the name of the column
 		 */
 		public String getColumnName(int col) {
-			return this.tableListColumns[col];
+			return this.tableLayoutListColumns[col];
 		}
 
 		@Override
@@ -166,8 +200,11 @@ public class OrderDialog extends JDialog {
 			switch (col) {
 			case 0:
 				return table.getTableNum();
+			case 1:
+				return table.getNumSeats();
+			// case 2:
 			default:
-				return table.isOccupied();
+				return table.canBeReserved();
 			}
 		}
 
@@ -208,8 +245,11 @@ public class OrderDialog extends JDialog {
 			case 0:
 				table.setTableNum((int) value);
 				break;
+			case 1:
+				table.setNumSeats((int) value);
+			// case 2:
 			default:
-				table.setOccupied((boolean) value);
+				table.setCanBeReserved((boolean) value);
 			}
 
 			fireTableCellUpdated(row, col);
