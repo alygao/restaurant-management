@@ -5,8 +5,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,25 +16,26 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
-import restaurantManagement1.SetupDialog.TableLayoutTableModel;
-
 public class OrderDialog extends JDialog {
 	private Restaurant restaurant;
-	private JPanel panel;
-	private RestaurantTablesTableModel restaurantTablesTableModel;
-	private JTable restaurantTablesTable;
+	private ImageIcon homepageBackground;
 	
-	//view tables panel components
+	//view general tables panel components
+	private JPanel generalTablesPanel;
 	private JButton claimReservationButton;
 	private JButton findTableButton;
 	private JButton viewTableButton;
+	private JButton returnToHomepageButton;
+	private RestaurantTablesTableModel restaurantTablesTableModel;
+	private JTable restaurantTablesTable;
 	
 	//view specific table panel components
+	private JPanel specificTablePanel;
 	private JButton fireOrderButton;
 	private JButton payButton;
 	private JButton releaseTableButton;
 	private JButton reprintReceiptButton;
-	private JButton returnButton;
+	private JButton returnToGeneralTablesButton;
 	
 
 	public OrderDialog(Restaurant restaurant) {
@@ -49,35 +52,54 @@ public class OrderDialog extends JDialog {
 		setLocationRelativeTo(null);
 		setResizable(false);
 
-		panel = new JPanel();
-		panel.setLayout(null);
-		getContentPane().add(panel);
+		//General Tables Panel		
+		generalTablesPanel = new JPanel();
+		generalTablesPanel.setLayout(null);
 
 		claimReservationButton = new JButton("Claim Reservation");
 		claimReservationButton.setBounds(865, 75, 120, 75);
 		claimReservationButton.addActionListener(new ButtonListener());
-		panel.add(claimReservationButton);
+		generalTablesPanel.add(claimReservationButton);
 
 		findTableButton = new JButton("Find a Table");
-		findTableButton.setBounds(865, 175, 120, 75);
+		findTableButton.setBounds(865, 165, 120, 75);
 		findTableButton.addActionListener(new ButtonListener());
-		panel.add(findTableButton);
+		generalTablesPanel.add(findTableButton);
 
 		viewTableButton = new JButton("View Table");
-		viewTableButton.setBounds(865, 275, 120, 75);
+		viewTableButton.setBounds(865, 255, 120, 75);
 		viewTableButton.addActionListener(new ButtonListener());
-		panel.add(viewTableButton);
+		generalTablesPanel.add(viewTableButton);
+		
+		returnToHomepageButton = new JButton("Return to Home");
+		returnToHomepageButton.setBounds(865, 435, 120, 75);
+		returnToHomepageButton.addActionListener(new ButtonListener());
+		generalTablesPanel.add(returnToHomepageButton);
 		
 		restaurantTablesTableModel = new RestaurantTablesTableModel();
 		restaurantTablesTable = new JTable(restaurantTablesTableModel);
 		restaurantTablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		restaurantTablesTable.setBounds(25, 50, 400, 400);
+		restaurantTablesTable.setBounds(25, 100, 400, 400);
 		restaurantTablesTableModel.addRows(restaurant.getTables());
 
 		JScrollPane tableListScrollPane = new JScrollPane(restaurantTablesTable);
-		tableListScrollPane.setBounds(25, 50, 400, 400);
-		panel.add(tableListScrollPane);
+		tableListScrollPane.setBounds(25, 100, 400, 400);
+		generalTablesPanel.add(tableListScrollPane);
 		
+		// Specific Table Panel
+		specificTablePanel = new JPanel();
+		specificTablePanel.setLayout(null);
+		getContentPane().add(specificTablePanel);
+//		specificTablePanel.setVisible(false);
+		
+		getContentPane().add(generalTablesPanel);
+		
+		// background image
+		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
+		JLabel homepageBackgroundLabel = new JLabel(homepageBackground);
+		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
+		specificTablePanel.add(homepageBackgroundLabel);
+		generalTablesPanel.add(homepageBackgroundLabel);
 		setVisible(true);
 	}
 
@@ -92,16 +114,30 @@ public class OrderDialog extends JDialog {
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == claimReservationButton) {
 				// claim only for the current date
+				if (restaurant.getTables().size() == 0) {
+					JOptionPane.showMessageDialog(null, "Your restaurant currently has no tables.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				String customerNameUnderReservation = JOptionPane
 						.showInputDialog("Please input the name under reservation: ");
 				if (customerNameUnderReservation != null) {
 					restaurant.claimReservation(customerNameUnderReservation.toUpperCase());
 				}
 			}else if (press.getSource() == viewTableButton) {
+				int selectedRow = restaurantTablesTable.getSelectedRow();
+				if (selectedRow < 0) {
+					JOptionPane.showMessageDialog(null, "Please choose a table to view.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}else {
+					generalTablesPanel.setVisible(false);
+				}
+			}else if (press.getSource() == findTableButton) {
 				FindTableDialog findTableDialog = new FindTableDialog (restaurant);
 				restaurantTablesTableModel.fireTableRowsUpdated(0, restaurant.getTables().size());
-			}else if (press.getSource() == findTableButton) {
-				
+			}else if (press.getSource() == returnToHomepageButton) {
+				dispose();
 			}
 		}
 	}

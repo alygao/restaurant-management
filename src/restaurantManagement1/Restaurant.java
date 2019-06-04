@@ -258,7 +258,9 @@ public class Restaurant extends JFrame {
 			reservationBook = (List<Reservation>) ois.readObject();
 			menu = (List<MenuItem>) ois.readObject();
 			waitingList = (Queue<Customer>) ois.readObject();
-		}
+			chefs = (DoublyLinkedList<Chef>) ois.readObject();
+			waiters = (DoublyLinkedList<Waiter>) ois.readObject();
+			}
 	}
 
 	/**
@@ -297,6 +299,8 @@ public class Restaurant extends JFrame {
 			oos.writeObject(reservationBook);
 			oos.writeObject(menu);
 			oos.writeObject(waitingList);
+			oos.writeObject(chefs);
+			oos.writeObject(waiters);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "The file cannot be used with this program.", "Error",
