@@ -56,7 +56,7 @@ public class OrderDialog extends JDialog {
 		generalTablesPanel = new JPanel();
 		generalTablesPanel.setLayout(null);
 
-		claimReservationButton = new JButton("Claim Reservation");
+		claimReservationButton = new JButton("<html>Claim<p>Reservation</html>");
 		claimReservationButton.setBounds(865, 75, 120, 75);
 		claimReservationButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(claimReservationButton);
@@ -71,7 +71,7 @@ public class OrderDialog extends JDialog {
 		viewTableButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(viewTableButton);
 		
-		returnToHomepageButton = new JButton("Return to Home");
+		returnToHomepageButton = new JButton("<html>Return<p>to Home</html>");
 		returnToHomepageButton.setBounds(865, 435, 120, 75);
 		returnToHomepageButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(returnToHomepageButton);

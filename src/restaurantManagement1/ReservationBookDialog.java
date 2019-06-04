@@ -68,7 +68,7 @@ public class ReservationBookDialog extends JDialog {
 		lookUpButton.addActionListener(new ButtonListener());
 		panel.add(lookUpButton);
 
-		addReservationButton = new JButton("Add Reservation");
+		addReservationButton = new JButton("<html>Add<p>Reservation</html>");
 		addReservationButton.setBounds(850, 100, 125, 125);
 		addReservationButton.addActionListener(new ButtonListener());
 		panel.add(addReservationButton);

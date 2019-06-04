@@ -95,8 +95,8 @@ public class MenuDialog extends JDialog {
 		Border recipeImageJLabeborder = BorderFactory.createLineBorder(Color.BLACK, 1);
 		menuItemImageLabel.setBorder(recipeImageJLabeborder);
 
-		loadImageButton = new JButton("Load Image");
-		loadImageButton.setBounds(500, 300, 100, 30);
+		loadImageButton = new JButton("<html>Load<p>Image</html>");
+		loadImageButton.setBounds(500, 300, 80, 50);
 		loadImageButton.addActionListener(new ButtonListener());
 		
 		addItemButton = new JButton("Add Item");
