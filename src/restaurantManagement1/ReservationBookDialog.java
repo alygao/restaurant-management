@@ -118,12 +118,12 @@ public class ReservationBookDialog extends JDialog {
 		/**
 		 * the names of each column in the table
 		 */
-		private final String[] tableLayoutListColumns = { "Customer Name", "Num. of People", "Time", "Table No." };
+		private final String[] tableLayoutListColumns = { "Customer Name", "Num. of People", "Time", "Table Name" };
 
 		/**
 		 * the class type for each column
 		 */
-		private final Class[] columnClasses = { String.class, int.class, String.class, int.class };
+		private final Class[] columnClasses = { String.class, int.class, String.class, String.class };
 
 		/**
 		 * the list of tables that are to be displayed within the table
@@ -180,7 +180,7 @@ public class ReservationBookDialog extends JDialog {
 			case 2:
 				return reservation.getReserveTimePeriod().getTime();
 			default:
-				return reservation.getTable().getTableNum();
+				return reservation.getTable().getTableName();
 			}
 		}
 
@@ -228,7 +228,7 @@ public class ReservationBookDialog extends JDialog {
 				reservation.getReserveTimePeriod().setTime((String) value);
 				break;
 			default:
-				reservation.getTable().setTableNum((int) value);
+				reservation.getTable().setTableName((String) value);
 			}
 
 			fireTableCellUpdated(row, col);

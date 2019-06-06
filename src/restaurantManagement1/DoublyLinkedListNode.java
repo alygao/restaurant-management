@@ -1,5 +1,7 @@
 package restaurantManagement1;
 
+import java.io.Serializable;
+
 /**
  * Project - RestaurantManagement
  * DoublyLinkedListNode.java
@@ -7,7 +9,7 @@ package restaurantManagement1;
  * @author Zaid Omer
  * @version June 14, 2019
  */
-class DoublyLinkedListNode<T>{
+class DoublyLinkedListNode<T> implements Serializable{
     private T item;
     private DoublyLinkedListNode<T> next;
     private DoublyLinkedListNode<T> previous;

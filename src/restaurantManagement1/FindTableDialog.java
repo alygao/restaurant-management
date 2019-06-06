@@ -3,6 +3,7 @@ package restaurantManagement1;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -17,6 +18,7 @@ public class FindTableDialog extends JDialog {
 
 	private Restaurant restaurant;
 	private JPanel panel;
+	private ImageIcon background;
 
 	private JTextField customerNameTextField;
 	private JSpinner numOfPeopleSpinner;
@@ -57,7 +59,7 @@ public class FindTableDialog extends JDialog {
 		numOfPeopleSpinner.setBounds(135, 120, 50, 30);
 		panel.add(numOfPeopleSpinner);
 
-		findAvailableTableButton = new JButton("Find Available Table");
+		findAvailableTableButton = new JButton(new ImageIcon(getClass().getResource("find table button.JPG")));
 		findAvailableTableButton.setBounds(40, 200, 120, 50);
 		panel.add(findAvailableTableButton);
 		findAvailableTableButton.addActionListener(new ActionListener() {
@@ -73,8 +75,9 @@ public class FindTableDialog extends JDialog {
 				if (availableTable == null) {
 					restaurant.getWaitingList().enqueue(customer);
 					JOptionPane.showMessageDialog(null, "Customer has been added to the waiting list");
-				}else {
-					JOptionPane.showMessageDialog(null, "Customer has been successfully placed at Table " + availableTable.getTableNum());
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Customer has been successfully placed at Table " + availableTable.getTableName());
 					availableTable.setCustomer(customer);
 					availableTable.setOccupied(true);
 				}
@@ -82,6 +85,12 @@ public class FindTableDialog extends JDialog {
 
 			}
 		});
+
+		// background image
+		background = new ImageIcon(getClass().getResource("small dialog background.JPG"));
+		JLabel backgroundLabel = new JLabel(background);
+		backgroundLabel.setBounds(0, 0, 200, 300);
+		panel.add(backgroundLabel);
 
 		setVisible(true);
 	}

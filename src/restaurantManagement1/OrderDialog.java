@@ -146,12 +146,12 @@ public class OrderDialog extends JDialog {
 		/**
 		 * the names of each column in the table
 		 */
-		private final String[] tableListColumns = { "Table Num.", "Occupied" };
+		private final String[] tableListColumns = { "Table Name", "Occupied" };
 	
 		/**
 		 * the class type for each column
 		 */
-		private final Class[] columnClasses = { int.class, boolean.class};
+		private final Class[] columnClasses = { String.class, boolean.class};
 	
 		/**
 		 * the list of recipes that are to be displayed within the table
@@ -201,7 +201,7 @@ public class OrderDialog extends JDialog {
 			Table table = this.tablesData.get(row);
 			switch (col) {
 			case 0:
-				return table.getTableNum();
+				return table.getTableName();
 			default:
 				return table.isOccupied();
 			}
@@ -242,7 +242,7 @@ public class OrderDialog extends JDialog {
 			Table table = this.tablesData.get(row);
 			switch (col) {
 			case 0:
-				table.setTableNum((int) value);
+				table.setTableName((String) value);
 				break;
 			default:
 				table.setOccupied((boolean) value);

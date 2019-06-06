@@ -198,12 +198,12 @@ public class AddReservationDialog extends JDialog {
 		/**
 		 * the names of each column in the table
 		 */
-		private final String[] tableLayoutListColumns = { "Table Num.", "Num. of Seats" };
+		private final String[] tableLayoutListColumns = { "Table Name", "Num. of Seats" };
 
 		/**
 		 * the class type for each column
 		 */
-		private final Class[] columnClasses = { int.class, int.class };
+		private final Class[] columnClasses = { String.class, int.class };
 
 		/**
 		 * the list of tables that are to be displayed within the table
@@ -254,7 +254,7 @@ public class AddReservationDialog extends JDialog {
 			Table table = this.reserveTablesData.get(row);
 			switch (col) {
 			case 0:
-				return table.getTableNum();
+				return table.getTableName();
 			default:
 				return table.getNumSeats();
 			}
@@ -295,7 +295,7 @@ public class AddReservationDialog extends JDialog {
 			Table table = this.reserveTablesData.get(row);
 			switch (col) {
 			case 0:
-				table.setTableNum((int) value);
+				table.setTableName((String) value);
 				break;
 			default:
 				table.setNumSeats((int) value);

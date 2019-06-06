@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -29,11 +30,13 @@ public class SetupDialog extends JDialog {
 	private List<Table> tables;
 	private String numPeople;
 	private boolean canBeReserved;
+//	private int tableNumber;
 
 	private JPanel addTablePanel;
 	private JPanel viewTablesPanel;
 	private JPanel restaurantFeaturesPanel; // restaurant name, store hours
 	private JSpinner numSeatsSpinner;
+	private JTextField tableNameTextField;
 	private JCheckBox canBeReservedCheckBox;
 	private JButton addTableButton;
 	private JButton deleteTableButton;
@@ -68,18 +71,25 @@ public class SetupDialog extends JDialog {
 		getContentPane().add(tabbedPane);
 
 		// Add Table Panel
+		JLabel tableNameLabel = new JLabel("Table Name");
+		tableNameLabel.setBounds(25, 50, 300, 30);
+		tableNameTextField = new JTextField();
+		tableNameTextField.setBounds(150, 50, 300, 30);
+		
 		JLabel numSeatsLabel = new JLabel("Number of Seats:");
-		numSeatsLabel.setBounds(25, 50, 300, 30);
+		numSeatsLabel.setBounds(25, 100, 300, 30);
 
+		addTablePanel.add(tableNameLabel);
+		addTablePanel.add(tableNameTextField);
 		addTablePanel.add(numSeatsLabel);
 
 		SpinnerModel tableSpinnerModel = new SpinnerNumberModel(2, 2, 10, 2);
 		numSeatsSpinner = new JSpinner(tableSpinnerModel);
-		numSeatsSpinner.setBounds(150, 50, 50, 30);
+		numSeatsSpinner.setBounds(150, 100, 50, 30);
 		addTablePanel.add(numSeatsSpinner);
 
 		canBeReservedCheckBox = new JCheckBox("Reservable", false);
-		canBeReservedCheckBox.setBounds(25, 100, 100, 30);
+		canBeReservedCheckBox.setBounds(25, 150, 100, 30);
 		addTablePanel.add(canBeReservedCheckBox);
 
 		addTableButton = new JButton("Add");
@@ -97,69 +107,77 @@ public class SetupDialog extends JDialog {
 		JScrollPane tableListScrollPane = new JScrollPane(tableLayoutTable);
 		tableListScrollPane.setBounds(25, 50, 400, 400);
 		viewTablesPanel.add(tableListScrollPane);
-		
+
 		deleteTableButton = new JButton("Delete");
 		deleteTableButton.setBounds(150, 475, 100, 50);
 		deleteTableButton.addActionListener(new ButtonListener());
 		viewTablesPanel.add(deleteTableButton);
-		
-		
-		
+
 		setVisible(true);
 	}
-	
+
 	class ButtonListener implements ActionListener {
 
 		/**
-		 * actionPerformed 
-		 * performs the action that is needed to be performed from clicking a button
+		 * actionPerformed performs the action that is needed to be performed from
+		 * clicking a button
+		 * 
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == addTableButton) {
-				Table table = new Table ((int)numSeatsSpinner.getValue(),canBeReservedCheckBox.isSelected());
+				String tableName = tableNameTextField.getText().replaceAll(" ","");
+				if (tableName.equals("")) {
+					JOptionPane.showMessageDialog(null, "Please input a table name.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				for (int i = 0; i< tables.size(); i++) {
+					if (tables.get(i).getTableName().equals(tableName.toUpperCase())) {
+						JOptionPane.showMessageDialog(null, "There is already a table with this name.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+				
+				Table table = new Table(tableName, (int) numSeatsSpinner.getValue(), canBeReservedCheckBox.isSelected());
 				tables.add(table);
-				table.setTableNum(tables.indexOf(table) + 1);
 				tableLayoutTableModel.addRow(table);
-			}else if (press.getSource() == deleteTableButton) {
+			} else if (press.getSource() == deleteTableButton) {
 				int selectedRow = tableLayoutTable.getSelectedRow();
 				if (selectedRow < 0) {
 					JOptionPane.showMessageDialog(null, "Please choose a table to delete.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
-				}else {
+				} else {
 					tableLayoutTableModel.removeRow(selectedRow);
-					tables.remove(selectedRow); 
-					
-					//re-organize table numbers
-					for (int i = 0; i < tables.size(); i++) {
-						tables.get(i).setTableNum(i + 1);
-					}
+					tables.remove(selectedRow);
 				}
 			}
 		}
 	}
-	
-	class TableLayoutTableModel extends AbstractTableModel{
+
+	class TableLayoutTableModel extends AbstractTableModel {
 		/**
 		 * the names of each column in the table
 		 */
-		private final String[] tableLayoutListColumns = { "Table Num.", "Num. of Seats", "Reservable" };
-	
+		private final String[] tableLayoutListColumns = { "Table Name", "Num. of Seats", "Reservable" };
+
 		/**
 		 * the class type for each column
 		 */
-		private final Class[] columnClasses = { int.class, int.class, boolean.class};
-	
+		private final Class[] columnClasses = { String.class, int.class, boolean.class };
+
 		/**
 		 * the list of recipes that are to be displayed within the table
 		 */
 		private List<Table> tablesData = new ArrayList<>();
-		
+
 		@Override
 		/**
-		 * getColumnCount
-		 * the number of columns in the table
+		 * getColumnCount the number of columns in the table
+		 * 
 		 * @return the number of columns
 		 */
 		public int getColumnCount() {
@@ -168,8 +186,8 @@ public class SetupDialog extends JDialog {
 
 		@Override
 		/**
-		 * getRowCount
-		 * the number of rows in the table
+		 * getRowCount the number of rows in the table
+		 * 
 		 * @return the number of rows
 		 */
 		public int getRowCount() {
@@ -179,6 +197,7 @@ public class SetupDialog extends JDialog {
 		@Override
 		/**
 		 * getColumnName
+		 * 
 		 * @param col the column number
 		 * @return the name of the column
 		 */
@@ -188,8 +207,8 @@ public class SetupDialog extends JDialog {
 
 		@Override
 		/**
-		 * getValueAt
-		 * finds the value at the specific row and column number
+		 * getValueAt finds the value at the specific row and column number *
+		 * 
 		 * @param row the row number
 		 * @param col the column number
 		 * @return the value at the specific row and column
@@ -199,7 +218,7 @@ public class SetupDialog extends JDialog {
 			Table table = this.tablesData.get(row);
 			switch (col) {
 			case 0:
-				return table.getTableNum();
+				return table.getTableName();
 			case 1:
 				return table.getNumSeats();
 			// case 2:
@@ -210,8 +229,8 @@ public class SetupDialog extends JDialog {
 
 		@Override
 		/**
-		 * getColumnClass
-		 * finds the class type for a specific column
+		 * getColumnClass finds the class type for a specific column
+		 * 
 		 * @param col the column number
 		 * @return the class type for the specific column
 		 */
@@ -221,8 +240,8 @@ public class SetupDialog extends JDialog {
 
 		@Override
 		/**
-		 * isCellEditable
-		 * checks if the user can edit the cell
+		 * isCellEditable checks if the user can edit the cell
+		 * 
 		 * @param row the row number
 		 * @param col the column number
 		 * @return whether or not the cell is editable
@@ -233,44 +252,46 @@ public class SetupDialog extends JDialog {
 
 		@Override
 		/**
-		 * setValueAt
-		 * sets a value at the specific row and column
+		 * setValueAt sets a value at the specific row and column
+		 * 
 		 * @param value the value to be set
-		 * @param row the row number
-		 * @param col the column number
+		 * @param row   the row number
+		 * @param col   the column number
 		 */
 		public void setValueAt(Object value, int row, int col) {
 			Table table = this.tablesData.get(row);
 			switch (col) {
 			case 0:
-				table.setTableNum((int) value);
+				table.setTableName((String) value);
 				break;
 			case 1:
 				table.setNumSeats((int) value);
-			// case 2:
+				// case 2:
 			default:
 				table.setCanBeReserved((boolean) value);
 			}
 
 			fireTableCellUpdated(row, col);
 		}
-		
+
 		/**
-		 * updateRow
-		 * when an table is modified, the row must be then updated
-		 * @param table the recipe to place in the table and add to the current list of tables
-		 * @param row the row that needs to be updated due to a change in the table
+		 * updateRow when an table is modified, the row must be then updated
+		 * 
+		 * @param table the recipe to place in the table and add to the current list of
+		 *              tables
+		 * @param row   the row that needs to be updated due to a change in the table
 		 */
-		public void updateRow ( Table table, int row ) {
-			this.tablesData.set( row, table );
-			fireTableRowsUpdated( row, row );
+		public void updateRow(Table table, int row) {
+			this.tablesData.set(row, table);
+			fireTableRowsUpdated(row, row);
 		}
 
 		/**
-		 * insertRow
-		 * inserts a row in the table with a table
-		 * @param position the position to put the row 
-		 * @param table the table to place in the table and add to the current list of tables
+		 * insertRow inserts a row in the table with a table
+		 * 
+		 * @param position the position to put the row
+		 * @param table    the table to place in the table and add to the current list
+		 *                 of tables
 		 */
 		public void insertRow(int position, Table table) {
 			this.tablesData.add(table);
@@ -278,8 +299,8 @@ public class SetupDialog extends JDialog {
 		}
 
 		/**
-		 * addRow
-		 * adds a row at the bottom of the table with a new recipe
+		 * addRow adds a row at the bottom of the table with a new recipe
+		 * 
 		 * @param table the table to be placed in the table
 		 */
 		public void addRow(Table table) {
@@ -287,8 +308,8 @@ public class SetupDialog extends JDialog {
 		}
 
 		/**
-		 * addRows
-		 * adds 2+ rows into the table
+		 * addRows adds 2+ rows into the table
+		 * 
 		 * @param tableList the list of tables that are to be put into the table
 		 */
 		public void addRows(List<Table> tableList) {
@@ -298,8 +319,8 @@ public class SetupDialog extends JDialog {
 		}
 
 		/**
-		 * removeRow
-		 * removes a specific row in the table
+		 * removeRow removes a specific row in the table
+		 * 
 		 * @param position the position of the recipe to be removed
 		 */
 		public void removeRow(int position) {
@@ -308,8 +329,8 @@ public class SetupDialog extends JDialog {
 		}
 
 		/**
-		 * getData
-		 * gets the list of tables
+		 * getData gets the list of tables
+		 * 
 		 * @return the list of tables
 		 */
 		public List<Table> getData() {
@@ -317,8 +338,8 @@ public class SetupDialog extends JDialog {
 		}
 
 		/**
-		 * setData
-		 * gets the list of tables
+		 * setData gets the list of tables
+		 * 
 		 * @param data the list of tables
 		 */
 		public void setData(List<Table> tablesData) {

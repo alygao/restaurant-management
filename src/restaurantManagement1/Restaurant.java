@@ -1,6 +1,5 @@
 package restaurantManagement1;
 
-import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,12 +37,14 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 
 public class Restaurant extends JFrame {
 
-	private List<Table> tables = new ArrayList<>();
-	private List<Reservation> reservationBook = new ArrayList<>();
-	private List<MenuItem> menu = new ArrayList<>();
+	private List<Table> tables = new DoublyLinkedList<>();
+	private List<Reservation> reservationBook = new DoublyLinkedList<>();
+	private List<MenuItem> menu = new DoublyLinkedList<>();
 	private Queue<Customer> waitingList = new Queue<>();
-	private DoublyLinkedList<Chef> chefs = new DoublyLinkedList<>();
-	private DoublyLinkedList<Waiter> waiters = new DoublyLinkedList<>();
+	private List<Employee> employees = new DoublyLinkedList<>();
+//	private DoublyLinkedList<Chef> chefs = new DoublyLinkedList<>();
+//	private DoublyLinkedList<Waiter> waiters = new DoublyLinkedList<>();
+	private Employee currentUser;
 	private Restaurant self = this;
 	private JPanel mainPanel;
 	private JButton orderButton;
@@ -134,7 +133,7 @@ public class Restaurant extends JFrame {
 		setResizable(false);
 		setUndecorated(false); // TODO: change to true
 		setLocationRelativeTo(null);
-//		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE); // TODO: comment out
 
 	}
 
@@ -253,14 +252,24 @@ public class Restaurant extends JFrame {
 			throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
 		this.configuration.setProperty("database.filename", file.getAbsolutePath());
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-//			self = (Restaurant) ois.readObject(); //TODO: fix
 			tables = (List<Table>) ois.readObject();
 			reservationBook = (List<Reservation>) ois.readObject();
 			menu = (List<MenuItem>) ois.readObject();
 			waitingList = (Queue<Customer>) ois.readObject();
-			chefs = (DoublyLinkedList<Chef>) ois.readObject();
-			waiters = (DoublyLinkedList<Waiter>) ois.readObject();
+			employees = (DoublyLinkedList<Employee>) ois.readObject();
+			if (employees.size() > 0) {
+				setupLogin();
+				this.disable();
 			}
+			if (currentUser!= null) {
+				this.enable();
+				
+				//TODO hiding under frame
+				JLabel employeeNameLabel = new JLabel ("Hello " + currentUser.getName());
+				employeeNameLabel.setBounds(600,20,100,30);
+				mainPanel.add(employeeNameLabel);
+			}
+		}
 	}
 
 	/**
@@ -299,8 +308,7 @@ public class Restaurant extends JFrame {
 			oos.writeObject(reservationBook);
 			oos.writeObject(menu);
 			oos.writeObject(waitingList);
-			oos.writeObject(chefs);
-			oos.writeObject(waiters);
+			oos.writeObject(employees);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "The file cannot be used with this program.", "Error",
@@ -403,6 +411,28 @@ public class Restaurant extends JFrame {
 		return reservationBook;
 	}
 
+	public List<Waiter> getWaiters() {
+		List<Waiter> waiters = new DoublyLinkedList<>();
+		for (int i = 0; i < employees.size(); i++) {
+			if (employees.get(i) instanceof Waiter) {
+				waiters.add((Waiter) employees.get(i));
+			}
+		}
+
+		return waiters;
+	}
+
+	public List<Chef> getChefs() {
+		List<Chef> chefs = new DoublyLinkedList<>();
+		for (int i = 0; i < employees.size(); i++) {
+			if (employees.get(i) instanceof Chef) {
+				chefs.add((Chef) employees.get(i));
+			}
+		}
+
+		return chefs;
+	}
+
 	public List<Table> getTables() {
 		return tables;
 	}
@@ -437,14 +467,11 @@ public class Restaurant extends JFrame {
 		List<Table> availableTableForReservation = getReservableTables(numPeople);
 		List<Reservation> savedReservationsForDate = new ArrayList<>();
 
-//		System.out.println("Reserve date is " + reserveTimePeriod.getDate());
 		for (int i = 0; i < reservationBook.size(); i++) {
-//			System.out.println("date of reservation: " + reservationBook.get(i).getReserveTimePeriod().getDate());
 			if (reservationBook.get(i).getReserveTimePeriod().getDate().equals(reserveTimePeriod.getDate())) {
 				savedReservationsForDate.add(reservationBook.get(i));
 			}
 		}
-//		System.out.println(savedReservationsForDate.size());
 		for (int i = 0; i < savedReservationsForDate.size(); i++) {
 			if (availableTableForReservation.contains(savedReservationsForDate.get(i).getTable())) {
 				if ((savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble() - 2 <= reserveTimePeriod
@@ -455,9 +482,6 @@ public class Restaurant extends JFrame {
 				}
 			}
 		}
-
-		System.out.println(availableTableForReservation.size());
-
 		return availableTableForReservation;
 	}
 
@@ -487,14 +511,21 @@ public class Restaurant extends JFrame {
 		// TODO : change table now to claimed under orders dialog
 	}
 
-	public void addChef(Chef chefToAdd) {
-		chefs.add(chefToAdd);
-		JOptionPane.showMessageDialog(null, "Chef successfully added.");
+	public void addEmployee(Employee employee) {
+		employees.add(employee);
+		JOptionPane.showMessageDialog(null, "Employee successfully added.");
 	}
 
-	public void addWaiter(Waiter waiterToAdd) {
-		waiters.add(waiterToAdd);
-		JOptionPane.showMessageDialog(null, "Waiter successfully added.");
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public Employee getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(Employee currentUser) {
+		this.currentUser = currentUser;
 	}
 
 	class ButtonListener implements ActionListener {
@@ -538,7 +569,7 @@ public class Restaurant extends JFrame {
 	public double convertTimeToDouble(String time) {
 		double convertedTime = 0;
 		convertedTime = Double.parseDouble(time.substring(0, time.indexOf(":")));
-		convertedTime += Double.parseDouble(time.substring(time.indexOf(":")+1, time.indexOf(":") + 3)) / 60;
+		convertedTime += Double.parseDouble(time.substring(time.indexOf(":") + 1, time.indexOf(":") + 3)) / 60;
 		if (time.substring(time.indexOf(":") + 4).equals("PM")) {
 			convertedTime += 12;
 		}
@@ -570,18 +601,33 @@ public class Restaurant extends JFrame {
 			}
 		}
 		if (availableTables.size() > 0) {
-			return getAppropriateTable(availableTables, customer.getNumPeople()); // TODO: change so its more efficient (doesnt return a 10seat
-															// table for 2 people)
+			return getAppropriateTable(availableTables, customer.getNumPeople()); // TODO: change so its more efficient
+																					// (doesnt return a 10seat
+			// table for 2 people)
 		} else {
 			return null;
 		}
+	}
+
+	public void changeAccess() {
+		if (currentUser instanceof Chef) {
+			reservationButton.disable();
+			employeeButton.disable();
+			tableLayoutButton.disable();
+			
+		}
+	}
+	
+	public void setupLogin() {
+		LoginDialog loginDialog = new LoginDialog(self);
 	}
 
 	private Table getAppropriateTable(List<Table> availableTables, int numPeople) {
 		int minDifference = Integer.MAX_VALUE;
 		Table bestTable = null;
 		for (int i = 0; i < availableTables.size(); i++) {
-			if (availableTables.get(i).getNumSeats() - numPeople > 0 && availableTables.get(i).getNumSeats() - numPeople < minDifference ) {
+			if (availableTables.get(i).getNumSeats() - numPeople > 0
+					&& availableTables.get(i).getNumSeats() - numPeople < minDifference) {
 				bestTable = availableTables.get(i);
 				minDifference = availableTables.get(i).getNumSeats();
 			}

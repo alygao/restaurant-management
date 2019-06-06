@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Table implements Serializable{
 
-	private int tableNum;
+	private String tableName;
 	private int numSeats;
 	private Customer customer;
 	private TableOrder currentOrder;
@@ -14,20 +14,14 @@ public class Table implements Serializable{
 	private Waiter currentAssignedWaiter;
 	private boolean occupied;
 
-	
-	
-
-	public Table(int numSeats, boolean canBeReserved) {
+	public Table(String tableName, int numSeats, boolean canBeReserved) {
+		this.tableName = tableName.toUpperCase();
 		this.numSeats = numSeats;
 		this.canBeReserved = canBeReserved;
 		this.customer = null;
 		this.currentOrder = null;
 		this.bill = null;
 		this.currentAssignedWaiter = null;
-		tableNum = -1;
-		
-		
-		
 	}
 	
 	public boolean isOccupied() {
@@ -38,12 +32,12 @@ public class Table implements Serializable{
 		this.occupied = occupied;
 	}
 
-	public int getTableNum() {
-		return tableNum;
+	public String getTableName() {
+		return tableName;
 	}
 
-	public void setTableNum(int tableNum) {
-		this.tableNum = tableNum;
+	public void setTableName(String tableNum) {
+		this.tableName = tableNum;
 	}
 
 	public int getNumSeats() {

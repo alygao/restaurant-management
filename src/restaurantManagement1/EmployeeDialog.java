@@ -8,14 +8,10 @@ package restaurantManagement1;
  * @version June 14 2019
  */
 
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -27,8 +23,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.table.AbstractTableModel;
-
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
@@ -41,7 +35,7 @@ public class EmployeeDialog extends JDialog{
     private JTextField userIDTextField;
     private JPasswordField passwordTextField;
     private JButton createEmployee;
-    private JSpinner dateSpinner;
+//    private JSpinner dateSpinner;
     private JTextField phoneNumberTextField;
     private JTextField emailTextField;
     private JTextField SINNumberTextField;
@@ -141,7 +135,7 @@ public class EmployeeDialog extends JDialog{
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         datePicker = new DatePicker(dateSettings);
-        dateSettings.setDateRangeLimits(null, LocalDate.now().plusDays( 60 ));
+//        dateSettings.setDateRangeLimits(null, LocalDate.now().minusDays( 60 )); //TODO: fix time range
         datePicker.setBounds( 625, 100, 200, 30 );
         datePicker.setDateToToday();
         datePicker.getComponentDateTextField().setEditable(false);
@@ -211,10 +205,10 @@ public class EmployeeDialog extends JDialog{
 
                         if(chefRadioButton.isSelected()){
                             newChef = new Chef(employeeName, pay, userID, password, dateHired, email, SINNumber);
-                            restaurant.addChef(newChef);
+                            restaurant.addEmployee(newChef);
                         }else{
                             newWaiter = new Waiter(employeeName, pay, userID, password, dateHired, email, SINNumber);
-                            restaurant.addWaiter(newWaiter);
+                            restaurant.addEmployee(newWaiter);
                         }
                     }
                 }
