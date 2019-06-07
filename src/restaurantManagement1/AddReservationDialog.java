@@ -33,7 +33,7 @@ public class AddReservationDialog extends JDialog {
 
 	private Restaurant restaurant;
 	private List<Table> availableTableForReservation;
-	private ReserveTimePeriod reserveTimePeriod;
+	private ReservationDateTime reserveTimePeriod;
 	private Reservation reservation;
 
 	private JTextField reserveNameTextField;
@@ -86,7 +86,39 @@ public class AddReservationDialog extends JDialog {
 		numPeopleSpinner = new JSpinner(tableSpinnerModel);
 		numPeopleSpinner.setBounds(150, 100, 50, 30);
 		panel.add(numPeopleSpinner);
-		
+
+		// Time
+		boolean dayAdvanced = false;
+		JLabel timeLabel = new JLabel("Time:");
+		timeLabel.setBounds(25, 200, 200, 30);
+		panel.add(timeLabel);
+		TimePickerSettings timeSettings = new TimePickerSettings();
+		timeSettings.setColor(TimeArea.TimePickerTextValidTime, Color.black);
+		LocalTime now = LocalTime.now();
+		int hour = now.getHour();
+		int minute = now.getMinute();
+		if (minute < 15) {
+			minute = 15;
+		} else if (minute < 30) {
+			minute = 30;
+		} else if (minute < 45) {
+			minute = 45;
+		} else {
+			if (hour < 23) {
+				hour += 1;
+			} else {
+				hour = 0;
+				dayAdvanced = true;
+			}
+			minute = 0;
+		}
+		timeSettings.initialTime = LocalTime.of(hour, minute);
+		timePicker = new TimePicker(timeSettings);
+		timePicker.setBounds(150, 200, 150, 30);
+		timePicker.getComponentTimeTextField().setEditable(false);
+//        timePicker.setTimeToNow();
+		panel.add(timePicker);
+
 		// Date
 		JLabel dateLabel = new JLabel("Date:");
 		dateLabel.setBounds(25, 150, 300, 30);
@@ -94,24 +126,28 @@ public class AddReservationDialog extends JDialog {
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
 		datePicker = new DatePicker(dateSettings);
-		dateSettings.setDateRangeLimits( LocalDate.now(), LocalDate.now().plusDays( 60 ) );
-		datePicker.setBounds( 150, 150, 200, 30 );
-		datePicker.setDateToToday();
-		datePicker.getComponentDateTextField().setEditable(false);
-		panel.add( datePicker );
+		dateSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusDays(60));
+		datePicker.setBounds(150, 150, 200, 30);
+		LocalDate today = LocalDate.now();
+		int month = today.getMonthValue();
+		int day = today.getDayOfMonth();
+		int year = today.getYear();
 		
-		// Time
-		JLabel timeLabel = new JLabel("Time:");
-		timeLabel.setBounds(25, 200, 200, 30);
-		panel.add(timeLabel);
-        TimePickerSettings timeSettings = new TimePickerSettings();
-        timeSettings.setColor(TimeArea.TimePickerTextValidTime, Color.black);
-        timeSettings.initialTime = LocalTime.now();
-        timePicker = new TimePicker(timeSettings);
-        timePicker.setBounds(150, 200, 150, 30);
-        timePicker.getComponentTimeTextField().setEditable(false);
-//        timePicker.setTimeToNow();
-        panel.add( timePicker );
+		if (dayAdvanced) {
+			day++;
+			if ( day > today.lengthOfMonth() ) {
+				day = 1;
+				month++;
+				if ( month > 12 ) {
+					year++;
+					month = 1;
+				}
+			}
+		}
+//		datePicker.setDateToToday();
+		datePicker.setDate( LocalDate.of(year, month, day) );
+		datePicker.getComponentDateTextField().setEditable(false);
+		panel.add(datePicker);
 
 		findAvailabilityButton = new JButton("Find Availability");
 		findAvailabilityButton.setBounds(100, 300, 200, 30);
@@ -126,7 +162,7 @@ public class AddReservationDialog extends JDialog {
 		bookReservationButton = new JButton("Book Reservation");
 		bookReservationButton.setBounds(800, 200, 150, 30);
 		bookReservationButton.addActionListener(new ButtonListener());
-		bookReservationButton.setVisible( false );
+		bookReservationButton.setVisible(false);
 		panel.add(bookReservationButton);
 
 		setVisible(true);
@@ -139,7 +175,7 @@ public class AddReservationDialog extends JDialog {
 //		bookReservationButton.setBounds(800, 200, 150, 30);
 //		bookReservationButton.addActionListener(new ButtonListener());
 //		panel.add(bookReservationButton);
-		bookReservationButton.setVisible( true );
+		bookReservationButton.setVisible(true);
 
 		reserveTableModel = new AvailableReservationTableModel();
 		possibleReserveTablesTable = new JTable(reserveTableModel);
@@ -163,15 +199,16 @@ public class AddReservationDialog extends JDialog {
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == findAvailabilityButton) {
-				
+
 				if (restaurant.getTables().size() == 0) {
 					JOptionPane.showMessageDialog(null, "Your restaurant currently has no tables.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				
-				reserveTimePeriod = new ReserveTimePeriod(datePicker.getText(), timePicker.getText());
-				availableTableForReservation = restaurant.findAvailableTableForReservation((int) numPeopleSpinner.getValue(), reserveTimePeriod);
+
+				reserveTimePeriod = new ReservationDateTime(datePicker.getText(), timePicker.getText());
+				availableTableForReservation = restaurant
+						.findAvailableTableForReservation((int) numPeopleSpinner.getValue(), reserveTimePeriod);
 				self.displayAvailableTables(availableTableForReservation);
 			} else if (press.getSource() == bookReservationButton) {
 				int selectedRow = possibleReserveTablesTable.getSelectedRow();
@@ -181,15 +218,15 @@ public class AddReservationDialog extends JDialog {
 					return;
 				}
 
-				reservation = new Reservation(availableTableForReservation.get(selectedRow), reserveNameTextField.getText(), (int) numPeopleSpinner.getValue(),
-						reserveTimePeriod);
+				reservation = new Reservation(availableTableForReservation.get(selectedRow),
+						reserveNameTextField.getText(), (int) numPeopleSpinner.getValue(), reserveTimePeriod);
 				restaurant.bookReservation(reservation);
 				dispose();
 
 			} else if (press.getSource() == returnButton) {
 				dispose();
 //				ReservationBookDialog reservationDialog = new ReservationBookDialog(restaurant);
-			
+
 			}
 		}
 	}

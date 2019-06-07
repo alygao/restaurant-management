@@ -98,7 +98,7 @@ public class ReservationBookDialog extends JDialog {
 			if (press.getSource() == lookUpButton) {
 				List<Reservation> reservationsUnderSpecifiedDate = new ArrayList<>();
 				for (int i = 0; i < restaurant.getReservationBook().size(); i++) {
-					if (restaurant.getReservationBook().get(i).getReserveTimePeriod().getDate()
+					if (restaurant.getReservationBook().get(i).getReservationDateTime().getDate()
 							.equals(datePicker.getText())) {
 						reservationsUnderSpecifiedDate.add(restaurant.getReservationBook().get(i));
 					}
@@ -178,7 +178,7 @@ public class ReservationBookDialog extends JDialog {
 			case 1:
 				return reservation.getCustomer().getNumPeople();
 			case 2:
-				return reservation.getReserveTimePeriod().getTime();
+				return reservation.getReservationDateTime().getTime();
 			default:
 				return reservation.getTable().getTableName();
 			}
@@ -225,7 +225,7 @@ public class ReservationBookDialog extends JDialog {
 				reservation.getCustomer().setNumPeople((int) value);
 				break;
 			case 2:
-				reservation.getReserveTimePeriod().setTime((String) value);
+				reservation.getReservationDateTime().setTime((String) value);
 				break;
 			default:
 				reservation.getTable().setTableName((String) value);

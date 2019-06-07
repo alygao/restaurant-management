@@ -29,7 +29,7 @@ public class LoginDialog extends JDialog {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
-		setUndecorated(false);
+		setUndecorated(true);
 		setName("Login");
 		setSize(200, 300);
 		setLocationRelativeTo(null);
@@ -43,7 +43,7 @@ public class LoginDialog extends JDialog {
 		usernameLabel.setBounds(10, 100, 75, 30);
 		panel.add(usernameLabel);
 
-		usernameTextField = new JTextField();
+		usernameTextField = new JTextField("bob1");
 		usernameTextField.setBounds(100, 100, 75, 30);
 		panel.add(usernameTextField);
 
@@ -51,7 +51,7 @@ public class LoginDialog extends JDialog {
 		passwordLabel.setBounds(10, 150, 75, 30);
 		panel.add(passwordLabel);
 
-		passwordField = new JPasswordField();
+		passwordField = new JPasswordField("123456");
 		passwordField.setBounds(100, 150, 75, 30);
 		panel.add(passwordField);
 

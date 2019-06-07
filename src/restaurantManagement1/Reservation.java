@@ -6,7 +6,7 @@ public class Reservation implements Serializable {
 	
 	private Table table;
 	private Customer customer;
-	private ReserveTimePeriod reserveTimePeriod;
+	private ReservationDateTime reservationDateTimePeriod;
 	
 	
 //	public Reservation (String name, int numPeople, Date date, double time) {
@@ -16,10 +16,10 @@ public class Reservation implements Serializable {
 //		this.reserveTimePeriod = new ReserveTimePeriod (date, time);
 //	}
 	
-	public Reservation (Table table, String name, int numPeople, ReserveTimePeriod reserveTimePeriod) {
+	public Reservation (Table table, String name, int numPeople, ReservationDateTime reservationDateTimePeriod) {
 		this.table = table;
 		this.customer = new Customer (name, numPeople);
-		this.reserveTimePeriod = reserveTimePeriod;
+		this.reservationDateTimePeriod = reservationDateTimePeriod;
 	}
 	
 	public Table getTable() {
@@ -34,11 +34,11 @@ public class Reservation implements Serializable {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	public ReserveTimePeriod getReserveTimePeriod() {
-		return reserveTimePeriod;
+	public ReservationDateTime getReservationDateTime() {
+		return reservationDateTimePeriod;
 	}
-	public void setReserveTimePeriod(ReserveTimePeriod reserveTimePeriod) {
-		this.reserveTimePeriod = reserveTimePeriod;
+	public void setReservationDateTime(ReservationDateTime reservationDateTimePeriod) {
+		this.reservationDateTimePeriod = reservationDateTimePeriod;
 	}
 	
 	

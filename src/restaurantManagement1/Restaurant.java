@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +14,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,9 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
 
 public class Restaurant extends JFrame {
 
@@ -56,6 +57,7 @@ public class Restaurant extends JFrame {
 	private JButton tableLayoutButton;
 	private JButton employeeButton;
 	private ImageIcon homepageBackground;
+	private JLabel homepageBackgroundLabel;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -121,9 +123,20 @@ public class Restaurant extends JFrame {
 
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo homepage.JPG"));
-		JLabel homepageBackgroundLabel = new JLabel(homepageBackground);
+		homepageBackgroundLabel = new JLabel(homepageBackground);
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
 		mainPanel.add(homepageBackgroundLabel);
+		
+
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent windowEvent) {
+				closeApplication();
+			}
+		});
+
+		loadConfigurationAndData();
+	
 
 		// icon image and size
 		setDefaultLookAndFeelDecorated(true);
@@ -134,6 +147,7 @@ public class Restaurant extends JFrame {
 		setUndecorated(false); // TODO: change to true
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE); // TODO: comment out
+
 
 	}
 
@@ -265,9 +279,12 @@ public class Restaurant extends JFrame {
 				this.enable();
 				
 				//TODO hiding under frame
+				mainPanel.remove(homepageBackgroundLabel);
+				
 				JLabel employeeNameLabel = new JLabel ("Hello " + currentUser.getName());
-				employeeNameLabel.setBounds(600,20,100,30);
+				employeeNameLabel.setBounds(600,400,100,30);
 				mainPanel.add(employeeNameLabel);
+				mainPanel.add(homepageBackgroundLabel);
 			}
 		}
 	}
@@ -457,7 +474,7 @@ public class Restaurant extends JFrame {
 		return reservableTables;
 	}
 
-	public List<Table> findAvailableTableForReservation(int numPeople, ReserveTimePeriod reserveTimePeriod) {
+	public List<Table> findAvailableTableForReservation(int numPeople, ReservationDateTime reserveTimePeriod) {
 		// save reserve tables to an array
 		// check date and save "already made" reservations to an array
 		// check each reservation to see if its within the range
@@ -468,18 +485,26 @@ public class Restaurant extends JFrame {
 		List<Reservation> savedReservationsForDate = new ArrayList<>();
 
 		for (int i = 0; i < reservationBook.size(); i++) {
-			if (reservationBook.get(i).getReserveTimePeriod().getDate().equals(reserveTimePeriod.getDate())) {
+//			if (reservationBook.get(i).getReservationDateTime().getDate().equals(reserveTimePeriod.getDate())) {
+			if (reservationBook.get(i).getReservationDateTime().getLocalDate().equals(Utils.convertToLocalDate(reserveTimePeriod.getDate()))) {
 				savedReservationsForDate.add(reservationBook.get(i));
 			}
 		}
 		for (int i = 0; i < savedReservationsForDate.size(); i++) {
 			if (availableTableForReservation.contains(savedReservationsForDate.get(i).getTable())) {
-				if ((savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble() - 2 <= reserveTimePeriod
-						.getTimeInDouble())
-						&& (savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble()
-								+ 2 >= reserveTimePeriod.getTimeInDouble())) {
+				if ( savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodFrom().isBefore( reserveTimePeriod.getLocalTime() )
+						&& savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodTo().isAfter( reserveTimePeriod.getLocalTime() )
+				) {
 					availableTableForReservation.remove(savedReservationsForDate.get(i).getTable());
 				}
+				
+				
+//				if ((savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble() - 2 <= reserveTimePeriod
+//						.getTimeInDouble())
+//						&& (savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble()
+//								+ 2 >= reserveTimePeriod.getTimeInDouble())) {
+//					availableTableForReservation.remove(savedReservationsForDate.get(i).getTable());
+//				}
 			}
 		}
 		return availableTableForReservation;
@@ -540,7 +565,7 @@ public class Restaurant extends JFrame {
 			if (press.getSource() == orderButton) {
 				OrderDialog orderDialog = new OrderDialog(self);
 			} else if (press.getSource() == transactionButton) {
-
+				TransactionDialog transactionDialog = new TransactionDialog(self);
 			} else if (press.getSource() == tipButton) {
 
 			} else if (press.getSource() == menuButton) {
@@ -558,48 +583,59 @@ public class Restaurant extends JFrame {
 		}
 	}
 
-	public static String getCurrentTime() {
-		Date date = new Date();
-		String strDateFormat = "hh:mma";
-		DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-		String formattedDate = dateFormat.format(date);
-		return formattedDate;
-	}
+//	public static String getCurrentTime() {
+//		Date date = new Date();
+//		String strDateFormat = "hh:mma";
+//		DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+//		String formattedDate = dateFormat.format(date);
+//		return formattedDate;
+//	}
 
-	public double convertTimeToDouble(String time) {
-		double convertedTime = 0;
-		convertedTime = Double.parseDouble(time.substring(0, time.indexOf(":")));
-		convertedTime += Double.parseDouble(time.substring(time.indexOf(":") + 1, time.indexOf(":") + 3)) / 60;
-		if (time.substring(time.indexOf(":") + 4).equals("PM")) {
-			convertedTime += 12;
-		}
-		return convertedTime;
-	}
+//	public double convertTimeToDouble(String time) {
+//		double convertedTime = 0;
+//		convertedTime = Double.parseDouble(time.substring(0, time.indexOf(":")));
+//		convertedTime += Double.parseDouble(time.substring(time.indexOf(":") + 1, time.indexOf(":") + 3)) / 60;
+//		if (time.substring(time.indexOf(":") + 4).equals("PM")) {
+//			convertedTime += 12;
+//		}
+//		return convertedTime;
+//	}
 
-	public String getCurrentDate() {
-		DatePickerSettings dateSettings = new DatePickerSettings();
-		DatePicker datePicker = new DatePicker(dateSettings);
-		datePicker.setDateToToday();
-		return datePicker.getText();
-	}
-
+//	public String getCurrentDate() {
+//		DatePickerSettings dateSettings = new DatePickerSettings();
+//		DatePicker datePicker = new DatePicker(dateSettings);
+//		datePicker.setDateToToday();
+//		return datePicker.getText();
+//	}
+	
 	public Table findAvailableTableForWalkInCustomer(Customer customer) {
 		List<Table> availableTables = new ArrayList<>();
-		double currentTime = convertTimeToDouble(getCurrentTime());
+		
 		for (int i = 0; i < tables.size(); i++) {
 			if (!tables.get(i).isOccupied()) {
 				availableTables.add(tables.get(i));
 			}
 		}
+
 		for (int i = 0; i < reservationBook.size(); i++) {
-			if (reservationBook.get(i).getReserveTimePeriod().getDate().equals(getCurrentDate())
-					&& convertTimeToDouble(
-							getCurrentTime()) < reservationBook.get(i).getReserveTimePeriod().getTimeInDouble() + 2
-					&& convertTimeToDouble(
-							getCurrentTime()) > reservationBook.get(i).getReserveTimePeriod().getTimeInDouble() - 2) {
+			if ( reservationBook.get(i).getReservationDateTime().getLocalDate().equals(LocalDate.now())
+					&& LocalTime.now().isBefore ( reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodTo() )
+					&& LocalTime.now().isAfter ( reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodFrom() ) ) {
 				availableTables.remove(reservationBook.get(i).getTable());
 			}
 		}
+
+//		
+//		double currentTime = convertTimeToDouble(getCurrentTime());
+//		for (int i = 0; i < reservationBook.size(); i++) {
+//			if (reservationBook.get(i).getReserveTimePeriod().getDate().equals(LocalDate.now())
+//					&& convertTimeToDouble(
+//							getCurrentTime()) < reservationBook.get(i).getReserveTimePeriod().getTimeInDouble() + 2
+//					&& convertTimeToDouble(
+//							getCurrentTime()) > reservationBook.get(i).getReserveTimePeriod().getTimeInDouble() - 2) {
+//				availableTables.remove(reservationBook.get(i).getTable());
+//			}
+//		}
 		if (availableTables.size() > 0) {
 			return getAppropriateTable(availableTables, customer.getNumPeople()); // TODO: change so its more efficient
 																					// (doesnt return a 10seat

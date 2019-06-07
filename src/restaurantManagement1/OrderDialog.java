@@ -47,7 +47,7 @@ public class OrderDialog extends JDialog {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
-		setUndecorated(false); // TODO change to true
+		setUndecorated(true); // TODO change to true
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -56,22 +56,22 @@ public class OrderDialog extends JDialog {
 		generalTablesPanel = new JPanel();
 		generalTablesPanel.setLayout(null);
 
-		claimReservationButton = new JButton("<html>Claim<p>Reservation</html>");
+		claimReservationButton = new JButton(new ImageIcon(getClass().getResource("claim reservation button.JPG")));
 		claimReservationButton.setBounds(865, 75, 120, 75);
 		claimReservationButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(claimReservationButton);
 
-		findTableButton = new JButton("Find a Table");
+		findTableButton = new JButton(new ImageIcon(getClass().getResource("find a table button.JPG")));
 		findTableButton.setBounds(865, 165, 120, 75);
 		findTableButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(findTableButton);
 
-		viewTableButton = new JButton("View Table");
+		viewTableButton = new JButton(new ImageIcon(getClass().getResource("view table button.JPG")));
 		viewTableButton.setBounds(865, 255, 120, 75);
 		viewTableButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(viewTableButton);
 		
-		returnToHomepageButton = new JButton("<html>Return<p>to Home</html>");
+		returnToHomepageButton = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
 		returnToHomepageButton.setBounds(865, 435, 120, 75);
 		returnToHomepageButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(returnToHomepageButton);
@@ -151,7 +151,7 @@ public class OrderDialog extends JDialog {
 		/**
 		 * the class type for each column
 		 */
-		private final Class[] columnClasses = { String.class, boolean.class};
+		private final Class[] columnClasses = { String.class, String.class};
 	
 		/**
 		 * the list of recipes that are to be displayed within the table
@@ -203,7 +203,7 @@ public class OrderDialog extends JDialog {
 			case 0:
 				return table.getTableName();
 			default:
-				return table.isOccupied();
+				return table.isOccupied() ? "Occupied by " + table.getCustomer().getName() : "Not Occupied";
 			}
 		}
 
@@ -229,28 +229,28 @@ public class OrderDialog extends JDialog {
 		public boolean isCellEditable(int row, int col) {
 			return false;
 		}
-
-		@Override
-		/**
-		 * setValueAt
-		 * sets a value at the specific row and column
-		 * @param value the value to be set
-		 * @param row the row number
-		 * @param col the column number
-		 */
-		public void setValueAt(Object value, int row, int col) {
-			Table table = this.tablesData.get(row);
-			switch (col) {
-			case 0:
-				table.setTableName((String) value);
-				break;
-			default:
-				table.setOccupied((boolean) value);
-			}
-
-			fireTableCellUpdated(row, col);
-		}
-		
+//
+//		@Override
+//		/**
+//		 * setValueAt
+//		 * sets a value at the specific row and column
+//		 * @param value the value to be set
+//		 * @param row the row number
+//		 * @param col the column number
+//		 */
+//		public void setValueAt(Object value, int row, int col) {
+//			Table table = this.tablesData.get(row);
+//			switch (col) {
+//			case 0:
+//				table.setTableName((String) value);
+//				break;
+//			default:
+//				if (table.getCustomer()!=
+//			}
+//
+//			fireTableCellUpdated(row, col);
+//		}
+//		
 		/**
 		 * updateRow
 		 * when an table is modified, the row must be then updated

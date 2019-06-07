@@ -42,6 +42,13 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements Serializable
 	public boolean remove(Object item) {
 		return removeItem ((T)item);
 	}
+	
+	@Override
+	public T remove(int index) {
+		T item = get(index);
+		this.remove( item );
+		return item;
+	}
 
     /**
      * to remove item from doubly linked list
