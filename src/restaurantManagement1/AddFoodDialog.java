@@ -1,14 +1,20 @@
 package restaurantManagement1;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.event.MouseEvent;
@@ -98,14 +104,14 @@ public class AddFoodDialog extends JDialog{
         appetizersTable = new JTable(appetizerLayoutTableModel);
         appetizersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         appetizersTable.setBounds(25, 160, 200, 200);
-        menu = restaurant.getMenu();
-        List<MenuItem> appetizers = new ArrayList<>();
-        for(int i = 0; i < menu.size(); i++){
-            if(menu.get(i).getCategory() == "Appetizer"){
-                appetizers.add(menu.get(i));
-            }
-        }
-        appetizerLayoutTableModel.addRows(appetizers);
+//        menu = restaurant.getMenu();
+//        List<MenuItem> appetizers = new ArrayList<>();
+//        for(int i = 0; i < menu.size(); i++){
+//            if(menu.get(i).getCategory() == "Appetizer"){
+//                appetizers.add(menu.get(i));
+//            }
+//        }
+        appetizerLayoutTableModel.addRows(restaurant.getAppetizerMenu());
         appetizersTable.addMouseListener(new MyMouseListener());
 
         JScrollPane tableListScrollPane = new JScrollPane(appetizersTable);
@@ -117,13 +123,13 @@ public class AddFoodDialog extends JDialog{
         entreesTable = new JTable(entreeLayoutTableModel);
         entreesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         entreesTable.setBounds(25, 390, 200, 200);
-        List<MenuItem> entrees = new ArrayList<>();
-        for(int i = 0; i < menu.size(); i++){
-            if(menu.get(i).getCategory() == "Entree"){
-                entrees.add(menu.get(i));
-            }
-        }
-        entreeLayoutTableModel.addRows(entrees);
+//        List<MenuItem> entrees = new ArrayList<>();
+//        for(int i = 0; i < menu.size(); i++){
+//            if(menu.get(i).getCategory() == "Entree"){
+//                entrees.add(menu.get(i));
+//            }
+//        }
+        entreeLayoutTableModel.addRows(restaurant.getEntreeMenu());
         entreesTable.addMouseListener(new MyMouseListener());
 
         JScrollPane entreeTableListScrollPane = new JScrollPane(entreesTable);
@@ -134,13 +140,13 @@ public class AddFoodDialog extends JDialog{
         FoodLayoutTableModel dessertLayoutTableModel = new FoodLayoutTableModel();
         dessertsTable = new JTable(dessertLayoutTableModel);
         dessertsTable.setBounds(250, 160, 200, 200);
-        List<MenuItem> desserts = new ArrayList<>();
-        for(int i = 0; i < menu.size(); i++){
-            if(menu.get(i).getCategory().equals("Dessert")){
-                desserts.add(menu.get(i));
-            }
-        }
-        dessertLayoutTableModel.addRows(desserts);
+//        List<MenuItem> desserts = new ArrayList<>();
+//        for(int i = 0; i < menu.size(); i++){
+//            if(menu.get(i).getCategory().equals("Dessert")){
+//                desserts.add(menu.get(i));
+//            }
+//        }
+        dessertLayoutTableModel.addRows(restaurant.getDessertMenu());
         dessertsTable.addMouseListener(new MyMouseListener());
 
         JScrollPane dessertTableListScrollPane = new JScrollPane(dessertsTable);
@@ -152,13 +158,13 @@ public class AddFoodDialog extends JDialog{
         beveragesTable = new JTable(beverageLayoutTableModel);
         beveragesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         beveragesTable.setBounds(250, 390, 200, 200);
-        List<MenuItem> beverages = new ArrayList<>();
-        for(int i = 0; i <  menu.size(); i++){
-            if(menu.get(i).getCategory() == "Beverage"){
-                beverages.add(menu.get(i));
-            }
-        }
-        beverageLayoutTableModel.addRows(beverages);
+//        List<MenuItem> beverages = new ArrayList<>();
+//        for(int i = 0; i <  menu.size(); i++){
+//            if(menu.get(i).getCategory() == "Beverage"){
+//                beverages.add(menu.get(i));
+//            }
+//        }
+        beverageLayoutTableModel.addRows(restaurant.getBeverageMenu());
         beveragesTable.addMouseListener(new MyMouseListener());
 
         JScrollPane beverageTableListScrollPane = new JScrollPane(beveragesTable);

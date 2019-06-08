@@ -337,7 +337,7 @@ public class Restaurant extends JFrame {
 
 	protected Properties configuration = new Properties();
 	public static final String CONFIGURATION_FILENAME = "restaurant.properties";
-	public static final String DEFAULT_DATABASE_FILENAME = "restaurant.fqo";
+	public static final String DEFAULT_DATABASE_FILENAME = "restaurant management.fqo";
 
 	/**
 	 * saveConfigurationAndData saves configuration and data under the file
@@ -571,6 +571,7 @@ public class Restaurant extends JFrame {
 			} else if (press.getSource() == tipButton) {
 
 			} else if (press.getSource() == menuButton) {
+				System.out.println("menu size is " + menu.size());
 				MenuDialog menuDialog = new MenuDialog(self);
 
 			} else if (press.getSource() == tableLayoutButton) {
@@ -584,31 +585,6 @@ public class Restaurant extends JFrame {
 			}
 		}
 	}
-
-//	public static String getCurrentTime() {
-//		Date date = new Date();
-//		String strDateFormat = "hh:mma";
-//		DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-//		String formattedDate = dateFormat.format(date);
-//		return formattedDate;
-//	}
-
-//	public double convertTimeToDouble(String time) {
-//		double convertedTime = 0;
-//		convertedTime = Double.parseDouble(time.substring(0, time.indexOf(":")));
-//		convertedTime += Double.parseDouble(time.substring(time.indexOf(":") + 1, time.indexOf(":") + 3)) / 60;
-//		if (time.substring(time.indexOf(":") + 4).equals("PM")) {
-//			convertedTime += 12;
-//		}
-//		return convertedTime;
-//	}
-
-//	public String getCurrentDate() {
-//		DatePickerSettings dateSettings = new DatePickerSettings();
-//		DatePicker datePicker = new DatePicker(dateSettings);
-//		datePicker.setDateToToday();
-//		return datePicker.getText();
-//	}
 	
 	public Table findAvailableTableForWalkInCustomer(Customer customer) {
 		List<Table> availableTables = new ArrayList<>();
@@ -627,21 +603,8 @@ public class Restaurant extends JFrame {
 			}
 		}
 
-//		
-//		double currentTime = convertTimeToDouble(getCurrentTime());
-//		for (int i = 0; i < reservationBook.size(); i++) {
-//			if (reservationBook.get(i).getReserveTimePeriod().getDate().equals(LocalDate.now())
-//					&& convertTimeToDouble(
-//							getCurrentTime()) < reservationBook.get(i).getReserveTimePeriod().getTimeInDouble() + 2
-//					&& convertTimeToDouble(
-//							getCurrentTime()) > reservationBook.get(i).getReserveTimePeriod().getTimeInDouble() - 2) {
-//				availableTables.remove(reservationBook.get(i).getTable());
-//			}
-//		}
 		if (availableTables.size() > 0) {
-			return getAppropriateTable(availableTables, customer.getNumPeople()); // TODO: change so its more efficient
-																					// (doesnt return a 10seat
-			// table for 2 people)
+			return getAppropriateTable(availableTables, customer.getNumPeople()); 
 		} else {
 			return null;
 		}
@@ -664,7 +627,7 @@ public class Restaurant extends JFrame {
 		int minDifference = Integer.MAX_VALUE;
 		Table bestTable = null;
 		for (int i = 0; i < availableTables.size(); i++) {
-			if (availableTables.get(i).getNumSeats() - numPeople > 0
+			if (availableTables.get(i).getNumSeats() - numPeople >= 0
 					&& availableTables.get(i).getNumSeats() - numPeople < minDifference) {
 				bestTable = availableTables.get(i);
 				minDifference = availableTables.get(i).getNumSeats();

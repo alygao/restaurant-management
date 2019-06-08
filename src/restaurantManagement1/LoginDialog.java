@@ -3,6 +3,7 @@ package restaurantManagement1;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -19,6 +20,7 @@ public class LoginDialog extends JDialog {
 	private JPasswordField passwordField;
 
 	private JButton loginButton;
+	private ImageIcon background;
 
 	public LoginDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
@@ -55,7 +57,7 @@ public class LoginDialog extends JDialog {
 		passwordField.setBounds(100, 150, 75, 30);
 		panel.add(passwordField);
 
-		loginButton = new JButton("Login");
+		loginButton = new JButton(new ImageIcon(getClass().getResource("login button.JPG")));
 		loginButton.setBounds(40, 200, 120, 40);
 		panel.add(loginButton);
 		loginButton.addActionListener(new ActionListener() {
@@ -83,6 +85,12 @@ public class LoginDialog extends JDialog {
 
 			}
 		});
+		
+		background = new ImageIcon(getClass().getResource("small dialog background.JPG"));
+		JLabel backgroundLabel = new JLabel(background);
+		backgroundLabel.setBounds(0, 0, 200, 300);
+		panel.add(backgroundLabel);
+		
 		setVisible(true);
 	}
 

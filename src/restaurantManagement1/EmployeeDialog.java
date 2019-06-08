@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -193,7 +192,7 @@ public class EmployeeDialog extends JDialog{
                         numeric = false;
                     }
                     if(numeric){
-                        String employeeName = employeeNameTextField.getText();
+                        String employeeName = employeeNameTextField.getText().toUpperCase();
                         double pay = Double.parseDouble(payTextField.getText());
                         String userID = userIDTextField.getText();
                         String password = passwordTextField.getText();
@@ -206,10 +205,13 @@ public class EmployeeDialog extends JDialog{
                         if(chefRadioButton.isSelected()){
                             newChef = new Chef(employeeName, pay, userID, password, dateHired, email, SINNumber);
                             restaurant.addEmployee(newChef);
+      
                         }else{
                             newWaiter = new Waiter(employeeName, pay, userID, password, dateHired, email, SINNumber);
                             restaurant.addEmployee(newWaiter);
                         }
+                        JOptionPane.showMessageDialog(null, employeeName + " has been added.");
+                        dispose();
                     }
                 }
             }
