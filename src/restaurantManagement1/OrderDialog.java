@@ -141,6 +141,10 @@ public class OrderDialog extends JDialog {
 					JOptionPane.showMessageDialog(null, "Please choose a table to view.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
+				}else if (restaurantTablesTable.getValueAt(selectedRow, 1).equals(("Not Occupied"))) {
+					JOptionPane.showMessageDialog(null, "This table is currently not occupied.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
 				}else {
 					AddFoodDialog addFoodDialog = new AddFoodDialog(restaurant, selectedRow);
 				}

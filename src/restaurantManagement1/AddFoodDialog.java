@@ -16,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -55,6 +54,7 @@ public class AddFoodDialog extends JDialog{
     public AddFoodDialog(Restaurant restaurant, int selectedRow){
         this.restaurant = restaurant;
         this.selectedRow = selectedRow;
+        menu = restaurant.getMenu();
         initUI();
     }
 
