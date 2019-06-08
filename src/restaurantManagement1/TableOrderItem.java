@@ -9,7 +9,15 @@ public class TableOrderItem implements Serializable{
 	private Waiter servedByWaiter;
 	private Chef preparedByChef;
 	private TableOrder tableOrder;
-	
+
+	TableOrderItem(){
+
+	}
+
+	TableOrderItem(MenuItem menuItem, int quantity, Waiter waiter, Chef chef, TableOrder tableOrder){
+
+	}
+
 	public MenuItem getMenuItem() {
 		return menuItem;
 	}

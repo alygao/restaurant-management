@@ -1,5 +1,6 @@
 package restaurantManagement1;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,12 +32,17 @@ public class OrderDialog extends JDialog {
 	
 	//view specific table panel components
 	private JPanel specificTablePanel;
+	private JPanel tablesFoodPanel;
 	private JButton fireOrderButton;
 	private JButton payButton;
 	private JButton releaseTableButton;
 	private JButton reprintReceiptButton;
 	private JButton returnToGeneralTablesButton;
-	
+	private String cutomerName;
+	private String tableName;
+	private int tableSize;
+	private JLabel tableInfo;
+	private JLabel homepageBackgroundLabel;
 
 	public OrderDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
@@ -51,6 +57,10 @@ public class OrderDialog extends JDialog {
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setResizable(false);
+
+		//Table's Order Panel
+		tablesFoodPanel = new JPanel();
+		tablesFoodPanel.setLayout(null);
 
 		//General Tables Panel		
 		generalTablesPanel = new JPanel();
@@ -96,8 +106,9 @@ public class OrderDialog extends JDialog {
 		
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
-		JLabel homepageBackgroundLabel = new JLabel(homepageBackground);
+		homepageBackgroundLabel = new JLabel(homepageBackground);
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
+
 		specificTablePanel.add(homepageBackgroundLabel);
 		generalTablesPanel.add(homepageBackgroundLabel);
 		setVisible(true);
@@ -131,7 +142,7 @@ public class OrderDialog extends JDialog {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}else {
-					generalTablesPanel.setVisible(false);
+					AddFoodDialog addFoodDialog = new AddFoodDialog(restaurant, selectedRow);
 				}
 			}else if (press.getSource() == findTableButton) {
 				FindTableDialog findTableDialog = new FindTableDialog (restaurant);

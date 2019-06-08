@@ -1,5 +1,6 @@
 package restaurantManagement1;
 
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -282,7 +283,8 @@ public class Restaurant extends JFrame {
 				mainPanel.remove(homepageBackgroundLabel);
 				
 				JLabel employeeNameLabel = new JLabel ("Hello " + currentUser.getName());
-				employeeNameLabel.setBounds(600,400,100,30);
+				employeeNameLabel.setBounds(700,20,100,30);
+				employeeNameLabel.setForeground(Color.white);
 				mainPanel.add(employeeNameLabel);
 				mainPanel.add(homepageBackgroundLabel);
 			}
