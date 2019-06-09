@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Table implements Serializable{
 
+	private Table self = this;
 	private String tableName;
 	private int numSeats;
 	private Customer customer;
@@ -15,6 +16,7 @@ public class Table implements Serializable{
 	private boolean occupied;
 
 	public Table(String tableName, int numSeats, boolean canBeReserved) {
+		currentOrder = new TableOrder();
 		this.tableName = tableName.toUpperCase();
 		this.numSeats = numSeats;
 		this.canBeReserved = canBeReserved;

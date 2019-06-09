@@ -1,6 +1,7 @@
 package restaurantManagement1;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class TableOrderItem implements Serializable{
 	
@@ -10,12 +11,12 @@ public class TableOrderItem implements Serializable{
 	private Chef preparedByChef;
 	private TableOrder tableOrder;
 
-	TableOrderItem(){
-
+	TableOrderItem(MenuItem menuItem, int quantity, Waiter waiter, Chef chef, TableOrder tableOrder){
+		tableOrder = new TableOrder();
 	}
 
-	TableOrderItem(MenuItem menuItem, int quantity, Waiter waiter, Chef chef, TableOrder tableOrder){
-
+	TableOrderItem(MenuItem menuItem, int quantity, Waiter waiter, Chef chef){
+		tableOrder = new TableOrder();
 	}
 
 	public MenuItem getMenuItem() {

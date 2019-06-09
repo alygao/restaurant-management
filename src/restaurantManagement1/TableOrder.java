@@ -9,7 +9,7 @@ public class TableOrder implements Serializable {
 	private TableOrder self = this;
 	private List<TableOrderItem> orderItems = new ArrayList<>();
 	private Waiter waiter;
-	
+
 	public List<TableOrderItem>  getOrderItems(){
 		return orderItems;
 	}

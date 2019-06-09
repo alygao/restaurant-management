@@ -29,8 +29,13 @@ public class AddFoodDialog extends JDialog{
     private JLabel tableInfoLabel;
     private JPanel tablesFoodPanel;
     private JButton returnToHomepageButton;
+    private JButton confirmOrderButton;
     private JLabel homepageBackgroundLabel;
     private JLabel totalPriceLabel;
+    private JLabel appetizersLabel;
+    private JLabel entreesLabel;
+    private JLabel dessertsLabel;
+    private JLabel beveragesLabel;
     private JTable appetizersTable;
     private JTable entreesTable;
     private JTable dessertsTable;
@@ -77,6 +82,11 @@ public class AddFoodDialog extends JDialog{
         tablesFoodPanel = new JPanel();
         tablesFoodPanel.setLayout(null);
 
+        confirmOrderButton = new JButton(new ImageIcon(getClass().getResource("confirm order button.JPG")));
+        confirmOrderButton.setBounds(865, 345, 120, 75);
+        confirmOrderButton.addActionListener(new ButtonListener());
+        tablesFoodPanel.add(confirmOrderButton);
+
         returnToHomepageButton = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
         returnToHomepageButton.setBounds(865, 435, 120, 75);
         returnToHomepageButton.addActionListener(new ButtonListener());
@@ -99,7 +109,11 @@ public class AddFoodDialog extends JDialog{
         tablesFoodPanel.add(totalPriceLabel);
 
         tablesFoodPanel.setVisible(true);
+
         //Appetizer Options
+        appetizersLabel = new JLabel("Appetizers");
+        appetizersLabel.setBounds(25, 140, 200, 20);
+        tablesFoodPanel.add(appetizersLabel);
         appetizerLayoutTableModel = new FoodLayoutTableModel();
         appetizersTable = new JTable(appetizerLayoutTableModel);
         appetizersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -119,6 +133,9 @@ public class AddFoodDialog extends JDialog{
         tablesFoodPanel.add(tableListScrollPane);
 
         //Entree Options
+        entreesLabel = new JLabel("Entrees");
+        entreesLabel.setBounds(25, 370, 200, 20);
+        tablesFoodPanel.add(entreesLabel);
         FoodLayoutTableModel entreeLayoutTableModel = new FoodLayoutTableModel();
         entreesTable = new JTable(entreeLayoutTableModel);
         entreesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -137,6 +154,9 @@ public class AddFoodDialog extends JDialog{
         tablesFoodPanel.add(entreeTableListScrollPane);
 
         //Dessert Options
+        dessertsLabel = new JLabel("Desserts");
+        dessertsLabel.setBounds(250, 140, 200, 20);
+        tablesFoodPanel.add(dessertsLabel);
         FoodLayoutTableModel dessertLayoutTableModel = new FoodLayoutTableModel();
         dessertsTable = new JTable(dessertLayoutTableModel);
         dessertsTable.setBounds(250, 160, 200, 200);
@@ -154,6 +174,9 @@ public class AddFoodDialog extends JDialog{
         tablesFoodPanel.add(dessertTableListScrollPane);
 
         //Beverages Options
+        beveragesLabel = new JLabel("Beverages");
+        beveragesLabel.setBounds(250, 370, 200, 20);
+        tablesFoodPanel.add(beveragesLabel);
         FoodLayoutTableModel beverageLayoutTableModel = new FoodLayoutTableModel();
         beveragesTable = new JTable(beverageLayoutTableModel);
         beveragesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -193,6 +216,8 @@ public class AddFoodDialog extends JDialog{
         public void actionPerformed(ActionEvent press){
             if (press.getSource() == returnToHomepageButton) {
                 dispose();
+            }else if(press.getSource() == confirmOrderButton){
+                
             }
         }
     }
@@ -200,6 +225,7 @@ public class AddFoodDialog extends JDialog{
     public class MyMouseListener implements MouseListener{
         @Override
         public void mouseClicked(MouseEvent press) {
+            currentOrder = new ArrayList<TableOrderItem>();
             if (press.getClickCount() == 2 && appetizersTable.getSelectedRow() != -1) {
                 appetizersTable = (JTable)press.getSource();
                 int row = appetizersTable.getSelectedRow();
@@ -220,9 +246,8 @@ public class AddFoodDialog extends JDialog{
                     }
                 }
                 totalPriceLabel.setText("Total Price + 13% HST: $" + (1.13*totalPrice));
-                currentOrder = table.getCurrentOrder().getOrderItems();
-                currentOrder.add(new TableOrderItem(appetizerOrdered, quantity, null, null, table.getCurrentOrder().getSelf()));
 
+                currentOrder.add(new TableOrderItem(beverageOrdered, quantity, null, null));
             }else if (press.getClickCount() == 2 && entreesTable.getSelectedRow() != -1) {
                 entreesTable = (JTable)press.getSource();
                 int row = entreesTable.getSelectedRow();
@@ -243,8 +268,7 @@ public class AddFoodDialog extends JDialog{
                     }
                 }
                 totalPriceLabel.setText("Total Price + 13% HST: " + (1.13*totalPrice));
-                currentOrder = table.getCurrentOrder().getOrderItems();
-                currentOrder.add(new TableOrderItem(entreeOrdered, quantity, null, null, table.getCurrentOrder().getSelf()));
+                currentOrder.add(new TableOrderItem(beverageOrdered, quantity, null, null));
 
             }else if (press.getClickCount() == 2 && dessertsTable.getSelectedRow() != -1) {
                 dessertsTable = (JTable)press.getSource();
@@ -266,8 +290,7 @@ public class AddFoodDialog extends JDialog{
                     }
                 }
                 totalPriceLabel.setText("Total Price + 13% HST: " + (1.13*totalPrice));
-                currentOrder = table.getCurrentOrder().getOrderItems();
-                currentOrder.add(new TableOrderItem(dessertOrdered, quantity, null, null, table.getCurrentOrder().getSelf()));
+                currentOrder.add(new TableOrderItem(beverageOrdered, quantity, null, null));
 
             }else if (press.getClickCount() == 2 && beveragesTable.getSelectedRow() != -1) {
                 beveragesTable = (JTable)press.getSource();
@@ -289,8 +312,7 @@ public class AddFoodDialog extends JDialog{
                     }
                 }
                 totalPriceLabel.setText("Total Price + 13% HST: " + (1.13*totalPrice));
-                currentOrder = table.getCurrentOrder().getOrderItems();
-                currentOrder.add(new TableOrderItem(beverageOrdered, quantity, null, null, table.getCurrentOrder().getSelf()));
+                currentOrder.add(new TableOrderItem(beverageOrdered, quantity, null, null));
             }
         }
 

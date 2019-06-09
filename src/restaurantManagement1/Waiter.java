@@ -22,5 +22,4 @@ public class Waiter extends Employee implements Serializable {
 		this.email = email;
 		this.SINNumber = SINNumber;
 	}
-
 }
