@@ -54,28 +54,30 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements Serializable
      * to remove item from doubly linked list
      * @param itemToRemove , the item to remove
      */
-    public boolean removeItem(T itemToRemove){
-        DoublyLinkedListNode<T> tempNode = head;
-        boolean removed = false;
-        if(head.getItem().equals(itemToRemove)){
-            head = head.getNext();
-            removed = true;
-        }else{
-            while(tempNode.getNext()!=null){
-                tempNode = tempNode.getNext();
-                if(tempNode.getItem().equals(itemToRemove)) {
-                    //if it's the last item in the list
-                    if (tempNode.getNext() == null) {
-                        tempNode.setPrevious(null);
-                    } else {
-                        tempNode.setPrevious(tempNode.getNext());
-                    }
-                    removed = true;
-                }
-            }
-        }
-        return removed;
-    }
+	 public boolean removeItem(T itemToRemove){
+	        DoublyLinkedListNode<T> tempNode = head;
+	        boolean removed = false;
+	        if(head.getItem().equals(itemToRemove)){
+	            head = head.getNext();
+	            removed = true;
+	        }else{
+	            while(tempNode.getNext()!=null){
+	                tempNode = tempNode.getNext();
+	                if(tempNode.getItem().equals(itemToRemove)) {
+	                    //if it's the last item in the list
+	                    if (tempNode.getNext() == null) {
+//	                        tempNode.setPrevious(null);
+	                    } else {
+//	                        tempNode.setPrevious(tempNode.getNext());
+	                        tempNode.getNext().setPrevious( tempNode.getPrevious() );
+	                    }
+	                    tempNode.getPrevious().setNext( tempNode.getNext() );
+	                    removed = true;
+	                }
+	            }
+	        }
+	        return removed;
+	    }
 
     /**
      * To calculate the size of the doubly linked list

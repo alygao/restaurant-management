@@ -3,6 +3,7 @@ package restaurantManagement1;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -46,7 +47,14 @@ public class WaitingListDialog extends JDialog {
 		waitingListTable = new JTable(waitingListTableModel);
 		waitingListTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		waitingListTable.setBounds(25, 20, 150, 150);
-//		waitingListTableModel.addRows(restaurant.getWaitingList().);
+
+		
+		List<Customer> customerList = new ArrayList<>();
+		Iterator<Customer> customerIterator = restaurant.getWaitingList().iterator();
+		while ( customerIterator.hasNext() ) {
+		customerList.add( customerIterator.next() );
+		}
+		waitingListTableModel.addRows(customerList);
 
 		JScrollPane tableListScrollPane = new JScrollPane(waitingListTable);
 		tableListScrollPane.setBounds(25, 20, 150, 150);

@@ -8,13 +8,13 @@ public class CustomerQueue<T extends Customer> extends Queue<T> {
 	 * @return T the item in the node being removed
 	 */
 	public T dequeue(int numPeople) {
-		QueueNode<T> tempNode = root;
+		QueueNode<T> tempNode = head;
 		QueueNode<T> previousNode = null;
 		System.out.println(numPeople);
 		while (tempNode != null) {
 			if (tempNode.getItem().getNumPeople() <= numPeople) {
 				if (previousNode == null) {
-					root = tempNode.getNext();
+					head = tempNode.getNext();
 				} else {
 					previousNode.setNext(tempNode.getNext());
 				}
@@ -28,12 +28,12 @@ public class CustomerQueue<T extends Customer> extends Queue<T> {
 	}
 
 	public void dequeue(Customer customer) {
-		QueueNode<T> tempNode = root;
+		QueueNode<T> tempNode = head;
 		QueueNode<T> previousNode = null;
 		while (tempNode != null) {
 			if (tempNode.getItem() == customer) {
 				if (previousNode == null) {
-					root = tempNode.getNext();
+					head = tempNode.getNext();
 				} else {
 					previousNode.setNext(tempNode.getNext());
 				}
