@@ -70,15 +70,6 @@ public class SetupDialog extends JDialog {
 		tableManagementPanel.setLayout(null);
 		getContentPane().add(tableManagementPanel);
 
-//		viewTablesPanel = new JPanel();
-//		viewTablesPanel.setLayout(null);
-//		getContentPane().add(viewTablesPanel);
-
-//		JTabbedPane tabbedPane = new JTabbedPane();
-//		tabbedPane.addTab("Table Management", null, tableManagementPanel);
-//		tabbedPane.addTab("Waiting List", null, viewTablesPanel);
-//		getContentPane().add(tabbedPane);
-
 		// Add Table Panel
 		JLabel tableNameLabel = new JLabel("Table Name");
 		tableNameLabel.setBounds(25, 150, 300, 30);
@@ -125,8 +116,6 @@ public class SetupDialog extends JDialog {
 		returnButton.setBounds(865, 435, 120, 75);
 		returnButton.addActionListener(new ButtonListener());
 		tableManagementPanel.add(returnButton);
-
-		// View Table Panel
 
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
@@ -194,6 +183,7 @@ public class SetupDialog extends JDialog {
 					}
 					tableLayoutTableModel.removeRow(selectedRow);
 					tables.remove(selectedRow);
+					System.out.println("The table size is " + tables.size());
 				}
 			} else if (press.getSource() == returnButton) {
 				dispose();

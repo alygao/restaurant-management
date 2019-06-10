@@ -14,12 +14,7 @@ import java.util.Iterator;
 class Queue<T> implements Serializable {
     protected QueueNode<T> root;
 
-    /**
-     * Queue constructor
-     */
-    Queue(){
-        root = new QueueNode<T>(null);
-    }
+   
 
     /**
      * adds node to the queue
