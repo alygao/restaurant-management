@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -71,7 +72,16 @@ public class WaitingListDialog extends JDialog {
 			 * @param press the action that occurs
 			 */
 			public void actionPerformed(ActionEvent press) {
-
+				int selectedRow = waitingListTable.getSelectedRow();
+				if (selectedRow < 0) {
+					JOptionPane.showMessageDialog(null,
+							"Please choose a customer to remove from the waiting list.",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				waitingListTableModel.removeRow(selectedRow);
+				restaurant.getWaitingList().dequeue(customerList.get(selectedRow));
+				customerList.remove(selectedRow);
 				
 
 			}

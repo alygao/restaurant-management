@@ -687,7 +687,7 @@ public class Restaurant extends JFrame {
 		return bestTable;
 	}
 
-	public Queue<Customer> getWaitingList() {
+	public CustomerQueue<Customer> getWaitingList() {
 		return waitingList;
 	}
 	
