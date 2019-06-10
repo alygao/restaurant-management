@@ -12,19 +12,17 @@ import java.util.Iterator;
  */
 
 class Queue<T> implements Serializable {
-    protected QueueNode<T> root;
-
-   
+    protected QueueNode<T> head;
 
     /**
      * adds node to the queue
      * @param nodeToAdd the node to add to the queue, of type QueueNode
      */
     public void enqueue(QueueNode<T> nodeToAdd){
-        if(root.getItem() == null){
-            root = nodeToAdd;
+        if(head.getItem() == null){
+            head = nodeToAdd;
         }else{
-            QueueNode<T> tempNode = root;
+            QueueNode<T> tempNode = head;
             while(tempNode.getNext() != null){
                 tempNode = tempNode.getNext();
             }
@@ -38,10 +36,10 @@ class Queue<T> implements Serializable {
      */
     public void enqueue(T item){
         QueueNode<T> nodeToAdd = new QueueNode<T>(item);
-        if(root == null){
-            root = nodeToAdd;
+        if(head == null){
+            head = nodeToAdd;
         }else{
-            QueueNode<T> tempNode = root;
+            QueueNode<T> tempNode = head;
             while(tempNode.getNext() != null){
                 tempNode = tempNode.getNext();
             }
@@ -54,8 +52,8 @@ class Queue<T> implements Serializable {
      * @return T the item in the node being removed
      */
     public T dequeue(){
-        QueueNode<T> previousRoot = root;
-        root = root.getNext();
+        QueueNode<T> previousRoot = head;
+        head = head.getNext();
         return previousRoot.getItem();
     }
     
@@ -67,8 +65,8 @@ class Queue<T> implements Serializable {
      */
     public int size(){
         int count = 1;
-        QueueNode<T> tempNode = root;
-        if(root == null){
+        QueueNode<T> tempNode = head;
+        if(head == null){
             return 0;
         }else{
             while(tempNode.getNext() != null){
@@ -78,6 +76,14 @@ class Queue<T> implements Serializable {
             return count;
         }       
     }
+    
+	public boolean isEmpty() {
+		if (head == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
     
 //    public Queue<T> clone(){
 //    	Queue<T> q1 = new Q
