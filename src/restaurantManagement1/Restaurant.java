@@ -1,7 +1,7 @@
 package restaurantManagement1;
 
-import java.awt.Color;
 import java.awt.Toolkit;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,13 +13,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -42,20 +38,20 @@ public class Restaurant extends JFrame {
 	private List<Table> tables = new DoublyLinkedList<>();
 	private List<Reservation> reservationBook = new DoublyLinkedList<>();
 	private List<MenuItem> menu = new DoublyLinkedList<>();
-	private Queue<Customer> waitingList = new Queue<>();
+	private CustomerQueue<Customer> waitingList = new CustomerQueue<>();
+	private Queue<TableOrderItem> kitchenOrders = new Queue<>();
 	private List<Employee> employees = new DoublyLinkedList<>();
-//	private DoublyLinkedList<Chef> chefs = new DoublyLinkedList<>();
-//	private DoublyLinkedList<Waiter> waiters = new DoublyLinkedList<>();
+	private List<TableOrder> historicalTransactions = new DoublyLinkedList<>();
 	private Employee currentUser;
 	private Restaurant self = this;
 	private JPanel mainPanel;
 	private JButton orderButton;
 	private JButton transactionButton;
-	private JButton tipButton;
+	private JButton kitchenButton;
 	private JButton reservationButton;
 	private JButton reportingButton;
 	private JButton menuButton;
-	private JButton tableLayoutButton;
+	private JButton setupButton;
 	private JButton employeeButton;
 	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
@@ -92,10 +88,10 @@ public class Restaurant extends JFrame {
 		transactionButton.addActionListener(new ButtonListener());
 		mainPanel.add(transactionButton);
 
-		tipButton = new JButton(new ImageIcon(getClass().getResource("tips button.JPG")));
-		tipButton.setBounds(350, 150, 125, 125);
-		tipButton.addActionListener(new ButtonListener());
-		mainPanel.add(tipButton);
+		kitchenButton = new JButton(new ImageIcon(getClass().getResource("kitchen button.JPG")));
+		kitchenButton.setBounds(350, 150, 125, 125);
+		kitchenButton.addActionListener(new ButtonListener());
+		mainPanel.add(kitchenButton);
 
 		menuButton = new JButton(new ImageIcon(getClass().getResource("menu button.JPG")));
 		menuButton.setBounds(500, 150, 125, 125);
@@ -107,27 +103,26 @@ public class Restaurant extends JFrame {
 		reservationButton.addActionListener(new ButtonListener());
 		mainPanel.add(reservationButton);
 
-		tableLayoutButton = new JButton(new ImageIcon(getClass().getResource("general button.JPG")));
-		tableLayoutButton.setBounds(200, 300, 125, 125);
-		tableLayoutButton.addActionListener(new ButtonListener());
-		mainPanel.add(tableLayoutButton);
-
 		employeeButton = new JButton(new ImageIcon(getClass().getResource("employee button.JPG")));
-		employeeButton.setBounds(350, 300, 125, 125);
+		employeeButton.setBounds(200, 300, 125, 125);
 		employeeButton.addActionListener(new ButtonListener());
 		mainPanel.add(employeeButton);
 
 		reportingButton = new JButton(new ImageIcon(getClass().getResource("reporting button.JPG")));
-		reportingButton.setBounds(500, 300, 125, 125);
+		reportingButton.setBounds(350, 300, 125, 125);
 		reportingButton.addActionListener(new ButtonListener());
 		mainPanel.add(reportingButton);
+		
+		setupButton = new JButton(new ImageIcon(getClass().getResource("setup button.JPG")));
+		setupButton.setBounds(500, 300, 125, 125);
+		setupButton.addActionListener(new ButtonListener());
+		mainPanel.add(setupButton);
 
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo homepage.JPG"));
 		homepageBackgroundLabel = new JLabel(homepageBackground);
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
 		mainPanel.add(homepageBackgroundLabel);
-		
 
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
@@ -137,7 +132,6 @@ public class Restaurant extends JFrame {
 		});
 
 		loadConfigurationAndData();
-	
 
 		// icon image and size
 		setDefaultLookAndFeelDecorated(true);
@@ -147,8 +141,7 @@ public class Restaurant extends JFrame {
 		setResizable(false);
 		setUndecorated(false); // TODO: change to true
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE); // TODO: comment out
-
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); // TODO: comment out
 
 	}
 
@@ -270,20 +263,22 @@ public class Restaurant extends JFrame {
 			tables = (List<Table>) ois.readObject();
 			reservationBook = (List<Reservation>) ois.readObject();
 			menu = (List<MenuItem>) ois.readObject();
-			waitingList = (Queue<Customer>) ois.readObject();
+			waitingList = (CustomerQueue<Customer>) ois.readObject();
 			employees = (DoublyLinkedList<Employee>) ois.readObject();
+			kitchenOrders = (Queue<TableOrderItem>) ois.readObject();
+			historicalTransactions = (List<TableOrder>) ois.readObject();
 			if (employees.size() > 0) {
 				setupLogin();
 				this.disable();
 			}
-			if (currentUser!= null) {
+			if (currentUser != null) {
 				this.enable();
-				
-				//TODO hiding under frame
+
+				// TODO hiding under frame
 				mainPanel.remove(homepageBackgroundLabel);
-				
-				JLabel employeeNameLabel = new JLabel ("Hello " + currentUser.getName());
-				employeeNameLabel.setBounds(700,20,100,30);
+
+				JLabel employeeNameLabel = new JLabel("Hello " + currentUser.getName());
+				employeeNameLabel.setBounds(700, 20, 100, 30);
 				employeeNameLabel.setForeground(Color.white);
 				mainPanel.add(employeeNameLabel);
 				mainPanel.add(homepageBackgroundLabel);
@@ -328,6 +323,8 @@ public class Restaurant extends JFrame {
 			oos.writeObject(menu);
 			oos.writeObject(waitingList);
 			oos.writeObject(employees);
+			oos.writeObject(historicalTransactions);
+			oos.writeObject(kitchenOrders);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "The file cannot be used with this program.", "Error",
@@ -466,11 +463,14 @@ public class Restaurant extends JFrame {
 		return reservableTables;
 	}
 
-	public List<Table> getReservableTables(int numPeople) {
+	public List<Table> getReservableTables(int numPeople, ReservationDateTime reserveTimePeriod) {
 		List<Table> reservableTables = new ArrayList<>();
 		for (int i = 0; i < tables.size(); i++) {
 			if (tables.get(i).canBeReserved() && tables.get(i).getNumSeats() >= numPeople) {
-				reservableTables.add(tables.get(i));
+				if (!reserveTimePeriod.getSecuredTimePeriodFrom().isBefore(LocalTime.now())
+						|| !tables.get(i).isOccupied()) {
+					reservableTables.add(tables.get(i));
+				}
 			}
 		}
 		return reservableTables;
@@ -483,30 +483,25 @@ public class Restaurant extends JFrame {
 		// if not, remove table from reserve tables
 		// make sure to not check if table has already been removed
 
-		List<Table> availableTableForReservation = getReservableTables(numPeople);
+		List<Table> availableTableForReservation = getReservableTables(numPeople, reserveTimePeriod);
 		List<Reservation> savedReservationsForDate = new ArrayList<>();
 
 		for (int i = 0; i < reservationBook.size(); i++) {
-//			if (reservationBook.get(i).getReservationDateTime().getDate().equals(reserveTimePeriod.getDate())) {
-			if (reservationBook.get(i).getReservationDateTime().getLocalDate().equals(Utils.convertToLocalDate(reserveTimePeriod.getDate()))) {
+			if (reservationBook.get(i).getReservationDateTime().getLocalDate()
+					.equals(Utils.convertToLocalDate(reserveTimePeriod.getDate()))) {
 				savedReservationsForDate.add(reservationBook.get(i));
 			}
 		}
 		for (int i = 0; i < savedReservationsForDate.size(); i++) {
-			if (availableTableForReservation.contains(savedReservationsForDate.get(i).getTable())) {
-				if ( savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodFrom().isBefore( reserveTimePeriod.getLocalTime() )
-						&& savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodTo().isAfter( reserveTimePeriod.getLocalTime() )
-				) {
+			if (!savedReservationsForDate.get(i).isClaimed()
+					&& availableTableForReservation.contains(savedReservationsForDate.get(i).getTable())) {
+				if (savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodFrom()
+						.isBefore(reserveTimePeriod.getLocalTime())
+						&& savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodTo()
+								.isAfter(reserveTimePeriod.getLocalTime())) {
 					availableTableForReservation.remove(savedReservationsForDate.get(i).getTable());
 				}
-				
-				
-//				if ((savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble() - 2 <= reserveTimePeriod
-//						.getTimeInDouble())
-//						&& (savedReservationsForDate.get(i).getReserveTimePeriod().getTimeInDouble()
-//								+ 2 >= reserveTimePeriod.getTimeInDouble())) {
-//					availableTableForReservation.remove(savedReservationsForDate.get(i).getTable());
-//				}
+
 			}
 		}
 		return availableTableForReservation;
@@ -519,11 +514,13 @@ public class Restaurant extends JFrame {
 
 	public void claimReservation(String customerName) {
 		boolean found = false;
-		int reservationIndex = -1;
+		Reservation reservation = null;
+		Table reservedTable = null;
 		for (int i = 0; i < reservationBook.size(); i++) {
-			if (reservationBook.get(i).getCustomer().getName().equals(customerName)) {
+			if ((!reservationBook.get(i).isClaimed())
+					&& reservationBook.get(i).getCustomer().getName().equals(customerName)) {
 				found = true;
-				reservationIndex = i;
+				reservation = reservationBook.get(i);
 				break;
 			}
 		}
@@ -532,15 +529,30 @@ public class Restaurant extends JFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		JOptionPane.showMessageDialog(null,
-				"Reservation has been claimed. Under 'Orders,' the table is now claimed by " + customerName);
-		reservationBook.remove(reservationIndex);
+
+//		// if customer arrives too early for their reservation
+//		if (reservation.getTable().isOccupied() && LocalTime.now().isBefore(reservation.getReservationDateTime().getLocalTime())) {
+//			JOptionPane.showMessageDialog(null, "Customer is too early for their reservation. The reserved table is currently being occupied.", "Error", JOptionPane.ERROR_MESSAGE);
+//			return;
+//		}
+//
+//		// if customer arrives too late for their reservation
+//		if (reservation.getTable().isOccupied() && LocalTime.now().isAfter(reservation.getReservationDateTime().getLocalTime())) {
+//			JOptionPane.showMessageDialog(null, "Customer is too late for their reservation. Please go to 'Find Table' and now add them as a walk-in customer.", "Error", JOptionPane.ERROR_MESSAGE);
+//			return;
+//		}
+
+		JOptionPane.showMessageDialog(null, "Reservation has been claimed by " + customerName + " for "
+				+ reservation.getReservationDateTime().getLocalTime());
+		reservation.setClaimed(true);
+		reservedTable = reservation.getTable();
+		reservedTable.setCustomer(reservation.getCustomer());
+		reservedTable.setOccupied(true);
 		// TODO : change table now to claimed under orders dialog
 	}
 
 	public void addEmployee(Employee employee) {
 		employees.add(employee);
-		JOptionPane.showMessageDialog(null, "Employee successfully added.");
 	}
 
 	public List<Employee> getEmployees() {
@@ -565,17 +577,20 @@ public class Restaurant extends JFrame {
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == orderButton) {
+				if (waitingList.size() > 0) {
+					checkWaitingList();
+				}
 				OrderDialog orderDialog = new OrderDialog(self);
 			} else if (press.getSource() == transactionButton) {
 				TransactionDialog transactionDialog = new TransactionDialog(self);
-			} else if (press.getSource() == tipButton) {
+			} else if (press.getSource() == kitchenButton) {
 
 			} else if (press.getSource() == menuButton) {
-				System.out.println("menu size is " + menu.size());
+//				System.out.println("menu size is " + menu.size());
 				MenuDialog menuDialog = new MenuDialog(self);
 
-			} else if (press.getSource() == tableLayoutButton) {
-				SetupDialog tableLayoutDialog = new SetupDialog(tables);
+			} else if (press.getSource() == setupButton) {
+				SetupDialog tableLayoutDialog = new SetupDialog(self);
 
 			} else if (press.getSource() == reservationButton) {
 				ReservationBookDialog reservationBookDialog = new ReservationBookDialog(self);
@@ -585,10 +600,11 @@ public class Restaurant extends JFrame {
 			}
 		}
 	}
-	
+
 	public Table findAvailableTableForWalkInCustomer(Customer customer) {
+
 		List<Table> availableTables = new ArrayList<>();
-		
+
 		for (int i = 0; i < tables.size(); i++) {
 			if (!tables.get(i).isOccupied()) {
 				availableTables.add(tables.get(i));
@@ -596,17 +612,44 @@ public class Restaurant extends JFrame {
 		}
 
 		for (int i = 0; i < reservationBook.size(); i++) {
-			if ( reservationBook.get(i).getReservationDateTime().getLocalDate().equals(LocalDate.now())
-					&& LocalTime.now().isBefore ( reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodTo() )
-					&& LocalTime.now().isAfter ( reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodFrom() ) ) {
+			if (reservationBook.get(i).getReservationDateTime().getLocalDate().equals(LocalDate.now())
+					&& LocalTime.now()
+							.isBefore(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodTo())
+					&& LocalTime.now()
+							.isAfter(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodFrom())) {
 				availableTables.remove(reservationBook.get(i).getTable());
 			}
 		}
 
 		if (availableTables.size() > 0) {
-			return getAppropriateTable(availableTables, customer.getNumPeople()); 
+			return getAppropriateTable(availableTables, customer.getNumPeople());
 		} else {
 			return null;
+		}
+	}
+	
+	public void checkWaitingList() {
+		if (waitingList.size() == 0) {
+			return;
+		}
+		
+		System.out.println(waitingList.size());
+		for (int i = 0; i< tables.size(); i++) {
+			if (!tables.get(i).isOccupied()) {
+				Table table = tables.get(i);
+				int numSeats = table.getNumSeats();
+				Customer customer = waitingList.dequeue(numSeats);
+				tables.get(i).setCustomer(customer);
+				if (tables.get(i).getCustomer() != null) {
+					JOptionPane.showMessageDialog(null, "From the waiting list, " + customer.getName() + " has been placed at a table.");
+					table.setOccupied(true);
+					Waiter waiter = findAvailableWaiter();
+					table.setCurrentAssignedWaiter(waiter);
+					table.setCurrentOrder(new TableOrder(table));
+					table.getCurrentOrder().setWaiter(waiter);
+					waiter.getAssignedTables().add(table);
+				}
+			}
 		}
 	}
 
@@ -614,11 +657,11 @@ public class Restaurant extends JFrame {
 		if (currentUser instanceof Chef) {
 			reservationButton.disable();
 			employeeButton.disable();
-			tableLayoutButton.disable();
-			
+			setupButton.disable();
+
 		}
 	}
-	
+
 	public void setupLogin() {
 		LoginDialog loginDialog = new LoginDialog(self);
 	}
@@ -639,4 +682,42 @@ public class Restaurant extends JFrame {
 	public Queue<Customer> getWaitingList() {
 		return waitingList;
 	}
+	
+	public List<Customer> getWaitingListInListForm() {
+//		Queue<Customer>
+		List<Customer> waitingListForm = new ArrayList<>();
+//		waitingList.toArray();
+		
+		return waitingListForm;
+	}
+
+	public Waiter findAvailableWaiter() {
+		int minTables = Integer.MAX_VALUE;
+		Waiter waiter = null;
+		for (int i = 0; i < getWaiters().size(); i++) {
+			if (getWaiters().get(i).getAssignedTables().size() < minTables) {
+				waiter = getWaiters().get(i);
+				minTables = getWaiters().get(i).getAssignedTables().size();
+				System.out.println(waiter.getName() + minTables);
+			}
+		}
+		return waiter;
+	}
+
+	public List<TableOrder> getHistoricalTransactions() {
+		return historicalTransactions;
+	}
+
+	public void setHistoricalTransactions(List<TableOrder> historicalTransactions) {
+		this.historicalTransactions = historicalTransactions;
+	}
+	
+	public Queue<TableOrderItem> getKitchenOrders() {
+		return kitchenOrders;
+	}
+
+	public void setKitchenOrders(Queue<TableOrderItem> kitchenOrders) {
+		this.kitchenOrders = kitchenOrders;
+	}
+
 }

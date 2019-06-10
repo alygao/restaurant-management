@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -32,6 +33,8 @@ import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 public class AddReservationDialog extends JDialog {
 
 	private Restaurant restaurant;
+	private ViewReservationsTableModel viewReservationsTableModel;
+
 	private List<Table> availableTableForReservation;
 	private ReservationDateTime reserveTimePeriod;
 	private Reservation reservation;
@@ -44,15 +47,19 @@ public class AddReservationDialog extends JDialog {
 	private JPanel panel;
 	private JButton findAvailabilityButton;
 	private JButton bookReservationButton;
-	private JButton returnButton;
+	private JButton returnToViewReservationsButton;
 
 	private AvailableReservationTableModel reserveTableModel;
 	private JTable possibleReserveTablesTable;
 
+	private ImageIcon homepageBackground;
+	private JLabel homepageBackgroundLabel;
+
 	private AddReservationDialog self = this;
 
-	public AddReservationDialog(Restaurant restaurant) {
+	public AddReservationDialog(Restaurant restaurant, ViewReservationsTableModel viewReservationsTableModel) {
 		this.restaurant = restaurant;
+		this.viewReservationsTableModel = viewReservationsTableModel;
 		initUI();
 	}
 
@@ -71,26 +78,26 @@ public class AddReservationDialog extends JDialog {
 
 		// GUI Components
 		JLabel reserveNameLabel = new JLabel("Reservation Name:");
-		reserveNameLabel.setBounds(25, 50, 300, 30);
+		reserveNameLabel.setBounds(25, 150, 300, 30);
 		panel.add(reserveNameLabel);
 
 		reserveNameTextField = new JTextField();
-		reserveNameTextField.setBounds(150, 50, 300, 30);
+		reserveNameTextField.setBounds(150, 150, 300, 30);
 		panel.add(reserveNameTextField);
 
 		JLabel numPeopleLabel = new JLabel("Number of People:");
-		numPeopleLabel.setBounds(25, 100, 300, 30);
+		numPeopleLabel.setBounds(25, 200, 300, 30);
 		panel.add(numPeopleLabel);
 
 		SpinnerModel tableSpinnerModel = new SpinnerNumberModel(1, 1, 10, 1);
 		numPeopleSpinner = new JSpinner(tableSpinnerModel);
-		numPeopleSpinner.setBounds(150, 100, 50, 30);
+		numPeopleSpinner.setBounds(150, 200, 50, 30);
 		panel.add(numPeopleSpinner);
 
 		// Time
 		boolean dayAdvanced = false;
 		JLabel timeLabel = new JLabel("Time:");
-		timeLabel.setBounds(25, 200, 200, 30);
+		timeLabel.setBounds(25, 300, 200, 30);
 		panel.add(timeLabel);
 		TimePickerSettings timeSettings = new TimePickerSettings();
 		timeSettings.setColor(TimeArea.TimePickerTextValidTime, Color.black);
@@ -114,56 +121,73 @@ public class AddReservationDialog extends JDialog {
 		}
 		timeSettings.initialTime = LocalTime.of(hour, minute);
 		timePicker = new TimePicker(timeSettings);
-		timePicker.setBounds(150, 200, 150, 30);
+		timePicker.setBounds(150, 300, 150, 30);
 		timePicker.getComponentTimeTextField().setEditable(false);
-//        timePicker.setTimeToNow();
 		panel.add(timePicker);
 
 		// Date
 		JLabel dateLabel = new JLabel("Date:");
-		dateLabel.setBounds(25, 150, 300, 30);
+		dateLabel.setBounds(25, 250, 300, 30);
 		panel.add(dateLabel);
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
 		datePicker = new DatePicker(dateSettings);
 		dateSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusDays(60));
-		datePicker.setBounds(150, 150, 200, 30);
+		datePicker.setBounds(150, 250, 200, 30);
 		LocalDate today = LocalDate.now();
 		int month = today.getMonthValue();
 		int day = today.getDayOfMonth();
 		int year = today.getYear();
-		
+
 		if (dayAdvanced) {
 			day++;
-			if ( day > today.lengthOfMonth() ) {
+			if (day > today.lengthOfMonth()) {
 				day = 1;
 				month++;
-				if ( month > 12 ) {
+				if (month > 12) {
 					year++;
 					month = 1;
 				}
 			}
 		}
-//		datePicker.setDateToToday();
-		datePicker.setDate( LocalDate.of(year, month, day) );
+		datePicker.setDate(LocalDate.of(year, month, day));
 		datePicker.getComponentDateTextField().setEditable(false);
 		panel.add(datePicker);
 
-		findAvailabilityButton = new JButton("Find Availability");
-		findAvailabilityButton.setBounds(100, 300, 200, 30);
+		findAvailabilityButton = new JButton(new ImageIcon(getClass().getResource("find availability button.JPG")));
+		findAvailabilityButton.setBounds(865, 75, 120, 75);
 		findAvailabilityButton.addActionListener(new ButtonListener());
 		panel.add(findAvailabilityButton);
 
-		returnButton = new JButton("Return");
-		returnButton.setBounds(100, 350, 200, 30);
-		returnButton.addActionListener(new ButtonListener());
-		panel.add(returnButton);
+		returnToViewReservationsButton = new JButton(new ImageIcon(getClass().getResource("return button.JPG")));
+		returnToViewReservationsButton.setBounds(865, 435, 120, 75);
+		returnToViewReservationsButton.addActionListener(new ButtonListener());
+		panel.add(returnToViewReservationsButton);
 
-		bookReservationButton = new JButton("Book Reservation");
-		bookReservationButton.setBounds(800, 200, 150, 30);
+		bookReservationButton = new JButton(new ImageIcon(getClass().getResource("book reservation button.JPG")));
+		bookReservationButton.setBounds(865, 165, 120, 75);
 		bookReservationButton.addActionListener(new ButtonListener());
 		bookReservationButton.setVisible(false);
 		panel.add(bookReservationButton);
+
+		// possibleReserveTablesTable
+		reserveTableModel = new AvailableReservationTableModel();
+		possibleReserveTablesTable = new JTable(reserveTableModel);
+		possibleReserveTablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		possibleReserveTablesTable.setBounds(500, 100, 300, 400);
+
+		JScrollPane tableListScrollPane = new JScrollPane(possibleReserveTablesTable);
+		tableListScrollPane.setBounds(500, 100, 300, 400);
+		panel.add(tableListScrollPane);
+
+		possibleReserveTablesTable.setVisible(false);
+
+		// background image
+		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
+		homepageBackgroundLabel = new JLabel(homepageBackground);
+		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
+		panel.add(homepageBackgroundLabel);
+
 
 		setVisible(true);
 
@@ -171,21 +195,20 @@ public class AddReservationDialog extends JDialog {
 
 	public void displayAvailableTables(List<Table> availableTableForReservation) {
 
-//		bookReservationButton = new JButton("Book Reservation");
-//		bookReservationButton.setBounds(800, 200, 150, 30);
-//		bookReservationButton.addActionListener(new ButtonListener());
-//		panel.add(bookReservationButton);
 		bookReservationButton.setVisible(true);
+		possibleReserveTablesTable.setVisible(true);
 
-		reserveTableModel = new AvailableReservationTableModel();
-		possibleReserveTablesTable = new JTable(reserveTableModel);
-		possibleReserveTablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		possibleReserveTablesTable.setBounds(500, 50, 200, 400);
-		reserveTableModel.addRows(availableTableForReservation);
+		reserveTableModel.setData(availableTableForReservation);
 
-		JScrollPane tableListScrollPane = new JScrollPane(possibleReserveTablesTable);
-		tableListScrollPane.setBounds(500, 50, 200, 400);
-		panel.add(tableListScrollPane);
+//		reserveTableModel = new AvailableReservationTableModel();
+//		possibleReserveTablesTable = new JTable(reserveTableModel);
+//		possibleReserveTablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		possibleReserveTablesTable.setBounds(500, 50, 200, 400);
+//		reserveTableModel.addRows(availableTableForReservation);
+//
+//		JScrollPane tableListScrollPane = new JScrollPane(possibleReserveTablesTable);
+//		tableListScrollPane.setBounds(500, 50, 200, 400);
+//		panel.add(tableListScrollPane);
 
 	}
 
@@ -201,6 +224,7 @@ public class AddReservationDialog extends JDialog {
 			if (press.getSource() == findAvailabilityButton) {
 
 				if (restaurant.getTables().size() == 0) {
+					possibleReserveTablesTable.setVisible(false);
 					JOptionPane.showMessageDialog(null, "Your restaurant currently has no tables.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
@@ -211,6 +235,12 @@ public class AddReservationDialog extends JDialog {
 						.findAvailableTableForReservation((int) numPeopleSpinner.getValue(), reserveTimePeriod);
 				self.displayAvailableTables(availableTableForReservation);
 			} else if (press.getSource() == bookReservationButton) {
+				String reservationName = reserveNameTextField.getText();
+				if (reservationName == null || reservationName.trim().length() == 0) {
+					JOptionPane.showMessageDialog(null, "Please input a reservation name.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				int selectedRow = possibleReserveTablesTable.getSelectedRow();
 				if (selectedRow < 0) {
 					JOptionPane.showMessageDialog(null, "Please choose a table to book a reservation.", "Error",
@@ -221,12 +251,11 @@ public class AddReservationDialog extends JDialog {
 				reservation = new Reservation(availableTableForReservation.get(selectedRow),
 						reserveNameTextField.getText(), (int) numPeopleSpinner.getValue(), reserveTimePeriod);
 				restaurant.bookReservation(reservation);
+				viewReservationsTableModel.addRow(reservation);
 				dispose();
 
-			} else if (press.getSource() == returnButton) {
+			} else if (press.getSource() == returnToViewReservationsButton) {
 				dispose();
-//				ReservationBookDialog reservationDialog = new ReservationBookDialog(restaurant);
-
 			}
 		}
 	}
@@ -413,6 +442,7 @@ public class AddReservationDialog extends JDialog {
 			this.reserveTablesData = tablesData;
 			fireTableRowsInserted(0, getRowCount());
 		}
+
 	}
 
 }

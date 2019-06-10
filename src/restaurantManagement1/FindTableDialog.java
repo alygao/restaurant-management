@@ -76,10 +76,21 @@ public class FindTableDialog extends JDialog {
 					restaurant.getWaitingList().enqueue(customer);
 					JOptionPane.showMessageDialog(null, "Customer has been added to the waiting list");
 				} else {
-					JOptionPane.showMessageDialog(null,
-							"Customer has been successfully placed at Table " + availableTable.getTableName());
-					availableTable.setCustomer(customer);
-					availableTable.setOccupied(true);
+					Waiter waiter = restaurant.findAvailableWaiter();
+					if (waiter == null) {
+						JOptionPane.showMessageDialog(null, "There are no available waiters.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						JOptionPane.showMessageDialog(null, "Customer has been successfully placed at Table "
+								+ availableTable.getTableName() + ". They will be served by " + waiter.getName());
+						availableTable.setCustomer(customer);
+						availableTable.setOccupied(true);
+						availableTable.setCurrentAssignedWaiter(waiter);
+						availableTable.setCurrentOrder(new TableOrder(availableTable));
+						availableTable.getCurrentOrder().setWaiter(waiter);
+						waiter.getAssignedTables().add(availableTable);
+					}
 				}
 				dispose();
 

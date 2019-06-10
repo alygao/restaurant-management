@@ -10,9 +10,14 @@ package restaurantManagement1;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -20,221 +25,507 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.AbstractTableModel;
+
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
-public class EmployeeDialog extends JDialog{
-    private Restaurant restaurant;
-    private JPanel viewEmployeesPanel;
-    private JPanel addEmployeesPanel;
-    private JTextField employeeNameTextField;
-    private JTextField payTextField;
-    private JTextField userIDTextField;
-    private JPasswordField passwordTextField;
-    private JButton createEmployee;
-//    private JSpinner dateSpinner;
-    private JTextField phoneNumberTextField;
-    private JTextField emailTextField;
-    private JTextField SINNumberTextField;
-    private DatePicker datePicker;
-    private JRadioButton chefRadioButton;
-    private JRadioButton waiterRadioButton;
-    private boolean numeric = true;
-    private Chef newChef;
-    private Waiter newWaiter;
+import restaurantManagement1.AddReservationDialog.AvailableReservationTableModel;
+import restaurantManagement1.OrderDialog.ButtonListener;
 
-    EmployeeDialog(Restaurant restaurant){
-        this.restaurant = restaurant;
-        initUI();
-    }
+public class EmployeeDialog extends JDialog {
+	private Restaurant restaurant;
+	private JPanel viewEmployeesPanel;
+	private JPanel addEmployeesPanel;
+	private JTextField employeeNameTextField;
+	private JTextField payTextField;
+	private JTextField userIDTextField;
+	private JPasswordField passwordTextField;
+	private JButton createEmployee;
+	private JTextField phoneNumberTextField;
+	private JTextField emailTextField;
+	private JTextField SINNumberTextField;
+	private DatePicker datePicker;
+	private JRadioButton chefRadioButton;
+	private JRadioButton waiterRadioButton;
+	private boolean numeric = true;
+	private Chef newChef;
+	private Waiter newWaiter;
+	private ViewEmployeesTableModel viewEmployeesTableModel;
+	private JTable viewEmployeesTable;
+	private JButton searchButton;
+	private JButton returnToHomeButton1;
+	private JButton returnToHomeButton2;
+	private JRadioButton searchChefRadioButton;
+	private JRadioButton searchWaiterRadioButton;
+	private ImageIcon homepageBackground;
+	private JLabel homepageBackgroundLabel;
 
-    public void initUI(){
-        setModalityType(ModalityType.APPLICATION_MODAL);
+	EmployeeDialog(Restaurant restaurant) {
+		this.restaurant = restaurant;
+		initUI();
+	}
 
-        setSize(1000, 600);
-        setLocationRelativeTo(null);
-        setResizable(false);
+	public void initUI() {
+		setModalityType(ModalityType.APPLICATION_MODAL);
 
-        viewEmployeesPanel = new JPanel();
-        viewEmployeesPanel.setLayout(null);
-        getContentPane().add(viewEmployeesPanel);
+		setUndecorated(true);
+		setSize(1000, 600);
+		setLocationRelativeTo(null);
+		setResizable(false);
 
-        addEmployeesPanel = new JPanel();
-        addEmployeesPanel.setLayout(null);
-        getContentPane().add(addEmployeesPanel);
+		viewEmployeesPanel = new JPanel();
+		viewEmployeesPanel.setLayout(null);
+		getContentPane().add(viewEmployeesPanel);
 
-        //Tabs
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Add Employee", null, addEmployeesPanel);
-        tabbedPane.addTab("View All Employees", null, viewEmployeesPanel);
-        getContentPane().add(tabbedPane);
+		addEmployeesPanel = new JPanel();
+		addEmployeesPanel.setLayout(null);
+		getContentPane().add(addEmployeesPanel);
 
-        //Add Employee Panel Setup
+		// Tabs
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.addTab("Add Employee", null, addEmployeesPanel);
+		tabbedPane.addTab("View Employees", null, viewEmployeesPanel);
+		getContentPane().add(tabbedPane);
 
-        //Employee Name
-        JLabel employeeNameLabel = new JLabel("Employee Name:");
-        employeeNameLabel.setBounds(25, 100, 300, 30);
-        addEmployeesPanel.add(employeeNameLabel);
+		// Add Employee Panel Setup
 
-        employeeNameTextField = new JTextField();
-        employeeNameTextField.setBounds(150, 100, 300, 30);
-        addEmployeesPanel.add(employeeNameTextField);
+		// Employee Name
+		JLabel employeeNameLabel = new JLabel("Employee Name:");
+		employeeNameLabel.setBounds(25, 100, 200, 30);
+		addEmployeesPanel.add(employeeNameLabel);
 
-        //Employee Pay
-        JLabel payLabel = new JLabel("Pay (Hourly Rate $):");
-        payLabel.setBounds(25, 150, 300, 30);
-        addEmployeesPanel.add(payLabel);
+		employeeNameTextField = new JTextField();
+		employeeNameTextField.setBounds(150, 100, 200, 30);
+		addEmployeesPanel.add(employeeNameTextField);
 
-        payTextField = new JTextField();
-        payTextField.setBounds(150, 150, 300, 30);
-        addEmployeesPanel.add(payTextField);
+		// Employee Pay
+		JLabel payLabel = new JLabel("Pay (Hourly Rate $):");
+		payLabel.setBounds(25, 150, 200, 30);
+		addEmployeesPanel.add(payLabel);
 
-        //Employee userID
-        JLabel userIDLabel = new JLabel ("User ID:");
-        userIDLabel.setBounds(25, 200, 300, 30);
-        addEmployeesPanel.add(userIDLabel);
+		payTextField = new JTextField();
+		payTextField.setBounds(150, 150, 200, 30);
+		addEmployeesPanel.add(payTextField);
 
-        userIDTextField = new JTextField();
-        userIDTextField.setBounds(150, 200, 300, 30);
-        addEmployeesPanel.add(userIDTextField);
+		// Employee userID
+		JLabel userIDLabel = new JLabel("User ID:");
+		userIDLabel.setBounds(25, 200, 200, 30);
+		addEmployeesPanel.add(userIDLabel);
 
-        //Enter user password
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(25, 250, 300, 30);
-        addEmployeesPanel.add(passwordLabel);
+		userIDTextField = new JTextField();
+		userIDTextField.setBounds(150, 200, 200, 30);
+		addEmployeesPanel.add(userIDTextField);
 
-        passwordTextField = new JPasswordField(20);
-        passwordTextField.setBounds(150, 250, 300, 30);
-        addEmployeesPanel.add(passwordTextField);
+		// Enter user password
+		JLabel passwordLabel = new JLabel("Password:");
+		passwordLabel.setBounds(25, 250, 200, 30);
+		addEmployeesPanel.add(passwordLabel);
 
-        //Type of Employee
-        JLabel employeeTypeLabel = new JLabel("Type of Employee: ");
-        employeeTypeLabel.setBounds(25, 300, 300, 30);
-        addEmployeesPanel.add(employeeTypeLabel);
+		passwordTextField = new JPasswordField(20);
+		passwordTextField.setBounds(150, 250, 200, 30);
+		addEmployeesPanel.add(passwordTextField);
 
-        chefRadioButton = new JRadioButton("Chef");
-        chefRadioButton.setBounds(150, 300, 300, 30);
-        addEmployeesPanel.add(chefRadioButton);
+		// Type of Employee
+		JLabel employeeTypeLabel = new JLabel("Type of Employee: ");
+		employeeTypeLabel.setBounds(25, 300, 200, 30);
+		addEmployeesPanel.add(employeeTypeLabel);
 
-        waiterRadioButton = new JRadioButton("Waiter");
-        waiterRadioButton.setBounds(150, 330, 300, 30);
-        addEmployeesPanel.add(waiterRadioButton);
+		chefRadioButton = new JRadioButton("Chef", true);
+		chefRadioButton.setBounds(150, 300, 200, 30);
+		addEmployeesPanel.add(chefRadioButton);
 
-        ButtonGroup employeeTypeGroup = new ButtonGroup();
-        employeeTypeGroup.add(chefRadioButton);
-        employeeTypeGroup.add(waiterRadioButton);
+		waiterRadioButton = new JRadioButton("Waiter");
+		waiterRadioButton.setBounds(150, 330, 200, 30);
+		addEmployeesPanel.add(waiterRadioButton);
 
-        //Date Added
-        JLabel dateLabel = new JLabel("Date Hired:");
-        dateLabel.setBounds(500, 100, 300, 30);
-        addEmployeesPanel.add(dateLabel);
+		ButtonGroup employeeTypeGroup = new ButtonGroup();
+		employeeTypeGroup.add(chefRadioButton);
+		employeeTypeGroup.add(waiterRadioButton);
 
-        DatePickerSettings dateSettings = new DatePickerSettings();
-        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-        datePicker = new DatePicker(dateSettings);
+		// Date Added
+		JLabel dateLabel = new JLabel("Date Hired:");
+		dateLabel.setBounds(400, 100, 200, 30);
+		addEmployeesPanel.add(dateLabel);
+
+		DatePickerSettings dateSettings = new DatePickerSettings();
+		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+		datePicker = new DatePicker(dateSettings);
 //        dateSettings.setDateRangeLimits(null, LocalDate.now().minusDays( 60 )); //TODO: fix time range
-        datePicker.setBounds( 625, 100, 200, 30 );
-        datePicker.setDateToToday();
-        datePicker.getComponentDateTextField().setEditable(false);
-        addEmployeesPanel.add( datePicker );
+		datePicker.setBounds(525, 100, 200, 30);
+		datePicker.setDateToToday();
+		datePicker.getComponentDateTextField().setEditable(false);
+		addEmployeesPanel.add(datePicker);
 
-        //Phone Number
-        JLabel phoneNumberLabel = new JLabel ("Phone Number:");
-        phoneNumberLabel.setBounds(500, 150, 300, 30);
-        addEmployeesPanel.add(phoneNumberLabel);
+		// Phone Number
+		JLabel phoneNumberLabel = new JLabel("Phone Number:");
+		phoneNumberLabel.setBounds(400, 150, 200, 30);
+		addEmployeesPanel.add(phoneNumberLabel);
 
-        phoneNumberTextField = new JTextField();
-        phoneNumberTextField.setBounds(625, 150, 300, 30);
-        addEmployeesPanel.add(phoneNumberTextField);
+		phoneNumberTextField = new JTextField();
+		phoneNumberTextField.setBounds(525, 150, 200, 30);
+		addEmployeesPanel.add(phoneNumberTextField);
 
-        //Email
-        JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setBounds(500, 200, 300, 30);
-        addEmployeesPanel.add(emailLabel);
+		// Email
+		JLabel emailLabel = new JLabel("Email:");
+		emailLabel.setBounds(400, 200, 200, 30);
+		addEmployeesPanel.add(emailLabel);
 
-        emailTextField = new JTextField();
-        emailTextField.setBounds(625, 200, 300, 30);
-        addEmployeesPanel.add(emailTextField);
+		emailTextField = new JTextField();
+		emailTextField.setBounds(525, 200, 200, 30);
+		addEmployeesPanel.add(emailTextField);
 
-        //SIN Number
-        JLabel SINNumberLabel = new JLabel("SIN Number:");
-        SINNumberLabel.setBounds(500, 250, 300, 30);
-        addEmployeesPanel.add(SINNumberLabel);
+		// SIN Number
+		JLabel SINNumberLabel = new JLabel("SIN Number:");
+		SINNumberLabel.setBounds(400, 250, 200, 30);
+		addEmployeesPanel.add(SINNumberLabel);
 
-        SINNumberTextField = new JTextField();
-        SINNumberTextField.setBounds(625, 250, 300, 30);
-        addEmployeesPanel.add(SINNumberTextField);
+		SINNumberTextField = new JTextField();
+		SINNumberTextField.setBounds(525, 250, 200, 30);
+		addEmployeesPanel.add(SINNumberTextField);
 
-        //Submit data, make employee
-        createEmployee = new JButton("Add Employee");
-        createEmployee.setBounds(25, 400, 150, 30);
-        createEmployee.addActionListener(new EmployeeDialog.ButtonListener());
-        addEmployeesPanel.add(createEmployee);
+		// Submit data, make employee
+		createEmployee = new JButton("Add Employee");
+		createEmployee.setBounds(300, 400, 150, 30);
+		createEmployee.addActionListener(new ButtonListener());
+		addEmployeesPanel.add(createEmployee);
+		
+		returnToHomeButton1 = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
+		returnToHomeButton1.setBounds(865, 435, 120, 75);
+		returnToHomeButton1.addActionListener(new ButtonListener());
+		addEmployeesPanel.add(returnToHomeButton1);
 
-        //Set Visible
-        setVisible(true);
-    }
+		// ========== View Employees Panel Setup ===============
+		searchChefRadioButton = new JRadioButton("View Chefs", true);
+		searchChefRadioButton.setBounds(150, 200, 200, 30);
+		viewEmployeesPanel.add(searchChefRadioButton);
 
-    class ButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent press){
-            if (press.getSource() == createEmployee) {
-                if((employeeNameTextField.getText().isEmpty()) || (payTextField.getText().isEmpty()) || (userIDTextField.getText().isEmpty()) || (passwordTextField.getText().isEmpty()) || (datePicker.getText().isEmpty()) || (phoneNumberTextField.getText().isEmpty()) || (emailTextField.getText().isEmpty()) || (SINNumberTextField.getText().isEmpty())){
-                    JOptionPane.showMessageDialog(null, "Please enter all required info.", "Error", JOptionPane.ERROR_MESSAGE);
-                }else if(!chefRadioButton.isSelected() && !waiterRadioButton.isSelected()){
-                    JOptionPane.showMessageDialog(null, "Please select the employee type.", "Error", JOptionPane.ERROR_MESSAGE);
-                }else{
-                    try {
-                        double pay = Double.parseDouble(payTextField.getText());
-                    } catch (NumberFormatException excption) {
-                        JOptionPane.showMessageDialog(null, "Please enter a numeric value for pay.", "Error", JOptionPane.ERROR_MESSAGE);
-                        numeric = false;
-                    }
-                    if(numeric){
-                        String employeeName = employeeNameTextField.getText().toUpperCase();
-                        double pay = Double.parseDouble(payTextField.getText());
-                        String userID = userIDTextField.getText();
-                        String password = passwordTextField.getText();
+		searchWaiterRadioButton = new JRadioButton("View Waiters");
+		searchWaiterRadioButton.setBounds(150, 230, 200, 30);
+		viewEmployeesPanel.add(searchWaiterRadioButton);
 
-                        String dateHired = datePicker.getText();
-                        String phoneNumber = phoneNumberTextField.getText();
-                        String email = emailTextField.getText();
-                        String SINNumber = SINNumberTextField.getText();
+		ButtonGroup searchEmployeeTypeGroup = new ButtonGroup();
+		employeeTypeGroup.add(searchChefRadioButton);
+		employeeTypeGroup.add(searchWaiterRadioButton);
 
-                        if(chefRadioButton.isSelected()){
-                            newChef = new Chef(employeeName, pay, userID, password, dateHired, email, SINNumber);
-                            restaurant.addEmployee(newChef);
-      
-                        }else{
-                            newWaiter = new Waiter(employeeName, pay, userID, password, dateHired, email, SINNumber);
-                            restaurant.addEmployee(newWaiter);
-                        }
-                        JOptionPane.showMessageDialog(null, employeeName + " has been added.");
-                        dispose();
-                    }
-                }
-            }
-        }
-    }
+		searchButton = new JButton("Search");
+		searchButton.setBounds(150, 300, 120, 30);
+		searchButton.addActionListener(new ButtonListener());
+		viewEmployeesPanel.add(searchButton);
 
-    //Getters
-    public Chef getChef(){
-        return newChef;
-    }
+		viewEmployeesTableModel = new ViewEmployeesTableModel();
+		viewEmployeesTable = new JTable(viewEmployeesTableModel);
+		viewEmployeesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		viewEmployeesTable.setBounds(400, 50, 400, 400);
+		viewEmployeesTableModel.addRows(restaurant.getEmployees());
 
-    public Waiter getNewWaiter(){
-        return newWaiter;
-    }
+		JScrollPane tableListScrollPane = new JScrollPane(viewEmployeesTable);
+		tableListScrollPane.setBounds(400, 50, 400, 400);
+		viewEmployeesPanel.add(tableListScrollPane);
+		viewEmployeesTable.setVisible(true);
+		
+		returnToHomeButton2 = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
+		returnToHomeButton2.setBounds(865, 435, 120, 75);
+		returnToHomeButton2.addActionListener(new ButtonListener());
+		viewEmployeesPanel.add(returnToHomeButton2);
 
-    //Setters
-    public void setNewChef(Chef newChef){
-        this.newChef = newChef;
-    }
+		// background image
+		homepageBackground = new ImageIcon(getClass().getResource("freshqo background 2.JPG"));
+		homepageBackgroundLabel = new JLabel(homepageBackground);
+		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
+		addEmployeesPanel.add(homepageBackgroundLabel); 
+		viewEmployeesPanel.add(homepageBackgroundLabel);
+		
+		// Set Visible
+		setVisible(true);
+	}
 
-    public void setNewWaiter(Waiter newWaiter){
-        this.newWaiter = newWaiter;
-    }
+	class ButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent press) {
+			if (press.getSource() == createEmployee) {
+				if ((employeeNameTextField.getText().isEmpty()) || (payTextField.getText().isEmpty())
+						|| (userIDTextField.getText().isEmpty()) || (passwordTextField.getText().isEmpty())
+						|| (datePicker.getText().isEmpty()) || (phoneNumberTextField.getText().isEmpty())
+						|| (emailTextField.getText().isEmpty()) || (SINNumberTextField.getText().isEmpty())) {
+					JOptionPane.showMessageDialog(null, "Please enter all required info.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				} else {
+					System.out.println(userIDTextField.getText());
+					System.out.println(passwordTextField.getText());
+					for (int i = 0; i < restaurant.getEmployees().size(); i++) {
+						if (restaurant.getEmployees().get(i).getUserID().equals((userIDTextField.getText()))) {
+							JOptionPane.showMessageDialog(null, "There is already an employee with that user ID",
+									"Error", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+					}
+
+					try {
+						double pay = Double.parseDouble(payTextField.getText());
+					} catch (NumberFormatException excption) {
+						JOptionPane.showMessageDialog(null, "Please enter a numeric value for pay.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						numeric = false;
+					}
+					if (numeric) {
+						String employeeName = employeeNameTextField.getText().toUpperCase();
+						double pay = Double.parseDouble(payTextField.getText());
+						String userID = userIDTextField.getText();
+						String password = passwordTextField.getText();
+
+						String dateHired = datePicker.getText();
+						String phoneNumber = phoneNumberTextField.getText();
+						String email = emailTextField.getText();
+						String SINNumber = SINNumberTextField.getText();
+
+						if (chefRadioButton.isSelected()) {
+							newChef = new Chef(employeeName, pay, userID, password, dateHired, email, SINNumber,
+									"Chef");
+							restaurant.addEmployee(newChef);
+
+						} else {
+							newWaiter = new Waiter(employeeName, pay, userID, password, dateHired, email, SINNumber,
+									"Waiter");
+							restaurant.addEmployee(newWaiter);
+						}
+						JOptionPane.showMessageDialog(null, employeeName + " has been added.");
+						dispose();
+					}
+				}
+			} else if (press.getSource() == searchButton) {
+				System.out.println(restaurant.getEmployees().size());
+				if (searchWaiterRadioButton.isSelected()) {
+					viewEmployeesTableModel.clearAll();
+					viewEmployeesTableModel.addWaiterRows((restaurant.getWaiters()));
+				} else if (searchChefRadioButton.isSelected()) {
+					viewEmployeesTableModel.clearAll();
+					viewEmployeesTableModel.addChefRows((restaurant.getChefs()));
+				} else {
+					viewEmployeesTableModel.clearAll();
+					viewEmployeesTableModel.addRows((restaurant.getEmployees()));
+				}
+			}else if (press.getSource() == returnToHomeButton1 || press.getSource() == returnToHomeButton2) {
+				dispose();
+			}
+		}
+	}
+
+	class ViewEmployeesTableModel extends AbstractTableModel {
+		/**
+		 * the names of each column in the table
+		 */
+		private final String[] tableLayoutListColumns = { "Name", "Position" };
+
+		/**
+		 * the class type for each column
+		 */
+		private final Class[] columnClasses = { String.class, String.class };
+
+		/**
+		 * the list of tables that are to be displayed within the table
+		 */
+		private List<Employee> employees = new ArrayList<>();
+
+		@Override
+		/**
+		 * getColumnCount the number of columns in the table
+		 * 
+		 * @return the number of columns
+		 */
+		public int getColumnCount() {
+			return this.tableLayoutListColumns.length;
+		}
+
+		@Override
+		/**
+		 * getRowCount the number of rows in the table
+		 * 
+		 * @return the number of rows
+		 */
+		public int getRowCount() {
+			return employees.size();
+		}
+
+		@Override
+		/**
+		 * getColumnName
+		 * 
+		 * @param col the column number
+		 * @return the name of the column
+		 */
+		public String getColumnName(int col) {
+			return this.tableLayoutListColumns[col];
+		}
+
+		@Override
+		/**
+		 * getValueAt finds the value at the specific row and column number
+		 * 
+		 * @param row the row number
+		 * @param col the column number
+		 * @return the value at the specific row and column
+		 */
+		public Object getValueAt(int row, int col) {
+
+			Employee employee = this.employees.get(row);
+			switch (col) {
+			case 0:
+				return employee.getName();
+			default:
+				return employee.getPosition();
+			}
+		}
+
+		@Override
+		/**
+		 * getColumnClass finds the class type for a specific column
+		 * 
+		 * @param col the column number
+		 * @return the class type for the specific column
+		 */
+		public Class<?> getColumnClass(int col) {
+			return this.columnClasses[col];
+		}
+
+		@Override
+		/**
+		 * isCellEditable checks if the user can edit the cell
+		 * 
+		 * @param row the row number
+		 * @param col the column number
+		 * @return whether or not the cell is editable
+		 */
+		public boolean isCellEditable(int row, int col) {
+			return false;
+		}
+
+		@Override
+		/**
+		 * setValueAt sets a value at the specific row and column
+		 * 
+		 * @param value the value to be set
+		 * @param row   the row number
+		 * @param col   the column number
+		 */
+		public void setValueAt(Object value, int row, int col) {
+			Employee employee = this.employees.get(row);
+			switch (col) {
+			case 0:
+				employee.setName((String) value);
+				break;
+			default:
+				employee.setPosition((String) value);
+			}
+
+			fireTableCellUpdated(row, col);
+		}
+
+		/**
+		 * updateRow when an table is modified, the row must be then updated
+		 * 
+		 * @param employee the employee to place in the table and add to the current
+		 *                 list of tables
+		 * @param row      the row that needs to be updated due to a change in the table
+		 */
+		public void updateRow(Employee employee, int row) {
+			this.employees.set(row, employee);
+			fireTableRowsUpdated(row, row);
+		}
+
+		/**
+		 * insertRow inserts a row in the table with a table
+		 * 
+		 * @param position the position to put the row
+		 * @param employee the employee to place in the table and add to the current
+		 *                 list of tables
+		 */
+		public void insertRow(int position, Employee employee) {
+			this.employees.add(employee);
+			fireTableRowsInserted(0, getRowCount());
+		}
+
+		/**
+		 * addRow adds a row at the bottom of the table with a new reservation
+		 * 
+		 * @param reservation the reservation to be placed in the table
+		 */
+		public void addRow(Employee employee) {
+			insertRow(getRowCount(), employee);
+		}
+
+		/**
+		 * addRows adds 2+ rows into the table
+		 * 
+		 * @param tableList the list of tables that are to be put into the table
+		 */
+		public void addRows(List<Employee> employeeList) {
+			for (Employee employee : employeeList) {
+				addRow(employee);
+			}
+		}
+
+		/**
+		 * addRows adds 2+ rows into the table
+		 * 
+		 * @param tableList the list of tables that are to be put into the table
+		 */
+		public void addChefRows(List<Chef> chefList) {
+			for (Employee employee : chefList) {
+				addRow(employee);
+			}
+		}
+
+		/**
+		 * addRows adds 2+ rows into the table
+		 * 
+		 * @param tableList the list of tables that are to be put into the table
+		 */
+		public void addWaiterRows(List<Waiter> waiterList) {
+			for (Employee employee : waiterList) {
+				addRow(employee);
+			}
+		}
+
+		/**
+		 * removeRow removes a specific row in the table
+		 * 
+		 * @param position the position of the reservation to be removed
+		 */
+		public void removeRow(int position) {
+			this.employees.remove(position);
+			fireTableRowsDeleted(0, getRowCount());
+		}
+
+		/**
+		 * getData gets the list of tables
+		 * 
+		 * @return the list of employees
+		 */
+		public List<Employee> getData() {
+			return employees;
+		}
+
+		/**
+		 * setData gets the list of reservations
+		 * 
+		 * @param employees the list of tables
+		 */
+		public void setData(List<Employee> employees) {
+			this.employees = employees;
+			fireTableRowsInserted(0, getRowCount());
+		}
+
+		public void clearAll() {
+			for (int i = employees.size() - 1; i >= 0; i--) {
+				removeRow(i);
+			}
+		}
+	}
+
 }
-
-

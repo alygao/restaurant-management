@@ -1,6 +1,5 @@
 package restaurantManagement1;
 
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,9 +9,6 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-
-import restaurantManagement1.OrderDialog.ButtonListener;
-
 
 public class TransactionDialog extends JDialog {
 

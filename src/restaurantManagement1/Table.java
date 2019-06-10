@@ -1,7 +1,6 @@
 package restaurantManagement1;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Table implements Serializable{
 
@@ -16,7 +15,7 @@ public class Table implements Serializable{
 	private boolean occupied;
 
 	public Table(String tableName, int numSeats, boolean canBeReserved) {
-		currentOrder = new TableOrder();
+		currentOrder = new TableOrder(this);
 		this.tableName = tableName.toUpperCase();
 		this.numSeats = numSeats;
 		this.canBeReserved = canBeReserved;

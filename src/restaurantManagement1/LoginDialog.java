@@ -45,7 +45,7 @@ public class LoginDialog extends JDialog {
 		usernameLabel.setBounds(10, 100, 75, 30);
 		panel.add(usernameLabel);
 
-		usernameTextField = new JTextField("bob1");
+		usernameTextField = new JTextField("bob1"); //TODO: change to blank
 		usernameTextField.setBounds(100, 100, 75, 30);
 		panel.add(usernameTextField);
 
@@ -53,7 +53,7 @@ public class LoginDialog extends JDialog {
 		passwordLabel.setBounds(10, 150, 75, 30);
 		panel.add(passwordLabel);
 
-		passwordField = new JPasswordField("123456");
+		passwordField = new JPasswordField("123456"); //TODO: change to blank
 		passwordField.setBounds(100, 150, 75, 30);
 		panel.add(passwordField);
 
@@ -68,6 +68,8 @@ public class LoginDialog extends JDialog {
 			 * @param e the action that occurs
 			 */
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(restaurant.getEmployees().get(0).getUserID());
+				System.out.println(restaurant.getEmployees().get(0).getPassword());
 				for (int i = 0; i < restaurant.getEmployees().size(); i++) {
 					if (restaurant.getEmployees().get(i).getUserID().equals(usernameTextField.getText())
 							&& restaurant.getEmployees().get(i).getPassword().equals(passwordField.getText())) {

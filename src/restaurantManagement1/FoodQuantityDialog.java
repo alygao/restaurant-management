@@ -16,70 +16,89 @@ import javax.swing.SpinnerNumberModel;
 
 public class FoodQuantityDialog extends JDialog {
 
-    private Restaurant restaurant;
-    private AddFoodDialog addFoodDialog;
-    private JPanel panel;
-    private ImageIcon background;
-    
-    private JSpinner quantitySpinner;
-    private JButton orderButton;
+	private TableOrderItem tableOrderItem;
+	private TableOrder tableOrder;
+	private JPanel panel;
+	private ImageIcon background;
 
-    public FoodQuantityDialog(Restaurant restaurant, AddFoodDialog addFoodDialog) {
-        this.restaurant = restaurant;
-        this.addFoodDialog = addFoodDialog;
-        initUI();
-    }
+	private JSpinner quantitySpinner;
+	private JButton orderButton;
 
-    private void initUI() {
+	public FoodQuantityDialog(MenuItem menuItem, Waiter waiter, TableOrder tableOrder) {
+		System.out.println(menuItem.getName());
+		this.tableOrderItem = new TableOrderItem(menuItem, waiter, tableOrder);
+		this.tableOrder = tableOrder;
+		initUI();
+	}
 
-        setModalityType(ModalityType.APPLICATION_MODAL);
+	private void initUI() {
 
-        setUndecorated(false); // TODO change to true
-        setSize(200, 300);
-        setLocationRelativeTo(null);
-        setResizable(false);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 
-        panel = new JPanel();
-        panel.setLayout(null);
-        getContentPane().add(panel);
+		setUndecorated(false); // TODO change to true
+		setSize(200, 300);
+		setLocationRelativeTo(null);
+		setResizable(false);
 
-        JLabel quantityLabel = new JLabel("Quantity of Item: ");
-        quantityLabel.setBounds(10, 120, 125, 30);
-        panel.add(quantityLabel);
+		panel = new JPanel();
+		panel.setLayout(null);
+		getContentPane().add(panel);
 
-        SpinnerModel quantitySpinnerModel = new SpinnerNumberModel(1, 1, 10, 1);
-        quantitySpinner = new JSpinner(quantitySpinnerModel);
-        quantitySpinner.setBounds(135, 120, 50, 30);
-        panel.add(quantitySpinner);
+		JLabel quantityLabel = new JLabel("Quantity of Item: ");
+		quantityLabel.setBounds(10, 120, 125, 30);
+		panel.add(quantityLabel);
 
-        orderButton = new JButton(new ImageIcon(getClass().getResource("order button.JPG")));
-        orderButton.setBounds(40, 200, 120, 50);
-        panel.add(orderButton);
-        orderButton.addActionListener(new ActionListener() {
-            @Override
-            /**
-             * actionPerformed Invoked when an action occurs
-             *
-             * @param press the action that occurs
-             */
-            public void actionPerformed(ActionEvent press) {
+		SpinnerModel quantitySpinnerModel = new SpinnerNumberModel(1, 1, 10, 1);
+		quantitySpinner = new JSpinner(quantitySpinnerModel);
+		quantitySpinner.setBounds(135, 120, 50, 30);
+		panel.add(quantitySpinner);
 
-                if (press.getSource() == orderButton) {
-                    int quantity = (int) quantitySpinner.getValue();
-                    addFoodDialog.setQuantity(quantity);
-                }
-                dispose();
+		orderButton = new JButton(new ImageIcon(getClass().getResource("order button.JPG")));
+		orderButton.setBounds(40, 200, 120, 50);
+		panel.add(orderButton);
+		orderButton.addActionListener(new ActionListener() {
+			@Override
+			/**
+			 * actionPerformed Invoked when an action occurs
+			 *
+			 * @param press the action that occurs
+			 */
+			public void actionPerformed(ActionEvent press) {
 
-            }
-        });
+				if (press.getSource() == orderButton) {
+					int quantity = (int) quantitySpinner.getValue();
+					// checks if item has been ordered before and not fired
+					// if so, add to previous item and update quantity
 
-        // background image
-        background = new ImageIcon(getClass().getResource("small dialog background.JPG"));
-        JLabel backgroundLabel = new JLabel(background);
-        backgroundLabel.setBounds(0, 0, 200, 300);
-        panel.add(backgroundLabel);
+					boolean orderBefore = false;
+					for (int i = 0; i < tableOrder.getOrderItems().size(); i++) {
+						if (tableOrder.getOrderItems().get(i).getMenuItem().equals(tableOrderItem.getMenuItem())
+								&& !tableOrder.getOrderItems().get(i).isFired()) {
+							tableOrder.getOrderItems().get(i)
+									.setQuantity(tableOrder.getOrderItems().get(i).getQuantity() + quantity);
+							orderBefore = true;
+						}
+					}
+					if (!orderBefore) {
+						tableOrderItem.setQuantity(quantity);
+						tableOrder.getOrderItems().add(tableOrderItem);
+					}
+					tableOrder
+							.setSubtotal(tableOrder.getSubtotal() + quantity * tableOrderItem.getMenuItem().getPrice());
+					tableOrder.setTotal(tableOrder.getSubtotal() * 1.13);
+				}
+				dispose();
 
-        setVisible(true);
-    }
+			}
+		});
+
+		// background image
+		background = new ImageIcon(getClass().getResource("small dialog background.JPG"));
+		JLabel backgroundLabel = new JLabel(background);
+		backgroundLabel.setBounds(0, 0, 200, 300);
+		panel.add(backgroundLabel);
+
+		setVisible(true);
+	}
 
 }

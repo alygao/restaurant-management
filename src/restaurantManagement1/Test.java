@@ -26,10 +26,14 @@ public class Test {
 		
 		
 //		System.out.println( LocalDate.of( 2019, -1, -2 ) );
-		String dateString = "June 7, 2019";
-		LocalDate date = LocalDate.parse( dateString, DateTimeFormatter.ofPattern( "MMMM d, yyyy" ));
-		System.out.println( "date = " + date );
-
+//		String dateString = "June 7, 2019";
+//		LocalDate date = LocalDate.parse( dateString, DateTimeFormatter.ofPattern( "MMMM d, yyyy" ));
+//		System.out.println( "date = " + date );
+		
+		Queue<Integer> numbers = new Queue<>();
+		numbers.enqueue(1);
+		numbers.enqueue(2);
+		numbers.enqueue(3);
 	}
 
 }

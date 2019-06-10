@@ -7,23 +7,12 @@ import java.util.List;
 public class Chef extends Employee implements Serializable {
 
 	private TableOrderItem currentOrderItem;
-	private List<TableOrderItem> completedOrders = new ArrayList<>();
-	private Restaurant restaurant;
+	private List<TableOrderItem> completedOrders;
 
-	private String name;
-	private double pay;
-	private String userID;
-	private String password;
-	private String dateHired;
-	private String email;
-	private String SINNumber;
-
-	public Chef(String name, double pay, String userID, String password, String dateHired, String email,
-			String SINNumber) {
-		super(name, pay, userID, password);
-		this.dateHired = dateHired;
-		this.email = email;
-		this.SINNumber = SINNumber;
+	public Chef(String name, double pay, String userID, String password, String dateHired, String email, String SINNumber, String position) {
+		super(name, pay, userID, password, dateHired, email, SINNumber, position );
+		currentOrderItem = null;
+		completedOrders = new ArrayList<>();
 	}
 
 	public void takeOrderItem() {
@@ -50,12 +39,5 @@ public class Chef extends Employee implements Serializable {
 		this.completedOrders = completedOrders;
 	}
 
-	public Restaurant getRestaurant() {
-		return restaurant;
-	}
-
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
 
 }

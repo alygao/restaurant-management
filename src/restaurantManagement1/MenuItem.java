@@ -1,21 +1,23 @@
 package restaurantManagement1;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 import javax.swing.Icon;
 
 public class MenuItem implements Serializable {
 	
 	private String name;
-	private double price;
+	private String price;
 	private String description;
 	private Icon image;
 	private String category;
+	private final DecimalFormat currencyFormat = new DecimalFormat("##0.00");
 	
 	
 	public MenuItem(String name, double price, String description, Icon image, String category) {
 		this.name = name.toUpperCase();
-		this.price = price;
+		this.price = currencyFormat.format(price);
 		this.description = description;
 		this.image = image;
 		this.category = category;
@@ -27,10 +29,13 @@ public class MenuItem implements Serializable {
 		this.name = name.toUpperCase();
 	}
 	public double getPrice() {
+		return Double.parseDouble(price);
+	}
+	public String getPriceFormatted() {
 		return price;
 	}
 	public void setPrice(double price) {
-		this.price = price;
+		this.price = currencyFormat.format(price);;
 	}
 	public String getDescription() {
 		return description;

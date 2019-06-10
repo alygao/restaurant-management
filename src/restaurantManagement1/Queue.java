@@ -1,6 +1,7 @@
 package restaurantManagement1;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 /**
  * Project - RestaurantManagement
@@ -10,8 +11,8 @@ import java.io.Serializable;
  * @version June 14, 2019
  */
 
-class Queue<T> implements Serializable{
-    private QueueNode<T> root;
+class Queue<T> implements Serializable {
+    protected QueueNode<T> root;
 
     /**
      * Queue constructor
@@ -42,7 +43,7 @@ class Queue<T> implements Serializable{
      */
     public void enqueue(T item){
         QueueNode<T> nodeToAdd = new QueueNode<T>(item);
-        if(root.getItem() == null){
+        if(root == null){
             root = nodeToAdd;
         }else{
             QueueNode<T> tempNode = root;
@@ -62,6 +63,8 @@ class Queue<T> implements Serializable{
         root = root.getNext();
         return previousRoot.getItem();
     }
+    
+
 
     /**
      * finds the size of the queue
@@ -70,7 +73,7 @@ class Queue<T> implements Serializable{
     public int size(){
         int count = 1;
         QueueNode<T> tempNode = root;
-        if(root.getItem() == null){
+        if(root == null){
             return 0;
         }else{
             while(tempNode.getNext() != null){
@@ -80,6 +83,14 @@ class Queue<T> implements Serializable{
             return count;
         }       
     }
+    
+//    public Queue<T> clone(){
+//    	Queue<T> q1 = new Q
+//    	Iterator<T> iterator = q1.iterator();
+//    	while(iterator.hasNext())  {
+//    	   q2.add(iterator.next());
+//    	}
+//    }
 
     
 }

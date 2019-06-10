@@ -1,6 +1,5 @@
 package restaurantManagement1;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -26,12 +25,13 @@ public class OrderDialog extends JDialog {
 	private JButton claimReservationButton;
 	private JButton findTableButton;
 	private JButton viewTableButton;
+	private JButton viewWaitingListButton;
 	private JButton returnToHomepageButton;
 	private RestaurantTablesTableModel restaurantTablesTableModel;
 	private JTable restaurantTablesTable;
 	
 	//view specific table panel components
-	private JPanel specificTablePanel;
+//	private JPanel specificTablePanel;
 	private JPanel tablesFoodPanel;
 	private JButton fireOrderButton;
 	private JButton payButton;
@@ -81,6 +81,11 @@ public class OrderDialog extends JDialog {
 		viewTableButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(viewTableButton);
 		
+		viewWaitingListButton = new JButton(new ImageIcon(getClass().getResource("view waiting list button.JPG")));
+		viewWaitingListButton.setBounds(865, 345, 120, 75);
+		viewWaitingListButton.addActionListener(new ButtonListener());
+		generalTablesPanel.add(viewWaitingListButton);
+		
 		returnToHomepageButton = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
 		returnToHomepageButton.setBounds(865, 435, 120, 75);
 		returnToHomepageButton.addActionListener(new ButtonListener());
@@ -96,12 +101,6 @@ public class OrderDialog extends JDialog {
 		tableListScrollPane.setBounds(25, 100, 400, 400);
 		generalTablesPanel.add(tableListScrollPane);
 		
-		// Specific Table Panel
-		specificTablePanel = new JPanel();
-		specificTablePanel.setLayout(null);
-		getContentPane().add(specificTablePanel);
-//		specificTablePanel.setVisible(false);
-		
 		getContentPane().add(generalTablesPanel);
 		
 		// background image
@@ -109,7 +108,7 @@ public class OrderDialog extends JDialog {
 		homepageBackgroundLabel = new JLabel(homepageBackground);
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
 
-		specificTablePanel.add(homepageBackgroundLabel);
+//		specificTablePanel.add(homepageBackgroundLabel);
 		generalTablesPanel.add(homepageBackgroundLabel);
 		setVisible(true);
 	}
@@ -134,6 +133,7 @@ public class OrderDialog extends JDialog {
 						.showInputDialog("Please input the name under reservation: ");
 				if (customerNameUnderReservation != null) {
 					restaurant.claimReservation(customerNameUnderReservation.toUpperCase());
+					restaurantTablesTableModel.refresh();
 				}
 			}else if (press.getSource() == viewTableButton) {
 				int selectedRow = restaurantTablesTable.getSelectedRow();
@@ -147,10 +147,20 @@ public class OrderDialog extends JDialog {
 					return;
 				}else {
 					AddFoodDialog addFoodDialog = new AddFoodDialog(restaurant, selectedRow);
+					restaurantTablesTableModel.refresh();
 				}
 			}else if (press.getSource() == findTableButton) {
+				if (restaurant.getTables().size() == 0) {
+					JOptionPane.showMessageDialog(null, "Your restaurant currently has no tables.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				FindTableDialog findTableDialog = new FindTableDialog (restaurant);
-				restaurantTablesTableModel.fireTableRowsUpdated(0, restaurant.getTables().size());
+//				restaurantTablesTableModel.fireTableRowsUpdated(0, restaurant.getTables().size());
+				restaurantTablesTableModel.refresh();
+			}else if (press.getSource() == viewWaitingListButton) {
+				WaitingListDialog waitingListDialog = new WaitingListDialog(restaurant); 
+			
 			}else if (press.getSource() == returnToHomepageButton) {
 				dispose();
 			}
@@ -269,7 +279,7 @@ public class OrderDialog extends JDialog {
 		/**
 		 * updateRow
 		 * when an table is modified, the row must be then updated
-		 * @param table the recipe to place in the table and add to the current list of tables
+		 * @param table the table to place in the table and add to the current list of tables
 		 * @param row the row that needs to be updated due to a change in the table
 		 */
 		public void updateRow ( Table table, int row ) {
@@ -336,8 +346,14 @@ public class OrderDialog extends JDialog {
 			this.tablesData = tablesData;
 			fireTableRowsInserted(0, getRowCount());
 		}
+		
+		public void refresh() {
+			fireTableRowsUpdated(0, getRowCount());
+		}
+			
+			
+			//		/**
 
-//		/**
 //		 * clearAll
 //		 * clears all rows in the table
 //		 */
@@ -347,3 +363,5 @@ public class OrderDialog extends JDialog {
 //		}
 	}
 }
+
+

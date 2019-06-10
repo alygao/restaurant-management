@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -21,30 +22,38 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.AbstractTableModel;
 
+import restaurantManagement1.AddReservationDialog.ButtonListener;
+
 /**
  * @author Alyssa Gao
  *
  */
 public class SetupDialog extends JDialog {
-
+	private Restaurant restaurant;
 	private List<Table> tables;
+	private List<Reservation> reservationBook;
 	private String numPeople;
 	private boolean canBeReserved;
-//	private int tableNumber;
 
-	private JPanel addTablePanel;
-	private JPanel viewTablesPanel;
-	private JPanel restaurantFeaturesPanel; // restaurant name, store hours
+
+	private JPanel tableManagementPanel;
+//	private JPanel viewTablesPanel;
 	private JSpinner numSeatsSpinner;
 	private JTextField tableNameTextField;
 	private JCheckBox canBeReservedCheckBox;
 	private JButton addTableButton;
 	private JButton deleteTableButton;
+	private JButton returnButton;
 	private TableLayoutTableModel tableLayoutTableModel;
 	private JTable tableLayoutTable;
 
-	public SetupDialog(List<Table> tables) {
-		this.tables = tables;
+	private ImageIcon homepageBackground;
+	private JLabel homepageBackgroundLabel;
+
+	public SetupDialog(Restaurant restaurant) {
+		this.restaurant = restaurant;
+		tables = restaurant.getTables();
+		reservationBook = restaurant.getReservationBook();
 		initUI();
 	}
 
@@ -52,67 +61,79 @@ public class SetupDialog extends JDialog {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
-//		setUndecorated(true);
+		setUndecorated(true);
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setResizable(false);
 
-		addTablePanel = new JPanel();
-		addTablePanel.setLayout(null);
-		getContentPane().add(addTablePanel);
+		tableManagementPanel = new JPanel();
+		tableManagementPanel.setLayout(null);
+		getContentPane().add(tableManagementPanel);
 
-		viewTablesPanel = new JPanel();
-		viewTablesPanel.setLayout(null);
-		getContentPane().add(viewTablesPanel);
+//		viewTablesPanel = new JPanel();
+//		viewTablesPanel.setLayout(null);
+//		getContentPane().add(viewTablesPanel);
 
-		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.addTab("Add Table", null, addTablePanel);
-		tabbedPane.addTab("View Tables", null, viewTablesPanel);
-		getContentPane().add(tabbedPane);
+//		JTabbedPane tabbedPane = new JTabbedPane();
+//		tabbedPane.addTab("Table Management", null, tableManagementPanel);
+//		tabbedPane.addTab("Waiting List", null, viewTablesPanel);
+//		getContentPane().add(tabbedPane);
 
 		// Add Table Panel
 		JLabel tableNameLabel = new JLabel("Table Name");
-		tableNameLabel.setBounds(25, 50, 300, 30);
+		tableNameLabel.setBounds(25, 150, 300, 30);
 		tableNameTextField = new JTextField();
-		tableNameTextField.setBounds(150, 50, 300, 30);
-		
-		JLabel numSeatsLabel = new JLabel("Number of Seats:");
-		numSeatsLabel.setBounds(25, 100, 300, 30);
+		tableNameTextField.setBounds(150, 150, 300, 30);
 
-		addTablePanel.add(tableNameLabel);
-		addTablePanel.add(tableNameTextField);
-		addTablePanel.add(numSeatsLabel);
+		JLabel numSeatsLabel = new JLabel("Number of Seats:");
+		numSeatsLabel.setBounds(25, 200, 300, 30);
+
+		tableManagementPanel.add(tableNameLabel);
+		tableManagementPanel.add(tableNameTextField);
+		tableManagementPanel.add(numSeatsLabel);
 
 		SpinnerModel tableSpinnerModel = new SpinnerNumberModel(2, 2, 10, 2);
 		numSeatsSpinner = new JSpinner(tableSpinnerModel);
-		numSeatsSpinner.setBounds(150, 100, 50, 30);
-		addTablePanel.add(numSeatsSpinner);
+		numSeatsSpinner.setBounds(150, 200, 50, 30);
+		tableManagementPanel.add(numSeatsSpinner);
 
 		canBeReservedCheckBox = new JCheckBox("Reservable", false);
-		canBeReservedCheckBox.setBounds(25, 150, 100, 30);
-		addTablePanel.add(canBeReservedCheckBox);
+		canBeReservedCheckBox.setBounds(25, 250, 100, 30);
+		tableManagementPanel.add(canBeReservedCheckBox);
 
-		addTableButton = new JButton("Add");
-		addTableButton.setBounds(50, 300, 125, 50);
+		addTableButton = new JButton(new ImageIcon(getClass().getResource("add table button.JPG")));
+		addTableButton.setBounds(865, 75, 120, 75);
 		addTableButton.addActionListener(new ButtonListener());
-		addTablePanel.add(addTableButton);
+		tableManagementPanel.add(addTableButton);
 
-		// View Table Panel
 		tableLayoutTableModel = new TableLayoutTableModel();
 		tableLayoutTable = new JTable(tableLayoutTableModel);
 		tableLayoutTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableLayoutTable.setBounds(25, 50, 400, 400);
+		tableLayoutTable.setBounds(500, 100, 300, 400);
 		tableLayoutTableModel.addRows(tables);
 
 		JScrollPane tableListScrollPane = new JScrollPane(tableLayoutTable);
-		tableListScrollPane.setBounds(25, 50, 400, 400);
-		viewTablesPanel.add(tableListScrollPane);
+		tableListScrollPane.setBounds(500, 100, 300, 400);
+		tableManagementPanel.add(tableListScrollPane);
 
-		deleteTableButton = new JButton("Delete");
-		deleteTableButton.setBounds(150, 475, 100, 50);
+		deleteTableButton = new JButton(new ImageIcon(getClass().getResource("delete table button.JPG")));
+		deleteTableButton.setBounds(865, 165, 120, 75);
 		deleteTableButton.addActionListener(new ButtonListener());
-		viewTablesPanel.add(deleteTableButton);
+		tableManagementPanel.add(deleteTableButton);
 
+		returnButton = new JButton(new ImageIcon(getClass().getResource("return button.JPG")));
+		returnButton.setBounds(865, 435, 120, 75);
+		returnButton.addActionListener(new ButtonListener());
+		tableManagementPanel.add(returnButton);
+
+		// View Table Panel
+
+		// background image
+		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
+		homepageBackgroundLabel = new JLabel(homepageBackground);
+		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
+		tableManagementPanel.add(homepageBackgroundLabel);
+		
 		setVisible(true);
 	}
 
@@ -126,24 +147,29 @@ public class SetupDialog extends JDialog {
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == addTableButton) {
-				String tableName = tableNameTextField.getText().replaceAll(" ","");
+				String tableName = tableNameTextField.getText().replaceAll(" ", "");
 				if (tableName.equals("")) {
 					JOptionPane.showMessageDialog(null, "Please input a table name.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				
-				for (int i = 0; i< tables.size(); i++) {
+
+				for (int i = 0; i < tables.size(); i++) {
 					if (tables.get(i).getTableName().equals(tableName.toUpperCase())) {
 						JOptionPane.showMessageDialog(null, "There is already a table with this name.", "Error",
 								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 				}
-				
-				Table table = new Table(tableName, (int) numSeatsSpinner.getValue(), canBeReservedCheckBox.isSelected());
+
+				Table table = new Table(tableName, (int) numSeatsSpinner.getValue(),
+						canBeReservedCheckBox.isSelected());
 				tables.add(table);
 				tableLayoutTableModel.addRow(table);
+
+				if (restaurant.getWaitingList().size() > 0) {
+					restaurant.checkWaitingList();
+				}
 			} else if (press.getSource() == deleteTableButton) {
 				int selectedRow = tableLayoutTable.getSelectedRow();
 				if (selectedRow < 0) {
@@ -151,9 +177,26 @@ public class SetupDialog extends JDialog {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				} else {
+					if (tables.get(selectedRow).isOccupied()) {
+						JOptionPane.showMessageDialog(null,
+								"This table is currently occupied. You can only remove the table if it is unoccupied.",
+								"Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					// check that there was no previous reservation with the table
+					for (int i = 0; i < reservationBook.size(); i++) {
+						if (reservationBook.get(i).getTable() == tables.get(selectedRow)) {
+							JOptionPane.showMessageDialog(null,
+									"This table is currently saved for a reservation. You can only remove it once the reservation is cleared and it is not being occupied.",
+									"Error", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+					}
 					tableLayoutTableModel.removeRow(selectedRow);
 					tables.remove(selectedRow);
 				}
+			} else if (press.getSource() == returnButton) {
+				dispose();
 			}
 		}
 	}

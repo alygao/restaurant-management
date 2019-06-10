@@ -5,21 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Waiter extends Employee implements Serializable {
-	private List<Table> assignedTables = new ArrayList<>();
-	private Restaurant restaurant;
+	private List<Table> assignedTables;
 
-	private String name;
-	private double pay;
-	private String userID;
-	private String password;
-	private String dateHired;
-	private String email;
-	private String SINNumber;
 
-	Waiter(String name, double pay, String userID, String password, String dateHired, String email, String SINNumber) {
-		super(name, pay, userID, password);
-		this.dateHired = dateHired;
-		this.email = email;
-		this.SINNumber = SINNumber;
+	public Waiter(String name, double pay, String userID, String password, String dateHired, String email, String SINNumber, String position) {
+		super(name, pay, userID, password, dateHired, email, SINNumber, position );
+		assignedTables = new ArrayList<>();
+	}
+
+	public List<Table> getAssignedTables() {
+		return assignedTables;
+	}
+
+	public void setAssignedTables(List<Table> assignedTables) {
+		this.assignedTables = assignedTables;
 	}
 }
