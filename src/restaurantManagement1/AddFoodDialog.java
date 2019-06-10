@@ -250,11 +250,15 @@ public class AddFoodDialog extends JDialog {
 					table.setOccupied(false);
 					table.getCurrentAssignedWaiter().getAssignedTables().remove(table);
 					table.setCurrentAssignedWaiter(null);
+					System.out.println("After releasing table, waiting list size is " + restaurant.getWaitingList().size());
+
+					if (restaurant.getWaitingList().size() > 0) {
+						restaurant.checkWaitingList();
+					}
 					dispose();
 				}
-				if (restaurant.getWaitingList().size() == 0) {
-					restaurant.checkWaitingList();
-				}
+				
+
 			} else if (press.getSource() == deleteItemButton) {
 				int selectedRow = orderedItemsTable.getSelectedRow();
 

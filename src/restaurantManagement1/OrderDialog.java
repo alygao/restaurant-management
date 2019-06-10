@@ -18,9 +18,6 @@ import javax.swing.table.AbstractTableModel;
 
 public class OrderDialog extends JDialog {
 	private Restaurant restaurant;
-	private ImageIcon homepageBackground;
-	
-	//view general tables panel components
 	private JPanel generalTablesPanel;
 	private JButton claimReservationButton;
 	private JButton findTableButton;
@@ -29,19 +26,8 @@ public class OrderDialog extends JDialog {
 	private JButton returnToHomepageButton;
 	private RestaurantTablesTableModel restaurantTablesTableModel;
 	private JTable restaurantTablesTable;
-	
-	//view specific table panel components
-//	private JPanel specificTablePanel;
 	private JPanel tablesFoodPanel;
-	private JButton fireOrderButton;
-	private JButton payButton;
-	private JButton releaseTableButton;
-	private JButton reprintReceiptButton;
-	private JButton returnToGeneralTablesButton;
-	private String cutomerName;
-	private String tableName;
-	private int tableSize;
-	private JLabel tableInfo;
+	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
 
 	public OrderDialog(Restaurant restaurant) {
@@ -108,7 +94,6 @@ public class OrderDialog extends JDialog {
 		homepageBackgroundLabel = new JLabel(homepageBackground);
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
 
-//		specificTablePanel.add(homepageBackgroundLabel);
 		generalTablesPanel.add(homepageBackgroundLabel);
 		setVisible(true);
 	}

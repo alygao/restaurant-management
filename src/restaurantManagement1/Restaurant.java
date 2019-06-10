@@ -265,8 +265,8 @@ public class Restaurant extends JFrame {
 			menu = (List<MenuItem>) ois.readObject();
 			waitingList = (CustomerQueue<Customer>) ois.readObject();
 			employees = (DoublyLinkedList<Employee>) ois.readObject();
-			kitchenOrders = (Queue<TableOrderItem>) ois.readObject();
 			historicalTransactions = (List<TableOrder>) ois.readObject();
+			kitchenOrders = (Queue<TableOrderItem>) ois.readObject();
 			if (employees.size() > 0) {
 				setupLogin();
 				this.disable();
@@ -577,6 +577,7 @@ public class Restaurant extends JFrame {
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == orderButton) {
+				System.out.println("Before entering order dialog, waiting list size is " + waitingList.size());
 				if (waitingList.size() > 0) {
 					checkWaitingList();
 				}
@@ -586,7 +587,6 @@ public class Restaurant extends JFrame {
 			} else if (press.getSource() == kitchenButton) {
 
 			} else if (press.getSource() == menuButton) {
-//				System.out.println("menu size is " + menu.size());
 				MenuDialog menuDialog = new MenuDialog(self);
 
 			} else if (press.getSource() == setupButton) {
@@ -633,7 +633,15 @@ public class Restaurant extends JFrame {
 			return;
 		}
 		
-		System.out.println(waitingList.size());
+		System.out.println("From the method here, waiting list size is " + waitingList.size());
+		
+//		
+//		for (int i = 0; i < waitingList.size(); i++) {
+//			if (waitingList.dequeue() == null) {
+//				System.out.println("There was a null");
+//			}
+//			System.out.println(waitingList.dequeue().getName());
+//		}
 		for (int i = 0; i< tables.size(); i++) {
 			if (!tables.get(i).isOccupied()) {
 				Table table = tables.get(i);
