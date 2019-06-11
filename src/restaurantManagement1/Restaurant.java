@@ -186,7 +186,7 @@ public class Restaurant extends JFrame {
 		}
 
 		disableButtons();
-		
+
 		// icon image and size
 		setDefaultLookAndFeelDecorated(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("freshqo icon.JPG")));
@@ -486,9 +486,8 @@ public class Restaurant extends JFrame {
 	public List<Table> findAvailableTableForReservation(int numPeople, ReservationDateTime reserveTimePeriod) {
 		// save reserve tables to an array
 		// check date and save "already made" reservations to an array
-		// check each reservation to see if its within the range
+		// check each reservation to see if its within the time range
 		// if not, remove table from reserve tables
-		// make sure to not check if table has already been removed
 
 		List<Table> availableTableForReservation = getReservableTables(numPeople, reserveTimePeriod);
 		List<Reservation> savedReservationsForDate = new ArrayList<>();
@@ -523,6 +522,7 @@ public class Restaurant extends JFrame {
 		boolean found = false;
 		Reservation reservation = null;
 		Table reservedTable = null;
+		Waiter waiter = findAvailableWaiter();
 		for (int i = 0; i < reservationBook.size(); i++) {
 			if ((!reservationBook.get(i).isClaimed())
 					&& reservationBook.get(i).getCustomer().getName().equals(customerName)) {
@@ -539,10 +539,19 @@ public class Restaurant extends JFrame {
 
 		JOptionPane.showMessageDialog(null, "Reservation has been claimed by " + customerName + " for "
 				+ reservation.getReservationDateTime().getLocalTime());
+		
 		reservation.setClaimed(true);
 		reservedTable = reservation.getTable();
 		reservedTable.setCustomer(reservation.getCustomer());
 		reservedTable.setOccupied(true);
+		reservedTable.setCurrentAssignedWaiter(waiter);
+		reservedTable.setCurrentOrder(new TableOrder(reservedTable));
+		reservedTable.getCurrentOrder().setWaiter(waiter);
+		waiter.getAssignedTables().add(reservedTable);
+		
+		JOptionPane.showMessageDialog(null, "They have been successfully placed at Table "
+				+ reservedTable.getTableName() + ". They will be served by " + waiter.getName());
+		
 	}
 
 	public void addEmployee(Employee employee) {
@@ -578,22 +587,24 @@ public class Restaurant extends JFrame {
 			} else if (press.getSource() == transactionButton) {
 				TransactionDialog transactionDialog = new TransactionDialog(self);
 			} else if (press.getSource() == kitchenButton) {
+				KitchenDialog kitchenDialog = new KitchenDialog(self);
 
 			} else if (press.getSource() == menuButton) {
 				MenuDialog menuDialog = new MenuDialog(self);
 
 			} else if (press.getSource() == setupButton) {
-				SetupDialog tableLayoutDialog = new SetupDialog(self);
+				SetupDialog setupDialog = new SetupDialog(self);
 
 			} else if (press.getSource() == reservationButton) {
 				ReservationBookDialog reservationBookDialog = new ReservationBookDialog(self);
 
 			} else if (press.getSource() == employeeButton) {
-				if (employees.size() == 0) {
+				if (getManagers().size() == 0) {
 					JOptionPane.showMessageDialog(null,
 							"You must first create a manager before creating other employees.");
 				}
 				EmployeeDialog employeeDialog = new EmployeeDialog(self);
+				
 			} else if (press.getSource() == logoutButton) {
 				logout();
 			} else if (press.getSource() == openFileButton) {
@@ -686,6 +697,8 @@ public class Restaurant extends JFrame {
 	}
 
 	private void logout() {
+		mainPanel.remove(employeeNameLabel);
+//		employeeNameLabel = null;
 		mainPanel.remove(homepageBackgroundLabel);
 		homepageBackgroundLabelLocked.setVisible(true);
 		disableButtons();

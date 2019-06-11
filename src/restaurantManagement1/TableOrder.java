@@ -10,6 +10,7 @@ public class TableOrder implements Serializable {
 	private Waiter waiter;
 	private double subtotal;
 	private double total;
+	private boolean paid;
 
 	
 	
@@ -19,6 +20,7 @@ public class TableOrder implements Serializable {
 		this.waiter = null;
 		this.setSubtotal(0);
 		this.setTotal(0);
+		this.paid = false;
 	}
 
 	public List<TableOrderItem>  getOrderItems(){
@@ -60,5 +62,13 @@ public class TableOrder implements Serializable {
 
 	public void setTotal(double total) {
 		this.total = total;
+	}
+
+	public boolean hasPaid() {
+		return paid;
+	}
+
+	public void setPaid(boolean paid) {
+		this.paid = paid;
 	}
 }

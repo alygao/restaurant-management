@@ -114,6 +114,11 @@ public class OrderDialog extends JDialog {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				if (restaurant.findAvailableWaiter() == null) {
+					JOptionPane.showMessageDialog(null, "There are no available waiters.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				String customerNameUnderReservation = JOptionPane
 						.showInputDialog("Please input the name under reservation: ");
 				if (customerNameUnderReservation != null) {
@@ -238,28 +243,7 @@ public class OrderDialog extends JDialog {
 		public boolean isCellEditable(int row, int col) {
 			return false;
 		}
-//
-//		@Override
-//		/**
-//		 * setValueAt
-//		 * sets a value at the specific row and column
-//		 * @param value the value to be set
-//		 * @param row the row number
-//		 * @param col the column number
-//		 */
-//		public void setValueAt(Object value, int row, int col) {
-//			Table table = this.tablesData.get(row);
-//			switch (col) {
-//			case 0:
-//				table.setTableName((String) value);
-//				break;
-//			default:
-//				if (table.getCustomer()!=
-//			}
-//
-//			fireTableCellUpdated(row, col);
-//		}
-//		
+	
 		/**
 		 * updateRow
 		 * when an table is modified, the row must be then updated

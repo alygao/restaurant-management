@@ -202,6 +202,11 @@ public class AddFoodDialog extends JDialog {
 		ordersListScrollPane.setBounds(500, 100, 300, 300);
 		tablesFoodPanel.add(ordersListScrollPane);
 
+		if (currentOrder.hasPaid()) {
+			payButton.setVisible(false);
+			deleteItemButton.setVisible(false);
+		}
+
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
 		homepageBackgroundLabel = new JLabel(homepageBackground);
@@ -240,9 +245,40 @@ public class AddFoodDialog extends JDialog {
 			} else if (press.getSource() == payButton) {
 				// add to past transactions
 				// print receipt (PDF)
+				for (int i = 0; i < currentOrder.getOrderItems().size(); i++) {
+					if (currentOrder.getOrderItems().get(i).isServedToCustomer() == false) {
+						JOptionPane.showMessageDialog(null, "Not all items have been served to the customer yet.",
+								"Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
 				restaurant.getHistoricalTransactions().add(currentOrder);
+				currentOrder.setPaid(true);
+				payButton.setVisible(false);
+				deleteItemButton.setVisible(false);
 
 			} else if (press.getSource() == releaseTableButton) {
+//				boolean allServed;
+				
+				for (int i = 0; i < currentOrder.getOrderItems().size(); i++) {
+				if(!currentOrder.getOrderItems().get(i).isFired()){
+					JOptionPane.showMessageDialog(null, "Please remove all items that will not be fired to the kitchen.",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}else if (currentOrder.getOrderItems().get(i).isFired() && currentOrder.getOrderItems().get(i).isServedToCustomer() == false) {
+						JOptionPane.showMessageDialog(null, "Not all items have been served to the customer yet.",
+								"Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}else {
+						if (!currentOrder.hasPaid()) {
+							JOptionPane.showMessageDialog(null, "Items that have been served to the customer have not been paid yet.",
+									"Error", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+					}
+				}
+				
 				int response = JOptionPane.showConfirmDialog(null,
 						"Are you sure you want to release this table and set as unoccupied now?", "Release Table",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -250,14 +286,11 @@ public class AddFoodDialog extends JDialog {
 					table.setOccupied(false);
 					table.getCurrentAssignedWaiter().getAssignedTables().remove(table);
 					table.setCurrentAssignedWaiter(null);
-					System.out.println("After releasing table, waiting list size is " + restaurant.getWaitingList().size());
-
 					if (restaurant.getWaitingList().size() > 0) {
 						restaurant.checkWaitingList();
 					}
 					dispose();
 				}
-				
 
 			} else if (press.getSource() == deleteItemButton) {
 				int selectedRow = orderedItemsTable.getSelectedRow();
@@ -285,7 +318,11 @@ public class AddFoodDialog extends JDialog {
 	public class MyMouseListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent press) {
-			if (press.getClickCount() == 2 && appetizersTable.getSelectedRow() != -1) {
+			if (currentOrder.hasPaid()) {
+				JOptionPane.showMessageDialog(null, "Customer has now paid. You can't order any more items.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} else if (press.getClickCount() == 2 && appetizersTable.getSelectedRow() != -1) {
 				appetizersTable = (JTable) press.getSource();
 				int row = appetizersTable.getSelectedRow();
 				appetizerOrdered = restaurant.getAppetizerMenu().get(row);

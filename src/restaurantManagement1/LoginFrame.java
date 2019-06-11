@@ -49,7 +49,7 @@ public class LoginFrame extends JFrame {
 		usernameLabel.setBounds(10, 100, 75, 30);
 		panel.add(usernameLabel);
 
-		usernameTextField = new JTextField("bob1"); //TODO: change to blank
+		usernameTextField = new JTextField("chef1"); //TODO: change to blank
 		usernameTextField.setBounds(100, 100, 75, 30);
 		panel.add(usernameTextField);
 
@@ -57,7 +57,7 @@ public class LoginFrame extends JFrame {
 		passwordLabel.setBounds(10, 150, 75, 30);
 		panel.add(passwordLabel);
 
-		passwordField = new JPasswordField("1234856"); //TODO: change to blank
+		passwordField = new JPasswordField("123"); //TODO: change to blank
 		passwordField.setBounds(100, 150, 75, 30);
 		panel.add(passwordField);
 
