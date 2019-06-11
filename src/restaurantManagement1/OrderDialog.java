@@ -141,7 +141,6 @@ public class OrderDialog extends JDialog {
 					return;
 				}
 				FindTableDialog findTableDialog = new FindTableDialog (restaurant);
-//				restaurantTablesTableModel.fireTableRowsUpdated(0, restaurant.getTables().size());
 				restaurantTablesTableModel.refresh();
 			}else if (press.getSource() == viewWaitingListButton) {
 				WaitingListDialog waitingListDialog = new WaitingListDialog(restaurant); 

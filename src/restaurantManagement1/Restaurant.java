@@ -33,6 +33,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import restaurantManagement1.OrderDialog.ButtonListener;
+
 public class Restaurant extends JFrame {
 
 	private List<Table> tables = new DoublyLinkedList<>();
@@ -42,6 +44,7 @@ public class Restaurant extends JFrame {
 	private Queue<TableOrderItem> kitchenOrders = new Queue<>();
 	private List<Employee> employees = new DoublyLinkedList<>();
 	private List<TableOrder> historicalTransactions = new DoublyLinkedList<>();
+	private double revenue = 0;
 	private Employee currentUser;
 	private Restaurant self = this;
 	private JPanel mainPanel;
@@ -55,6 +58,14 @@ public class Restaurant extends JFrame {
 	private JButton employeeButton;
 	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
+	private ImageIcon homepageBackgroundLocked;
+	private JLabel homepageBackgroundLabelLocked;
+	private JButton openFileButton;
+	private JButton saveFileButton;
+	private JButton logoutButton;
+	private JButton loginButton;
+	private JButton closeFileButton;
+	private JLabel employeeNameLabel;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -75,8 +86,6 @@ public class Restaurant extends JFrame {
 		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
 		getContentPane().add(mainPanel);
-
-		setJMenuBar(createMenu());
 
 		orderButton = new JButton(new ImageIcon(getClass().getResource("orders button.JPG")));
 		orderButton.setBounds(50, 150, 125, 125);
@@ -112,11 +121,42 @@ public class Restaurant extends JFrame {
 		reportingButton.setBounds(350, 300, 125, 125);
 		reportingButton.addActionListener(new ButtonListener());
 		mainPanel.add(reportingButton);
-		
+
 		setupButton = new JButton(new ImageIcon(getClass().getResource("setup button.JPG")));
 		setupButton.setBounds(500, 300, 125, 125);
 		setupButton.addActionListener(new ButtonListener());
 		mainPanel.add(setupButton);
+
+		loginButton = new JButton(new ImageIcon(getClass().getResource("homepage login button.JPG")));
+		loginButton.setBounds(865, 75, 120, 75);
+		loginButton.addActionListener(new ButtonListener());
+		mainPanel.add(loginButton);
+
+		logoutButton = new JButton(new ImageIcon(getClass().getResource("logout button.JPG")));
+		logoutButton.setBounds(865, 75, 120, 75);
+		logoutButton.addActionListener(new ButtonListener());
+		mainPanel.add(logoutButton);
+
+		openFileButton = new JButton(new ImageIcon(getClass().getResource("open file button.JPG")));
+		openFileButton.setBounds(865, 165, 120, 75);
+		openFileButton.addActionListener(new ButtonListener());
+		mainPanel.add(openFileButton);
+
+		saveFileButton = new JButton(new ImageIcon(getClass().getResource("save file button.JPG")));
+		saveFileButton.setBounds(865, 255, 120, 75);
+		saveFileButton.addActionListener(new ButtonListener());
+		mainPanel.add(saveFileButton);
+
+		closeFileButton = new JButton(new ImageIcon(getClass().getResource("close file button.JPG")));
+		closeFileButton.setBounds(865, 345, 120, 75);
+		closeFileButton.addActionListener(new ButtonListener());
+		mainPanel.add(closeFileButton);
+
+		// background image when logged out
+		homepageBackgroundLocked = new ImageIcon(getClass().getResource("freshqo homepage locked.JPG"));
+		homepageBackgroundLabelLocked = new JLabel(homepageBackgroundLocked);
+		homepageBackgroundLabelLocked.setBounds(0, 0, 1000, 600);
+		mainPanel.add(homepageBackgroundLabelLocked);
 
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo homepage.JPG"));
@@ -132,60 +172,31 @@ public class Restaurant extends JFrame {
 		});
 
 		loadConfigurationAndData();
+		if (employees.size() == 0) {
+			JOptionPane.showMessageDialog(null,
+					"Welcome to Freshqo! As there are currently no employees added, there will be an already set username and password to login.");
+			JOptionPane.showMessageDialog(null,
+					"Once logged in, please add a manager to the database before creating any other employees.");
+			String newPassword = JOptionPane.showInputDialog(
+					"A default user is created for you. UserID: manager. Please enter a new password.");
+			System.out.println(newPassword);
 
+			Manager newManager = new Manager("Manager", 0.0, "manager", newPassword, "", "", "", "Manager");
+			addEmployee(newManager);
+		}
+
+		disableButtons();
+		
 		// icon image and size
 		setDefaultLookAndFeelDecorated(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("freshqo icon.JPG")));
 		setTitle("Freshqo Management");
 		setSize(1000, 600);
 		setResizable(false);
-		setUndecorated(false); // TODO: change to true
+		setUndecorated(true);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); // TODO: comment out
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-	}
-
-	private JMenuBar createMenu() {
-		JMenuBar menubar = new JMenuBar();
-
-		JMenu file = new JMenu("File");
-
-		// Open File
-		JMenuItem fileOpen = new JMenuItem("Open");
-		fileOpen.setMnemonic(KeyEvent.VK_O);
-		fileOpen.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openDataFile();
-			}
-		});
-
-		// Save File
-		JMenuItem fileSave = new JMenuItem("Save");
-		fileSave.setMnemonic(KeyEvent.VK_S);
-		fileSave.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveDataFile();
-			}
-		});
-
-		// Exit File
-		JMenuItem eMenuItem = new JMenuItem("Exit");
-		eMenuItem.setMnemonic(KeyEvent.VK_E);
-		eMenuItem.setToolTipText("Exit application");
-		eMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				closeApplication();
-			}
-		});
-
-		file.add(fileOpen);
-		file.add(fileSave);
-		file.add(eMenuItem);
-		menubar.add(file);
-
-		return menubar;
 	}
 
 	/**
@@ -258,6 +269,7 @@ public class Restaurant extends JFrame {
 	@SuppressWarnings("unchecked")
 	private void loadDataFile(File file)
 			throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
+		System.out.println(file.getAbsolutePath());
 		this.configuration.setProperty("database.filename", file.getAbsolutePath());
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
 			tables = (List<Table>) ois.readObject();
@@ -267,22 +279,6 @@ public class Restaurant extends JFrame {
 			employees = (DoublyLinkedList<Employee>) ois.readObject();
 			historicalTransactions = (List<TableOrder>) ois.readObject();
 			kitchenOrders = (Queue<TableOrderItem>) ois.readObject();
-			if (employees.size() > 0) {
-				setupLogin();
-				this.disable();
-			}
-			if (currentUser != null) {
-				this.enable();
-
-				// TODO hiding under frame
-				mainPanel.remove(homepageBackgroundLabel);
-
-				JLabel employeeNameLabel = new JLabel("Hello " + currentUser.getName());
-				employeeNameLabel.setBounds(700, 20, 100, 30);
-				employeeNameLabel.setForeground(Color.white);
-				mainPanel.add(employeeNameLabel);
-				mainPanel.add(homepageBackgroundLabel);
-			}
 		}
 	}
 
@@ -449,6 +445,17 @@ public class Restaurant extends JFrame {
 		return chefs;
 	}
 
+	public List<Manager> getManagers() {
+		List<Manager> managers = new DoublyLinkedList<>();
+		for (int i = 0; i < employees.size(); i++) {
+			if (employees.get(i) instanceof Manager) {
+				managers.add((Manager) employees.get(i));
+			}
+		}
+
+		return managers;
+	}
+
 	public List<Table> getTables() {
 		return tables;
 	}
@@ -530,25 +537,12 @@ public class Restaurant extends JFrame {
 			return;
 		}
 
-//		// if customer arrives too early for their reservation
-//		if (reservation.getTable().isOccupied() && LocalTime.now().isBefore(reservation.getReservationDateTime().getLocalTime())) {
-//			JOptionPane.showMessageDialog(null, "Customer is too early for their reservation. The reserved table is currently being occupied.", "Error", JOptionPane.ERROR_MESSAGE);
-//			return;
-//		}
-//
-//		// if customer arrives too late for their reservation
-//		if (reservation.getTable().isOccupied() && LocalTime.now().isAfter(reservation.getReservationDateTime().getLocalTime())) {
-//			JOptionPane.showMessageDialog(null, "Customer is too late for their reservation. Please go to 'Find Table' and now add them as a walk-in customer.", "Error", JOptionPane.ERROR_MESSAGE);
-//			return;
-//		}
-
 		JOptionPane.showMessageDialog(null, "Reservation has been claimed by " + customerName + " for "
 				+ reservation.getReservationDateTime().getLocalTime());
 		reservation.setClaimed(true);
 		reservedTable = reservation.getTable();
 		reservedTable.setCustomer(reservation.getCustomer());
 		reservedTable.setOccupied(true);
-		// TODO : change table now to claimed under orders dialog
 	}
 
 	public void addEmployee(Employee employee) {
@@ -577,7 +571,6 @@ public class Restaurant extends JFrame {
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == orderButton) {
-				System.out.println("Before entering order dialog, waiting list size is " + waitingList.size());
 				if (waitingList.size() > 0) {
 					checkWaitingList();
 				}
@@ -596,7 +589,21 @@ public class Restaurant extends JFrame {
 				ReservationBookDialog reservationBookDialog = new ReservationBookDialog(self);
 
 			} else if (press.getSource() == employeeButton) {
+				if (employees.size() == 0) {
+					JOptionPane.showMessageDialog(null,
+							"You must first create a manager before creating other employees.");
+				}
 				EmployeeDialog employeeDialog = new EmployeeDialog(self);
+			} else if (press.getSource() == logoutButton) {
+				logout();
+			} else if (press.getSource() == openFileButton) {
+				openDataFile();
+			} else if (press.getSource() == saveFileButton) {
+				saveDataFile();
+			} else if (press.getSource() == closeFileButton) {
+				closeApplication();
+			} else if (press.getSource() == loginButton) {
+				login();
 			}
 		}
 	}
@@ -627,29 +634,20 @@ public class Restaurant extends JFrame {
 			return null;
 		}
 	}
-	
+
 	public void checkWaitingList() {
 		if (waitingList.size() == 0) {
 			return;
 		}
-		
-		System.out.println("From the method here, waiting list size is " + waitingList.size());
-		
-//		
-//		for (int i = 0; i < waitingList.size(); i++) {
-//			if (waitingList.dequeue() == null) {
-//				System.out.println("There was a null");
-//			}
-//			System.out.println(waitingList.dequeue().getName());
-//		}
-		for (int i = 0; i< tables.size(); i++) {
+		for (int i = 0; i < tables.size(); i++) {
 			if (!tables.get(i).isOccupied()) {
 				Table table = tables.get(i);
 				int numSeats = table.getNumSeats();
 				Customer customer = waitingList.dequeue(numSeats);
 				tables.get(i).setCustomer(customer);
 				if (tables.get(i).getCustomer() != null) {
-					JOptionPane.showMessageDialog(null, "From the waiting list, " + customer.getName() + " has been placed at a table.");
+					JOptionPane.showMessageDialog(null,
+							"From the waiting list, " + customer.getName() + " has been placed at a table.");
 					table.setOccupied(true);
 					Waiter waiter = findAvailableWaiter();
 					table.setCurrentAssignedWaiter(waiter);
@@ -661,17 +659,66 @@ public class Restaurant extends JFrame {
 		}
 	}
 
-	public void changeAccess() {
-		if (currentUser instanceof Chef) {
-			reservationButton.disable();
-			employeeButton.disable();
-			setupButton.disable();
+//	public void changeAccess() {
+//		if (currentUser instanceof Chef) {
+//			reservationButton.disable();
+//			employeeButton.disable();
+//			setupButton.disable();
+//
+//		}
+//	}
 
+	public void login() {
+		LoginFrame loginFrame = new LoginFrame(self);
+	}
+
+	public void initializeSuccessfulLogin() {
+		if (currentUser != null) {
+			homepageBackgroundLabelLocked.setVisible(false);
+
+			employeeNameLabel = new JLabel("Hello " + currentUser.getName());
+			employeeNameLabel.setBounds(700, 20, 100, 30);
+			employeeNameLabel.setForeground(Color.white);
+			mainPanel.add(employeeNameLabel);
+			mainPanel.add(homepageBackgroundLabel);
+			enableButtons();
 		}
 	}
 
-	public void setupLogin() {
-		LoginDialog loginDialog = new LoginDialog(self);
+	private void logout() {
+		mainPanel.remove(homepageBackgroundLabel);
+		homepageBackgroundLabelLocked.setVisible(true);
+		disableButtons();
+		currentUser = null;
+	}
+
+	private void enableButtons() {
+
+		orderButton.setVisible(true);
+		transactionButton.setVisible(true);
+		kitchenButton.setVisible(true);
+		menuButton.setVisible(true);
+		reservationButton.setVisible(true);
+		employeeButton.setVisible(true);
+		reportingButton.setVisible(true);
+		setupButton.setVisible(true);
+		loginButton.setVisible(false);
+		logoutButton.setVisible(true);
+
+	}
+
+	private void disableButtons() {
+		orderButton.setVisible(false);
+		transactionButton.setVisible(false);
+		kitchenButton.setVisible(false);
+		menuButton.setVisible(false);
+		reservationButton.setVisible(false);
+		employeeButton.setVisible(false);
+		reportingButton.setVisible(false);
+		setupButton.setVisible(false);
+		loginButton.setVisible(true);
+		logoutButton.setVisible(false);
+
 	}
 
 	private Table getAppropriateTable(List<Table> availableTables, int numPeople) {
@@ -690,12 +737,12 @@ public class Restaurant extends JFrame {
 	public CustomerQueue<Customer> getWaitingList() {
 		return waitingList;
 	}
-	
+
 	public List<Customer> getWaitingListInListForm() {
 //		Queue<Customer>
 		List<Customer> waitingListForm = new ArrayList<>();
 //		waitingList.toArray();
-		
+
 		return waitingListForm;
 	}
 
@@ -719,7 +766,7 @@ public class Restaurant extends JFrame {
 	public void setHistoricalTransactions(List<TableOrder> historicalTransactions) {
 		this.historicalTransactions = historicalTransactions;
 	}
-	
+
 	public Queue<TableOrderItem> getKitchenOrders() {
 		return kitchenOrders;
 	}
