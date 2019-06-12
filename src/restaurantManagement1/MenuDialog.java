@@ -33,9 +33,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.text.NumberFormatter;
 
-import restaurantManagement1.OrderDialog.ButtonListener;
-import restaurantManagement1.OrderDialog.RestaurantTablesTableModel;
-
 public class MenuDialog extends JDialog {
 
 	private Restaurant restaurant;
@@ -53,7 +50,7 @@ public class MenuDialog extends JDialog {
 	private JPanel panel;
 	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
-	
+
 	private MenuTableModel menuTableModel;
 	private JTable menuTable;
 
@@ -126,7 +123,7 @@ public class MenuDialog extends JDialog {
 		returnToHomepageButton = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
 		returnToHomepageButton.setBounds(865, 435, 120, 75);
 		returnToHomepageButton.addActionListener(new ButtonListener());
-		
+
 		menuTableModel = new MenuTableModel();
 		menuTable = new JTable(menuTableModel);
 		menuTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -141,7 +138,7 @@ public class MenuDialog extends JDialog {
 		panel.add(menuItemPriceLabel);
 		panel.add(menuItemPriceTextField);
 		panel.add(menuItemDescriptionLabel);
-		panel.add(menuItemDescriptionTextArea);
+//		panel.add(menuItemDescriptionTextArea);
 		panel.add(menuItemCategoryLabel);
 		panel.add(menuItemCategoryChoice);
 		panel.add(menuItemImageLabel);
@@ -151,15 +148,15 @@ public class MenuDialog extends JDialog {
 		panel.add(returnToHomepageButton);
 		panel.add(tableListScrollPane);
 
+		menuItemDescriptionScrollPane.getViewport().add(this.menuItemDescriptionTextArea);
+		menuItemDescriptionScrollPane.setBounds(175, 350, 200, 75);
+		panel.add(menuItemDescriptionScrollPane);
+
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
 		homepageBackgroundLabel = new JLabel(homepageBackground);
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
 		panel.add(homepageBackgroundLabel);
-		
-		menuItemDescriptionScrollPane.getViewport().add(this.menuItemDescriptionTextArea);
-		menuItemDescriptionScrollPane.setBounds(175, 350, 200, 75);
-		panel.add(menuItemDescriptionScrollPane);
 
 		setVisible(true);
 	}
@@ -191,17 +188,25 @@ public class MenuDialog extends JDialog {
 					File file = fileopen.getSelectedFile();
 					try {
 						BufferedImage img = ImageIO.read(file);
+						if (img == null) {
+							JOptionPane.showMessageDialog(null, "Invalid image file.", "Error",
+									JOptionPane.ERROR_MESSAGE);
+							return;
+						}
 						Image dimg = img.getScaledInstance(175, 175, Image.SCALE_SMOOTH);
 						menuItemImageLabel.setIcon(new ImageIcon(dimg));
 					} catch (IOException e1) {
 						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Error in loading image.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
 					}
 				}
 			} else if (press.getSource() == deleteItemButton) {
 				int selectedRow = menuTable.getSelectedRow();
 				if (selectedRow < 0) {
-					JOptionPane.showMessageDialog(null, "Please select a menu item.",
-							"Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please select a menu item.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				menuTableModel.removeRow(selectedRow);
@@ -240,7 +245,7 @@ public class MenuDialog extends JDialog {
 
 	class MenuTableModel extends AbstractTableModel {
 		private final String[] foodLayoutListColumns = { "Dish", "Price", "Category" };
-		private final Class[] columnClasses = { String.class, String.class,  String.class };
+		private final Class[] columnClasses = { String.class, String.class, String.class };
 		private List<MenuItem> menu = new ArrayList<>();
 
 		@Override
