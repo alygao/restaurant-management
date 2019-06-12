@@ -68,7 +68,9 @@ public class EmployeeDialog extends JDialog {
 	private JRadioButton searchManagerRadioButton;
 	private JButton deleteEmployeeButton;
 	private ImageIcon homepageBackground;
+	private ImageIcon homepageBackground2;
 	private JLabel homepageBackgroundLabel;
+	private JLabel homepageBackgroundLabel2;
 
 	EmployeeDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
@@ -85,17 +87,17 @@ public class EmployeeDialog extends JDialog {
 
 		viewEmployeesPanel = new JPanel();
 		viewEmployeesPanel.setLayout(null);
-		getContentPane().add(viewEmployeesPanel);
+		//getContentPane().add(viewEmployeesPanel);
 
 		addEmployeesPanel = new JPanel();
 		addEmployeesPanel.setLayout(null);
-		getContentPane().add(addEmployeesPanel);
+		//getContentPane().add(addEmployeesPanel);
 
 		// Tabs
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Add Employee", null, addEmployeesPanel);
 		tabbedPane.addTab("View Employees", null, viewEmployeesPanel);
-		getContentPane().add(tabbedPane);
+
 
 		// Add Employee Panel Setup
 
@@ -253,14 +255,19 @@ public class EmployeeDialog extends JDialog {
 		returnToHomeButton2.addActionListener(new ButtonListener());
 		viewEmployeesPanel.add(returnToHomeButton2);
 
-		// background image
-		homepageBackground = new ImageIcon(getClass().getResource("freshqo background 2.JPG"));
+		// background images
+		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
 		homepageBackgroundLabel = new JLabel(homepageBackground);
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
 		addEmployeesPanel.add(homepageBackgroundLabel);
-		viewEmployeesPanel.add(homepageBackgroundLabel);
+
+		homepageBackground2 = new ImageIcon(getClass().getResource("freshqo background.JPG"));
+		homepageBackgroundLabel2 = new JLabel(homepageBackground2);
+		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
+		viewEmployeesPanel.add(homepageBackgroundLabel2);
 
 		// Set Visible
+		getContentPane().add(tabbedPane);
 		setVisible(true);
 	}
 

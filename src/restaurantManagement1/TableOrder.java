@@ -8,6 +8,7 @@ public class TableOrder implements Serializable {
 	private Table table;
 	private List<TableOrderItem> orderItems;
 	private Waiter waiter;
+	private String date;
 	private double subtotal;
 	private double total;
 	private boolean paid;
@@ -21,6 +22,14 @@ public class TableOrder implements Serializable {
 		this.setSubtotal(0);
 		this.setTotal(0);
 		this.paid = false;
+	}
+
+	public String getDate(){
+		return date;
+	}
+
+	public void setDate(String date){
+		this.date = date;
 	}
 
 	public List<TableOrderItem>  getOrderItems(){

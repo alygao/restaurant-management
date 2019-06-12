@@ -19,6 +19,8 @@ import javax.swing.JScrollPane;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class AddFoodDialog extends JDialog {
 	private Restaurant restaurant;
@@ -151,6 +153,7 @@ public class AddFoodDialog extends JDialog {
 		entreesLabel = new JLabel("Entrees");
 		entreesLabel.setBounds(25, 370, 200, 20);
 		tablesFoodPanel.add(entreesLabel);
+
 		FoodLayoutTableModel entreeLayoutTableModel = new FoodLayoutTableModel();
 		entreesTable = new JTable(entreeLayoutTableModel);
 		entreesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -236,6 +239,14 @@ public class AddFoodDialog extends JDialog {
 				for (int i = 0; i < currentOrder.getOrderItems().size(); i++) {
 					if (!currentOrder.getOrderItems().get(i).isFired()) {
 						restaurant.getKitchenOrders().enqueue(currentOrder.getOrderItems().get(i));
+
+						//Add today's date to transaction
+						String pattern = "yyyy-MM-dd";
+						SimpleDateFormat dateFormatting = new SimpleDateFormat(pattern);
+						String todaysDate = dateFormatting.format(new Date());
+						currentOrder.setDate(todaysDate);
+						System.out.println(currentOrder.getDate());
+
 						currentOrder.getOrderItems().get(i).setFired(true);
 					}
 				}
