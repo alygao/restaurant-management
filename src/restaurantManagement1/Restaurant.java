@@ -13,7 +13,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -173,7 +172,18 @@ public class Restaurant extends JFrame {
 		});
 
 		loadConfigurationAndData();
-		login();
+		if (employees.size() == 0) {
+			JOptionPane.showMessageDialog(null,
+					"Welcome to Freshqo! As there are currently no employees added, there will be an already set username and password to login.");
+			JOptionPane.showMessageDialog(null,
+					"Once logged in, please add a manager to the database before creating any other employees.");
+			String newPassword = JOptionPane.showInputDialog(
+					"A default user is created for you. UserID: manager. Please enter a new password.");
+			System.out.println(newPassword);
+
+			Manager newManager = new Manager("Manager", 0.0, "manager", newPassword, "", "", "", "Manager");
+			addEmployee(newManager);
+		}
 
 		disableButtons();
 
@@ -529,7 +539,7 @@ public class Restaurant extends JFrame {
 
 		JOptionPane.showMessageDialog(null, "Reservation has been claimed by " + customerName + " for "
 				+ reservation.getReservationDateTime().getLocalTime());
-
+		
 		reservation.setClaimed(true);
 		reservedTable = reservation.getTable();
 		reservedTable.setCustomer(reservation.getCustomer());
@@ -538,10 +548,10 @@ public class Restaurant extends JFrame {
 		reservedTable.setCurrentOrder(new TableOrder(reservedTable));
 		reservedTable.getCurrentOrder().setWaiter(waiter);
 		waiter.getAssignedTables().add(reservedTable);
-
+		
 		JOptionPane.showMessageDialog(null, "They have been successfully placed at Table "
 				+ reservedTable.getTableName() + ". They will be served by " + waiter.getName());
-
+		
 	}
 
 	public void addEmployee(Employee employee) {
@@ -594,10 +604,7 @@ public class Restaurant extends JFrame {
 							"You must first create a manager before creating other employees.");
 				}
 				EmployeeDialog employeeDialog = new EmployeeDialog(self);
-
-			} else if (press.getSource() == reportingButton) {
-				ReportingDialog reportingDialog = new ReportingDialog(self);
-
+				
 			} else if (press.getSource() == logoutButton) {
 				logout();
 			} else if (press.getSource() == openFileButton) {
@@ -610,7 +617,6 @@ public class Restaurant extends JFrame {
 				login();
 			}
 		}
-
 	}
 
 	public Table findAvailableTableForWalkInCustomer(Customer customer) {
@@ -664,20 +670,17 @@ public class Restaurant extends JFrame {
 		}
 	}
 
+//	public void changeAccess() {
+//		if (currentUser instanceof Chef) {
+//			reservationButton.disable();
+//			employeeButton.disable();
+//			setupButton.disable();
+//
+//		}
+//	}
+
 	public void login() {
-		if (employees.size() == 0) {
-			JOptionPane.showMessageDialog(null,
-					"Welcome to Freshqo! As there are currently no employees added, there will be an already set username and password to login.");
-			JOptionPane.showMessageDialog(null,
-					"Once logged in, please add a manager to the database before creating any other employees.");
-			String newPassword = JOptionPane.showInputDialog(
-					"A default user is created for you. UserID: manager. Please enter a new password.");
-			if (newPassword != null) {
-				Manager newManager = new Manager("Manager", 0.0, "manager", newPassword, "", "", "", "Manager");
-				addEmployee(newManager);
-				LoginFrame loginFrame = new LoginFrame(self);
-			}
-		}
+		LoginFrame loginFrame = new LoginFrame(self);
 	}
 
 	public void initializeSuccessfulLogin() {
@@ -767,23 +770,6 @@ public class Restaurant extends JFrame {
 			}
 		}
 		return waiter;
-	}
-
-	public double getTotalSales() {
-//		DecimalFormat currencyFormat = new DecimalFormat("##0.00");
-		double totalSales = 0;
-		for (int i = 0; i < historicalTransactions.size(); i++) {
-			totalSales = historicalTransactions.get(i).getTotal();
-		}
-		return totalSales;
-	}
-
-	public int getTotalSeats() {
-		int totalSeats = 0;
-		for (int i = 0; i < tables.size(); i++) {
-			totalSeats = tables.get(i).getNumSeats();
-		}
-		return totalSeats;
 	}
 
 	public List<TableOrder> getHistoricalTransactions() {
