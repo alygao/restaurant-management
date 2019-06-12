@@ -137,7 +137,7 @@ public class ReservationBookDialog extends JDialog {
 		homepageBackgroundLabel = new JLabel(homepageBackground);
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
 		panel.add(homepageBackgroundLabel);
-		
+
 		setVisible(true);
 		nameLabel.setVisible(false);
 		searchNameTextField.setVisible(false);
@@ -162,7 +162,7 @@ public class ReservationBookDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 * 
+		 *
 		 * @param press used to determine which button is pressed
 		 */
 		public void itemStateChanged(ItemEvent e) {
@@ -181,7 +181,7 @@ public class ReservationBookDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 * 
+		 *
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
@@ -228,7 +228,7 @@ public class ReservationBookDialog extends JDialog {
 					if (restaurant.getReservationBook().get(i).getReservationDateTime().getDate()
 							.equals(viewReservationsTableModel.getValueAt(selectedRow, 0))
 							&& restaurant.getReservationBook().get(i).getReservationDateTime().getTime()
-									.equals(viewReservationsTableModel.getValueAt(selectedRow, 1))) {
+							.equals(viewReservationsTableModel.getValueAt(selectedRow, 1))) {
 						reservation = restaurant.getReservationBook().get(i);
 					}
 				}

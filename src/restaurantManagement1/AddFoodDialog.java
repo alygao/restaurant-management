@@ -23,6 +23,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 public class AddFoodDialog extends JDialog {
+	private Utils utils;
 	private Restaurant restaurant;
 	private ImageIcon homepageBackground;
 	private String tableName;
@@ -62,6 +63,7 @@ public class AddFoodDialog extends JDialog {
 	private final DecimalFormat currencyFormat = new DecimalFormat("##0.00");
 
 	public AddFoodDialog(Restaurant restaurant, int selectedRow) {
+		utils = new Utils();
 		this.restaurant = restaurant;
 		this.tables = restaurant.getTables();
 		table = tables.get(selectedRow);
@@ -245,7 +247,6 @@ public class AddFoodDialog extends JDialog {
 						SimpleDateFormat dateFormatting = new SimpleDateFormat(pattern);
 						String todaysDate = dateFormatting.format(new Date());
 						currentOrder.setDate(todaysDate);
-						System.out.println(currentOrder.getDate());
 
 						currentOrder.getOrderItems().get(i).setFired(true);
 					}

@@ -26,6 +26,9 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import java.awt.Color;
+import javax.swing.border.Border;
+import javax.swing.BorderFactory;
 
 public class TransactionDialog extends JDialog {
 
@@ -40,6 +43,11 @@ public class TransactionDialog extends JDialog {
 	private DatePickerSettings dateSettings;
 	private DatePicker datePicker;
 	private JButton lookUpButton;
+	private JButton resetButton;
+	private TransactionLayoutTableModel transactionTableLayout;
+	private OrderLayoutTableModel orderLayoutTableLayout;
+	private JTable orderTable;
+	private JLabel menuItemImageLabel;
 
 	public TransactionDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
@@ -71,33 +79,57 @@ public class TransactionDialog extends JDialog {
 		panel.add(returnToHomepageButton);
 
 		//JTable of Transactions
-		TransactionLayoutTableModel transactionTableLayout = new TransactionLayoutTableModel();
+		transactionTableLayout = new TransactionLayoutTableModel();
 		transactionTable = new JTable(transactionTableLayout);
 		transactionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		transactionTable.setBounds(25, 150, 500, 400);
+		transactionTable.setBounds(25, 150, 455, 400);
+		transactionTable.addMouseListener(new MyMouseListener());
 		transactionTableLayout.addRows(restaurant.getHistoricalTransactions());
 
 		JScrollPane transactionListScrollPane = new JScrollPane(transactionTable);
-		transactionListScrollPane.setBounds(25, 150, 500, 400);
+		transactionListScrollPane.setBounds(25, 150, 455, 400);
 		panel.add(transactionListScrollPane);
 
+		//JTable for specifics on the order selected
+		orderLayoutTableLayout = new OrderLayoutTableModel();
+		orderTable = new JTable(orderLayoutTableLayout);
+		orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		orderTable.setBounds(500, 50, 320, 400);
+		orderTable.addMouseListener(new MyMouseListener());
+
+		JScrollPane orderListScrollPane = new JScrollPane(orderTable);
+		orderListScrollPane.setBounds(500, 50, 320, 350);
+		panel.add(orderListScrollPane);
+
 		// Date
-		dateLabel = new JLabel("<html>Reservation:<p>Date</html>");
+		dateLabel = new JLabel("<html>Transaction:<p>Date</html>");
 		dateLabel.setBounds(25, 100, 100, 30);
 		panel.add(dateLabel);
 		dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
 		datePicker = new DatePicker(dateSettings);
-		dateSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusDays(60));
+		dateSettings.setDateRangeLimits(null, null);
 		datePicker.setBounds(150, 100, 200, 30);
 		datePicker.setDateToToday();
 		datePicker.getComponentDateTextField().setEditable(false);
 		panel.add(datePicker);
 
 		lookUpButton = new JButton(new ImageIcon(getClass().getResource("look up button.JPG")));
-		lookUpButton.setBounds(380, 100, 100, 30);
+		lookUpButton.setBounds(380, 60, 100, 30);
 		lookUpButton.addActionListener(new ButtonListener());
 		panel.add(lookUpButton);
+
+		resetButton = new JButton(new ImageIcon(getClass().getResource(("reset button.JPG"))));
+		resetButton.setBounds(380, 100, 100, 30);
+		resetButton.addActionListener(new ButtonListener());
+		panel.add(resetButton);
+
+		ImageIcon originalImage = new ImageIcon(getClass().getResource("original menu item image.JPG"));
+		menuItemImageLabel = new JLabel(originalImage);
+		menuItemImageLabel.setBounds(500, 420, 150, 150);
+		Border recipeImageJLabeborder = BorderFactory.createLineBorder(Color.BLACK, 1);
+		menuItemImageLabel.setBorder(recipeImageJLabeborder);
+		panel.add(menuItemImageLabel);
 
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
@@ -119,20 +151,58 @@ public class TransactionDialog extends JDialog {
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == printButton) {
-				// claim only for the current date
-				if (restaurant.getTables().size() == 0) {
-					JOptionPane.showMessageDialog(null, "Your restaurant currently has no tables.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-					return;
+
+			}else if(press.getSource() == lookUpButton){
+				List<TableOrder> transactionsUnderSpecificDate = new ArrayList<>();
+				for(int i = 0; i < restaurant.getHistoricalTransactions().size(); i++){
+					if(restaurant.getHistoricalTransactions().get(i).getDate().equals("" + Utils.convertToLocalDate(datePicker.getText()))){
+						transactionsUnderSpecificDate.add(restaurant.getHistoricalTransactions().get(i));
+					}
 				}
-				String customerNameUnderReservation = JOptionPane
-						.showInputDialog("Please input the name under reservation: ");
-				if (customerNameUnderReservation != null) {
-					restaurant.claimReservation(customerNameUnderReservation.toUpperCase());
-				}
+
+				transactionTableLayout.clearAll();
+				transactionTableLayout.addRows(transactionsUnderSpecificDate);
+
+			}else if(press.getSource() == resetButton){
+				transactionTableLayout.clearAll();
+				transactionTableLayout.addRows(restaurant.getHistoricalTransactions());
 			}else if (press.getSource() == returnToHomepageButton) {
 				dispose();
 			}
+		}
+	}
+
+	public class MyMouseListener implements MouseListener {
+		@Override
+		public void mouseClicked(MouseEvent press) {
+			if (press.getClickCount() == 1 && transactionTable.getSelectedRow() != -1) {
+				orderLayoutTableLayout.clearAll();
+				int row = transactionTable.getSelectedRow();
+				orderLayoutTableLayout.addRows(restaurant.getHistoricalTransactions().get(row).getOrderItems());
+			}else if(press.getClickCount() == 1 && orderTable.getSelectedRow() != -1){
+				menuItemImageLabel.setText(null);
+			}
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent press) {
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent press) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent press) {
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent press) {
+
 		}
 	}
 
@@ -312,6 +382,155 @@ public class TransactionDialog extends JDialog {
 		public void setData(List<TableOrder> transactionData) {
 			this.transactionData = transactionData;
 			fireTableRowsInserted(0, getRowCount());
+		}
+
+		public void clearAll() {
+			for (int i = transactionData.size() - 1; i >= 0 ; i--) {
+				removeRow(i);
+			}
+		}
+	}
+
+	class OrderLayoutTableModel extends AbstractTableModel {
+		private final String[] orderLayoutColumns = {"Item", "Cost ($)", "Quantity"};
+		private final Class[] columnClasses = {String.class, Double.class, Integer.class};
+		private List<TableOrderItem> orderData = new ArrayList<>();
+
+		@Override
+		/**
+		 * getColumnCount the number of columns in the table
+		 *
+		 * @return the number of columns
+		 */
+		public int getColumnCount() {
+			return this.orderLayoutColumns.length;
+		}
+
+		@Override
+		/**
+		 * getRowCount the number of rows in the table
+		 *
+		 * @return the number of rows
+		 */
+		public int getRowCount() {
+			return orderData.size();
+		}
+
+		@Override
+		/**
+		 * getColumnName
+		 *
+		 * @param col the column number
+		 * @return the name of the column
+		 */
+		public String getColumnName(int col) {
+			return this.orderLayoutColumns[col];
+		}
+
+		@Override
+		/**
+		 * getValueAt finds the value at the specific row and column number *
+		 *
+		 * @param row the row number
+		 * @param col the column number
+		 * @return the value at the specific row and column
+		 */
+		public Object getValueAt(int row, int col) {
+
+			TableOrderItem order = this.orderData.get(row);
+			MenuItem menuItem = order.getMenuItem();
+			switch (col) {
+				case 0:
+					return menuItem.getName();
+				case 1:
+					return menuItem.getPrice();
+				default:
+					return order.getQuantity();
+			}
+		}
+
+		@Override
+		/**
+		 * isCellEditable checks if the user can edit the cell
+		 *
+		 * @param row the row number
+		 * @param col the column number
+		 * @return whether or not the cell is editable
+		 */
+		public boolean isCellEditable(int row, int col) {
+			return false;
+		}
+
+		@Override
+		/**
+		 * setValueAt sets a value at the specific row and column
+		 *
+		 * @param value the value to be set
+		 * @param row   the row number
+		 * @param col   the column number
+		 */
+		public void setValueAt(Object value, int row, int col) {
+			TableOrderItem order = this.orderData.get(row);
+			MenuItem menuItem = order.getMenuItem();
+			switch (col) {
+				case 0:
+					menuItem.setName((String) value);
+					break;
+				case 1:
+					menuItem.setPrice((double) value);
+					break;
+				default:
+					order.setQuantity((int) value);
+			}
+
+			fireTableCellUpdated(row, col);
+		}
+
+		/**
+		 * insertRow inserts a row in the table with a table
+		 *
+		 * @param position the position to put the row
+		 * @param order the food to show on the table
+		 */
+		public void insertRow(int position, TableOrderItem order) {
+			this.orderData.add(order);
+			fireTableRowsInserted(0, getRowCount());
+		}
+
+		/**
+		 * addRow adds a row at the bottom of the table with a new recipe
+		 *
+		 * @param order the food to be placed in the table
+		 */
+		public void addRow(TableOrderItem order) {
+			insertRow(getRowCount(), order);
+		}
+
+		/**
+		 * addRows adds 2+ rows into the table
+		 *
+		 * @param ordersList the list of orders that are to be put into the table
+		 */
+		public void addRows(List<TableOrderItem> ordersList) {
+			for (TableOrderItem orderItem : ordersList) {
+				addRow(orderItem);
+			}
+		}
+
+		/**
+		 * removeRow removes a specific row in the table
+		 *
+		 * @param position the position of the recipe to be removed
+		 */
+		public void removeRow(int position) {
+			this.orderData.remove(position);
+			fireTableRowsDeleted(0, getRowCount());
+		}
+
+		public void clearAll() {
+			for (int i = orderData.size() - 1; i >= 0 ; i--) {
+				removeRow(i);
+			}
 		}
 
 	}

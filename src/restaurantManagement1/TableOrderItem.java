@@ -13,8 +13,6 @@ public class TableOrderItem implements Serializable{
 	private boolean fired;
 	private boolean servedToCustomer;
 
-	
-	
 	public TableOrderItem(MenuItem menuItem, Waiter servedByWaiter, TableOrder tableOrder) {
 		this.menuItem = menuItem;
 		this.servedByWaiter = servedByWaiter;
