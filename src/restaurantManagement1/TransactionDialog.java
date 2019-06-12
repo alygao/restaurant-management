@@ -30,8 +30,19 @@ import java.awt.Color;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 
+/**
+ * TransactionDialog
+ * 
+ * The dialog to display historical transactions
+ * 
+ * @author Zaid Omer
+ * @version 1.0
+ * @date June 13, 2019
+ */
+
 public class TransactionDialog extends JDialog {
 
+	// VARIABLES
 	private Restaurant restaurant;
 	private JLabel dateLabel;
 	private ImageIcon homepageBackground;
@@ -49,16 +60,23 @@ public class TransactionDialog extends JDialog {
 	private JTable orderTable;
 	private JLabel menuItemImageLabel;
 
+	/**
+	 * initializes the restaurant and calls the initialize user interface method
+	 * @param restaurant the restaurant 
+	 */
 	public TransactionDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
-		setUndecorated(true); // TODO change to true
+		setUndecorated(true);
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -141,6 +159,15 @@ public class TransactionDialog extends JDialog {
 		setVisible(true);
 	}
 	
+	/**
+	 * ButtonListener
+	 * 
+	 * Performs actions based on specific button
+	 * 
+	 * @author Zaid Omer
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 
 		/**
@@ -172,6 +199,16 @@ public class TransactionDialog extends JDialog {
 		}
 	}
 
+	
+	/**
+	 * MyMouseListener
+	 * 
+	 * Performs actions based on specific mouse action
+	 * 
+	 * @author Zaid Omer
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	public class MyMouseListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent press) {
@@ -206,6 +243,15 @@ public class TransactionDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * TransactionLayoutTableModel
+	 * 
+	 * The table model to display transaactions
+	 * 
+	 * @author Zaid Omer
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class TransactionLayoutTableModel extends AbstractTableModel {
 		private final String[] transactionLayoutColumns = {"Date", "Total ($)", "Subtotal ($)"};
 		private final Class[] columnClasses = { String.class, Double.class , Double.class};
@@ -314,7 +360,7 @@ public class TransactionDialog extends JDialog {
 		 * updateRow when an table is modified, the row must be then updated
 		 *
 		 * @param transaction the transaction to place in the table and add to the current list
-		 *                 of tables
+		 *                 of transactions
 		 * @param row      the row that needs to be updated due to a change in the table
 		 */
 		public void updateRow(TableOrder transaction, int row) {
@@ -327,7 +373,7 @@ public class TransactionDialog extends JDialog {
 		 * insertRow inserts a row in the table with a table
 		 *
 		 * @param position the position to put the row
-		 * @param transaction the food to show on the table
+		 * @param transaction the transaction to show on the table
 		 */
 		public void insertRow(int position, TableOrder transaction) {
 			this.transactionData.add(transaction);
@@ -337,7 +383,7 @@ public class TransactionDialog extends JDialog {
 		/**
 		 * addRow adds a row at the bottom of the table with a new recipe
 		 *
-		 * @param transaction the food to be placed in the table
+		 * @param transaction the transaction to be placed in the table
 		 */
 		public void addRow(TableOrder transaction) {
 			insertRow(getRowCount(), transaction);
@@ -358,7 +404,7 @@ public class TransactionDialog extends JDialog {
 		/**
 		 * removeRow removes a specific row in the table
 		 *
-		 * @param position the position of the recipe to be removed
+		 * @param position the position of the trqansaction to be removed
 		 */
 		public void removeRow(int position) {
 			this.transactionData.remove(position);
@@ -366,7 +412,7 @@ public class TransactionDialog extends JDialog {
 		}
 
 		/**
-		 * getData gets the list of tables
+		 * getData gets the list of transactions
 		 *
 		 * @return the list of transaction items
 		 */
@@ -375,7 +421,7 @@ public class TransactionDialog extends JDialog {
 		}
 
 		/**
-		 * setData gets the list of tables
+		 * setData gets the list of transactions
 		 *
 		 * @param transactionData the list of transaction items
 		 */
@@ -391,6 +437,15 @@ public class TransactionDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * OrderLayoutTableModel
+	 * 
+	 * The table model to display order items
+	 * 
+	 * @author Zaid Omer
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class OrderLayoutTableModel extends AbstractTableModel {
 		private final String[] orderLayoutColumns = {"Item", "Cost ($)", "Quantity"};
 		private final Class[] columnClasses = {String.class, Double.class, Integer.class};

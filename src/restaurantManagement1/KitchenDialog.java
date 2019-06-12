@@ -136,8 +136,10 @@ public class KitchenDialog extends JDialog {
 			finishButton.setVisible(false);
 		}
 		itemNameTextField.setBounds(610, 160, 100, 30);
+		itemNameTextField.setEditable(false);
 		panel.add(itemNameTextField);
 		quantityTextField.setBounds(610, 200, 50, 30);
+		quantityTextField.setEditable(false);
 		panel.add(quantityTextField);
 		itemImage.setBounds(580, 230, 175, 175);
 		panel.add(itemImage);

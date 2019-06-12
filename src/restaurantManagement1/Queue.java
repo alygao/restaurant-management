@@ -7,7 +7,8 @@ import java.util.Iterator;
  * Project - RestaurantManagement Queue.java A File to make the queue
  * 
  * @author Zaid Omer
- * @version June 14, 2019
+ * @version 1.0
+ * @date June 13, 2019
  */
 
 class Queue<T> implements Serializable {
@@ -78,28 +79,47 @@ class Queue<T> implements Serializable {
 		}
 	}
 
-	public boolean isEmpty() {
-		if (head == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
+	/**
+	 * creates a queue iterator
+	 * 
+	 * @author Alyssa Gao
+	 * @return Iterator the queue iterator
+	 */	
 	public Iterator iterator() {
 		return new QueueIterator();
 	}
 
+	/**
+	 * QueueIterator
+	 * 
+	 * The queue iterator that contains methods to help convert a queue to an arraylist
+	 * 
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class QueueIterator implements Iterator<T> {
 
 		private QueueNode<T> currentNode = head;
 
 		@Override
+		/**
+		 * checks if there is still a next value
+		 * 
+		 * @author Alyssa Gao
+		 * @return false if current node is false
+		 */
 		public boolean hasNext() {
 			return currentNode != null;
 		}
 
 		@Override
+		/**
+		 * returns next value in iteration
+		 * 
+		 * @author Alyssa Gao
+		 * @return T the next value
+		 */
 		public T next() {
 			T item = null;
 			if (currentNode != null) {

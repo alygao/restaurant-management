@@ -263,7 +263,7 @@ public class EmployeeDialog extends JDialog {
 
 		homepageBackground2 = new ImageIcon(getClass().getResource("freshqo background.JPG"));
 		homepageBackgroundLabel2 = new JLabel(homepageBackground2);
-		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
+		homepageBackgroundLabel2.setBounds(0, 0, 1000, 600);
 		viewEmployeesPanel.add(homepageBackgroundLabel2);
 
 		// Set Visible

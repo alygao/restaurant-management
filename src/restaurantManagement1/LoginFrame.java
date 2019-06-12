@@ -31,10 +31,7 @@ public class LoginFrame extends JFrame {
 
 	private void initUI() {
 
-//		setModalityType(ModalityType.APPLICATION_MODAL);
-
 		setUndecorated(true);
-//		setDefaultLookAndFeelDecorated(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("freshqo icon.JPG")));
 		setName("Login");
 		setSize(200, 300);
@@ -49,7 +46,7 @@ public class LoginFrame extends JFrame {
 		usernameLabel.setBounds(10, 100, 75, 30);
 		panel.add(usernameLabel);
 
-		usernameTextField = new JTextField("chef1"); //TODO: change to blank
+		usernameTextField = new JTextField("manager"); //TODO: change to blank
 		usernameTextField.setBounds(100, 100, 75, 30);
 		panel.add(usernameTextField);
 

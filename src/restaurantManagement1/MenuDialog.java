@@ -138,7 +138,6 @@ public class MenuDialog extends JDialog {
 		panel.add(menuItemPriceLabel);
 		panel.add(menuItemPriceTextField);
 		panel.add(menuItemDescriptionLabel);
-//		panel.add(menuItemDescriptionTextArea);
 		panel.add(menuItemCategoryLabel);
 		panel.add(menuItemCategoryChoice);
 		panel.add(menuItemImageLabel);

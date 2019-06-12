@@ -3,6 +3,16 @@ package restaurantManagement1;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ViewReservationsTableModel
+ * 
+ * The table model to view reservations
+ * 
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
+
 import javax.swing.table.AbstractTableModel;
 
 public class ViewReservationsTableModel extends AbstractTableModel {
@@ -19,7 +29,7 @@ public class ViewReservationsTableModel extends AbstractTableModel {
 			boolean.class };
 
 	/**
-	 * the list of tables that are to be displayed within the table
+	 * the list of reservations that are to be displayed within the table
 	 */
 	private List<Reservation> reservationData = new ArrayList<>();
 
@@ -141,7 +151,7 @@ public class ViewReservationsTableModel extends AbstractTableModel {
 	 * updateRow when an table is modified, the row must be then updated
 	 * 
 	 * @param reservation the reservation to place in the table and add to the
-	 *                    current list of tables
+	 *                    current list of reservations
 	 * @param row         the row that needs to be updated due to a change in the
 	 *                    table
 	 */
@@ -155,7 +165,7 @@ public class ViewReservationsTableModel extends AbstractTableModel {
 	 * 
 	 * @param position    the position to put the row
 	 * @param reservation the reservation to place in the table and add to the
-	 *                    current list of tables
+	 *                    current list of reservations
 	 */
 	public void insertRow(int position, Reservation reservation) {
 		this.reservationData.add(reservation);
@@ -174,7 +184,7 @@ public class ViewReservationsTableModel extends AbstractTableModel {
 	/**
 	 * addRows adds 2+ rows into the table
 	 * 
-	 * @param tableList the list of tables that are to be put into the table
+	 * @param reservationList the list of reservations that are to be put into the table
 	 */
 	public void addRows(List<Reservation> reservationList) {
 		for (Reservation reservation : reservationList) {
@@ -204,7 +214,7 @@ public class ViewReservationsTableModel extends AbstractTableModel {
 	/**
 	 * setData gets the list of reservations
 	 * 
-	 * @param reservationData the list of tables
+	 * @param reservationData the list of reservations
 	 */
 	public void setData(List<Reservation> reservationData) {
 		this.reservationData = reservationData;
@@ -215,7 +225,5 @@ public class ViewReservationsTableModel extends AbstractTableModel {
 		for (int i = reservationData.size() - 1; i >= 0 ; i--) {
 			removeRow(i);
 		}
-//		this.reservationData = new ArrayList<>();
-//		fireTableRowsDeleted(0, getRowCount());
 	}
 }

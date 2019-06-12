@@ -17,8 +17,19 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * WaitingListDialog
+ * 
+ * The dialog to display waiting list
+ * 
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
+
 public class WaitingListDialog extends JDialog {
 
+	// VARIABLES
 	private JPanel panel;
 	private Restaurant restaurant;
 	private ImageIcon background;
@@ -26,11 +37,19 @@ public class WaitingListDialog extends JDialog {
 	private JTable waitingListTable;
 	private JButton deleteButton;
 
+	
+	/**
+	 * initializes restaurant and user interface
+	 * @param restaurant
+	 */
 	public WaitingListDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
 		initUI();
 	}
 
+	/**
+	 * initializes user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -97,6 +116,15 @@ public class WaitingListDialog extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * WaitingListTableModel
+	 * 
+	 * The table model for waiting list
+	 * 
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class WaitingListTableModel extends AbstractTableModel {
 		/**
 		 * the names of each column in the table
@@ -115,7 +143,7 @@ public class WaitingListDialog extends JDialog {
 
 		@Override
 		/**
-		 * getColumnCount the number of columns in the table
+		 * the number of columns in the table
 		 * 
 		 * @return the number of columns
 		 */
@@ -125,7 +153,7 @@ public class WaitingListDialog extends JDialog {
 
 		@Override
 		/**
-		 * getRowCount the number of rows in the table
+		 * the number of rows in the table
 		 * 
 		 * @return the number of rows
 		 */
@@ -135,7 +163,7 @@ public class WaitingListDialog extends JDialog {
 
 		@Override
 		/**
-		 * getColumnName
+		 * gets column name
 		 * 
 		 * @param col the column number
 		 * @return the name of the column
@@ -146,7 +174,7 @@ public class WaitingListDialog extends JDialog {
 
 		@Override
 		/**
-		 * getValueAt finds the value at the specific row and column number *
+		 * finds the value at the specific row and column number
 		 * 
 		 * @param row the row number
 		 * @param col the column number
@@ -165,7 +193,7 @@ public class WaitingListDialog extends JDialog {
 
 		@Override
 		/**
-		 * getColumnClass finds the class type for a specific column
+		 * finds the class type for a specific column
 		 * 
 		 * @param col the column number
 		 * @return the class type for the specific column
@@ -176,7 +204,7 @@ public class WaitingListDialog extends JDialog {
 
 		@Override
 		/**
-		 * isCellEditable checks if the user can edit the cell
+		 * checks if the user can edit the cell
 		 * 
 		 * @param row the row number
 		 * @param col the column number
@@ -188,7 +216,7 @@ public class WaitingListDialog extends JDialog {
 
 		@Override
 		/**
-		 * setValueAt sets a value at the specific row and column
+		 * sets a value at the specific row and column
 		 * 
 		 * @param value the value to be set
 		 * @param row   the row number
@@ -208,7 +236,7 @@ public class WaitingListDialog extends JDialog {
 		}
 
 		/**
-		 * updateRow when an table is modified, the row must be then updated
+		 * when an table is modified, the row must be then updated
 		 * 
 		 * @param customer the customer to place in the table and add to the current
 		 *                 list of tables
@@ -220,7 +248,7 @@ public class WaitingListDialog extends JDialog {
 		}
 
 		/**
-		 * insertRow inserts a row in the table with a table
+		 * inserts a row in the table with a table
 		 * 
 		 * @param position the position to put the row
 		 * @param customer the customer to place in the table and add to the current
@@ -232,18 +260,18 @@ public class WaitingListDialog extends JDialog {
 		}
 
 		/**
-		 * addRow adds a row at the bottom of the table with a new recipe
+		 * adds a row at the bottom of the table with a new recipe
 		 * 
-		 * @param customer the table to be placed in the table
+		 * @param customer the customer to be placed in the table
 		 */
 		public void addRow(Customer customer) {
 			insertRow(getRowCount(), customer);
 		}
 
 		/**
-		 * addRows adds 2+ rows into the table
+		 * adds 2+ rows into the table
 		 * 
-		 * @param tableList the list of tables that are to be put into the table
+		 * @param waitingListData the list of customers that are to be put into the table
 		 */
 		public void addRows(List<Customer> waitingListData) {
 			for (Customer customer : waitingListData) {
@@ -252,42 +280,15 @@ public class WaitingListDialog extends JDialog {
 		}
 
 		/**
-		 * removeRow removes a specific row in the table
+		 * removes a specific row in the table
 		 * 
-		 * @param position the position of the recipe to be removed
+		 * @param position the position of the customer to be removed
 		 */
 		public void removeRow(int position) {
 			this.waitingListData.remove(position);
 			fireTableRowsDeleted(0, getRowCount());
 		}
 
-		/**
-		 * getData gets the list of tables
-		 * 
-		 * @return the list of customers
-		 */
-		public List<Customer> getData() {
-			return waitingListData;
-		}
-
-		/**
-		 * setData gets the list of tables
-		 * 
-		 * @param data the list of tables
-		 */
-		public void setData(List<Customer> waitingListData) {
-			this.waitingListData = waitingListData;
-			fireTableRowsInserted(0, getRowCount());
-		}
-
-//		/**
-//		 * clearAll
-//		 * clears all rows in the table
-//		 */
-//		public void clearAll() {
-//			setData(new List <Table>());
-//			fireTableDataChanged();
-//		}
 	}
 
 }
