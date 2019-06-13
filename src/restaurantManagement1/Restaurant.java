@@ -243,7 +243,7 @@ public class Restaurant extends JFrame {
 
 	/**
 	 * loadDataFile load the RecipeDatabase from the file specified by the filename.
-	 * 
+	 *
 	 * @param filename the file name of the database file.
 	 * @throws FileNotFoundException  if the file cannot be found
 	 * @throws IOException            if there is an error in reading the file
@@ -258,7 +258,7 @@ public class Restaurant extends JFrame {
 
 	/**
 	 * loadDataFile load the RecipeDatabase from the file specified.
-	 * 
+	 *
 	 * @param file the File object defining the database file.
 	 * @throws FileNotFoundException  if the file cannot be found
 	 * @throws IOException            if there is an error in reading the file
@@ -299,7 +299,7 @@ public class Restaurant extends JFrame {
 
 	/**
 	 * saveDataFile converts the String filename into a file
-	 * 
+	 *
 	 * @param filename the name of the file to be saved
 	 */
 	private void saveDataFile(String filename) {
@@ -308,7 +308,7 @@ public class Restaurant extends JFrame {
 
 	/**
 	 * saveDataFile saves the data into a file
-	 * 
+	 *
 	 * @param file the file which will hold the saved data
 	 */
 	private void saveDataFile(File file) {
@@ -504,7 +504,7 @@ public class Restaurant extends JFrame {
 				if (savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodFrom()
 						.isBefore(reserveTimePeriod.getLocalTime())
 						&& savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodTo()
-								.isAfter(reserveTimePeriod.getLocalTime())) {
+						.isAfter(reserveTimePeriod.getLocalTime())) {
 					availableTableForReservation.remove(savedReservationsForDate.get(i).getTable());
 				}
 
@@ -539,7 +539,7 @@ public class Restaurant extends JFrame {
 
 		JOptionPane.showMessageDialog(null, "Reservation has been claimed by " + customerName + " for "
 				+ reservation.getReservationDateTime().getLocalTime());
-		
+
 		reservation.setClaimed(true);
 		reservedTable = reservation.getTable();
 		reservedTable.setCustomer(reservation.getCustomer());
@@ -548,10 +548,10 @@ public class Restaurant extends JFrame {
 		reservedTable.setCurrentOrder(new TableOrder(reservedTable));
 		reservedTable.getCurrentOrder().setWaiter(waiter);
 		waiter.getAssignedTables().add(reservedTable);
-		
+
 		JOptionPane.showMessageDialog(null, "They have been successfully placed at Table "
 				+ reservedTable.getTableName() + ". They will be served by " + waiter.getName());
-		
+
 	}
 
 	public void addEmployee(Employee employee) {
@@ -575,7 +575,7 @@ public class Restaurant extends JFrame {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 * 
+		 *
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
@@ -604,7 +604,7 @@ public class Restaurant extends JFrame {
 							"You must first create a manager before creating other employees.");
 				}
 				EmployeeDialog employeeDialog = new EmployeeDialog(self);
-				
+
 			} else if (press.getSource() == logoutButton) {
 				logout();
 			} else if (press.getSource() == openFileButton) {
@@ -632,9 +632,9 @@ public class Restaurant extends JFrame {
 		for (int i = 0; i < reservationBook.size(); i++) {
 			if (reservationBook.get(i).getReservationDateTime().getLocalDate().equals(LocalDate.now())
 					&& LocalTime.now()
-							.isBefore(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodTo())
+					.isBefore(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodTo())
 					&& LocalTime.now()
-							.isAfter(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodFrom())) {
+					.isAfter(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodFrom())) {
 				availableTables.remove(reservationBook.get(i).getTable());
 			}
 		}

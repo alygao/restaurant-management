@@ -2,6 +2,7 @@ package restaurantManagement1;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
@@ -36,7 +37,6 @@ public class TransactionDialog extends JDialog {
 	private JLabel dateLabel;
 	private ImageIcon homepageBackground;
 	private JPanel panel;
-	private JButton printButton;
 	private JButton returnToHomepageButton;
 	private JLabel homepageBackgroundLabel;
 	private JTable transactionTable;
@@ -49,6 +49,7 @@ public class TransactionDialog extends JDialog {
 	private JTable orderTable;
 	private JLabel menuItemImageLabel;
 	private MenuItem selectedMenuItem;
+	private final DecimalFormat currencyFormat = new DecimalFormat("##0.00");
 
 	/**
 	 * initializes the restaurant and calls the initialize user interface method
@@ -70,15 +71,9 @@ public class TransactionDialog extends JDialog {
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
-
-		//Print Button
-		printButton = new JButton(new ImageIcon(getClass().getResource("print button.JPG")));
-		printButton.setBounds(865, 75, 120, 75);
-		printButton.addActionListener(new ButtonListener());
-		panel.add(printButton);
 
 		//Return Button
 		returnToHomepageButton = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
@@ -166,13 +161,11 @@ public class TransactionDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 * 
+		 *
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
-			if (press.getSource() == printButton) {
-
-			}else if(press.getSource() == lookUpButton){
+			if(press.getSource() == lookUpButton){
 				List<TableOrder> transactionsUnderSpecificDate = new ArrayList<>();
 				for(int i = 0; i < restaurant.getHistoricalTransactions().size(); i++){
 					if(restaurant.getHistoricalTransactions().get(i).getDate().equals("" + Utils.convertToLocalDate(datePicker.getText()))){
@@ -257,7 +250,7 @@ public class TransactionDialog extends JDialog {
 	 */
 	class TransactionLayoutTableModel extends AbstractTableModel {
 		private final String[] transactionLayoutColumns = {"Date", "Transaction ID", "Total ($)", "Subtotal ($)"};
-		private final Class[] columnClasses = { String.class, String.class, Double.class , Double.class};
+		private final Class[] columnClasses = { String.class, String.class, String.class , String.class};
 		private List<TableOrder> transactionData = new ArrayList<>();
 
 		@Override
@@ -308,9 +301,9 @@ public class TransactionDialog extends JDialog {
 				case 1:
 					return transaction.getTransactionID();
 				case 2:
-					return transaction.getTotal();
+					return currencyFormat.format(transaction.getTotal());
 				default:
-					return transaction.getSubtotal();
+					return currencyFormat.format(transaction.getSubtotal());
 			}
 		}
 
@@ -459,7 +452,7 @@ public class TransactionDialog extends JDialog {
 	 */
 	class OrderLayoutTableModel extends AbstractTableModel {
 		private final String[] orderLayoutColumns = {"Item", "Cost ($)", "Quantity"};
-		private final Class[] columnClasses = {String.class, Double.class, Integer.class};
+		private final Class[] columnClasses = {String.class, String.class, Integer.class};
 		private List<TableOrderItem> orderData = new ArrayList<>();
 
 		@Override
@@ -509,7 +502,7 @@ public class TransactionDialog extends JDialog {
 				case 0:
 					return menuItem.getName();
 				case 1:
-					return menuItem.getPrice();
+					return  currencyFormat.format(menuItem.getPrice());
 				default:
 					return order.getQuantity();
 			}

@@ -44,7 +44,7 @@ public class MenuItem implements Serializable {
 		return price;
 	}
 	public void setPrice(double price) {
-		this.price = currencyFormat.format(price);;
+		this.price = currencyFormat.format(price);
 	}
 	public String getDescription() {
 		return description;
