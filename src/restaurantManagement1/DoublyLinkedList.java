@@ -8,11 +8,11 @@ import java.util.AbstractList;
  * DoublyLinkedList.java
  * A File to make the Doubly Linked List
  * @author Zaid Omer
- * @version June 14, 2019
+ * @version June 13, 2019
  */
-
 public class DoublyLinkedList<T> extends AbstractList<T> implements Serializable {
-	
+
+    //VARIABLES
     private DoublyLinkedListNode<T> head;
     
 	@Override
@@ -37,13 +37,25 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements Serializable
         }
         return added;
 	}
-    
-	@Override
+
+    @Override
+    /**
+     * remove
+     * removes item from doubly linked list
+     * @param item the item to remove
+     * @return call to removeItem method (actually removes it)
+     */
 	public boolean remove(Object item) {
 		return removeItem ((T)item);
 	}
-	
-	@Override
+
+    /**
+     * remove
+     * remove item from doubly linked list given an index
+     * @param index the index of the item to remove
+     * @return T the item that was removed
+     */
+    @Override
 	public T remove(int index) {
 		T item = get(index);
 		this.remove( item );
@@ -54,7 +66,6 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements Serializable
      * to remove item from doubly linked list
      * @param itemToRemove , the item to remove
      */
-
     public boolean removeItem(T itemToRemove){
         DoublyLinkedListNode<T> tempNode = head;
         boolean removed = false;
@@ -100,8 +111,14 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements Serializable
             return size;
         }
     }
-    
-	@Override
+
+    /**
+     * contains
+     * check to see of item passed through is in the linked list
+     * @param item the item to check if it's in the doubly linked list
+     * @return call to containsHelper
+     */
+    @Override
 	public boolean contains(Object item) {
 		return containsHelper((T)item);
 	}
@@ -165,8 +182,12 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements Serializable
         }
     }
 
-
-	@Override
+    /**
+     * get
+     * get the linked list node item given an index
+     * @param index the integer index value
+     */
+    @Override
 	public T get(int index) {
 		int sizeCounter = 0;
 		DoublyLinkedListNode<T> tempNode = head;

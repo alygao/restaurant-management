@@ -5,25 +5,17 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.awt.Color;
@@ -32,14 +24,11 @@ import javax.swing.BorderFactory;
 
 /**
  * TransactionDialog
- * 
  * The dialog to display historical transactions
- * 
  * @author Zaid Omer
  * @version 1.0
  * @date June 13, 2019
  */
-
 public class TransactionDialog extends JDialog {
 
 	// VARIABLES
@@ -59,10 +48,11 @@ public class TransactionDialog extends JDialog {
 	private OrderLayoutTableModel orderLayoutTableLayout;
 	private JTable orderTable;
 	private JLabel menuItemImageLabel;
+	private MenuItem selectedMenuItem;
 
 	/**
 	 * initializes the restaurant and calls the initialize user interface method
-	 * @param restaurant the restaurant 
+	 * @param restaurant the restaurant
 	 */
 	public TransactionDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
@@ -76,7 +66,7 @@ public class TransactionDialog extends JDialog {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
-		setUndecorated(true);
+		setUndecorated(true); // TODO change to true
 		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -132,16 +122,19 @@ public class TransactionDialog extends JDialog {
 		datePicker.getComponentDateTextField().setEditable(false);
 		panel.add(datePicker);
 
+		//Confirm Search Button
 		lookUpButton = new JButton(new ImageIcon(getClass().getResource("look up button.JPG")));
 		lookUpButton.setBounds(380, 60, 100, 30);
 		lookUpButton.addActionListener(new ButtonListener());
 		panel.add(lookUpButton);
 
+		//Reset Search Button
 		resetButton = new JButton(new ImageIcon(getClass().getResource(("reset button.JPG"))));
 		resetButton.setBounds(380, 100, 100, 30);
 		resetButton.addActionListener(new ButtonListener());
 		panel.add(resetButton);
 
+		//Menu Item Image Box
 		ImageIcon originalImage = new ImageIcon(getClass().getResource("original menu item image.JPG"));
 		menuItemImageLabel = new JLabel(originalImage);
 		menuItemImageLabel.setBounds(500, 420, 150, 150);
@@ -158,12 +151,12 @@ public class TransactionDialog extends JDialog {
 		getContentPane().add(panel);
 		setVisible(true);
 	}
-	
+
 	/**
 	 * ButtonListener
-	 * 
+	 *
 	 * Performs actions based on specific button
-	 * 
+	 *
 	 * @author Zaid Omer
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -199,12 +192,11 @@ public class TransactionDialog extends JDialog {
 		}
 	}
 
-	
 	/**
 	 * MyMouseListener
-	 * 
+	 *
 	 * Performs actions based on specific mouse action
-	 * 
+	 *
 	 * @author Zaid Omer
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -215,9 +207,20 @@ public class TransactionDialog extends JDialog {
 			if (press.getClickCount() == 1 && transactionTable.getSelectedRow() != -1) {
 				orderLayoutTableLayout.clearAll();
 				int row = transactionTable.getSelectedRow();
-				orderLayoutTableLayout.addRows(restaurant.getHistoricalTransactions().get(row).getOrderItems());
-			}else if(press.getClickCount() == 1 && orderTable.getSelectedRow() != -1){
-				menuItemImageLabel.setText(null);
+				String transactinoIDOfSelectedOrder = "" + transactionTable.getValueAt(row, 1);
+
+				for(int i = 0; i < restaurant.getHistoricalTransactions().size(); i++){
+					if((restaurant.getHistoricalTransactions().get(i).getTransactionID()).equals(transactinoIDOfSelectedOrder)){
+						orderLayoutTableLayout.addRows(restaurant.getHistoricalTransactions().get(i).getOrderItems());
+					}
+				}
+			}else if(press.getClickCount() >= 1 && orderTable.getSelectedRow() != -1){
+				for(int i = 0; i < restaurant.getMenu().size(); i++){
+					if(orderTable.getValueAt(orderTable.getSelectedRow(), 0).equals(restaurant.getMenu().get(i).getName())){
+						selectedMenuItem = restaurant.getMenu().get(i);
+					}
+				}
+				menuItemImageLabel.setIcon(selectedMenuItem.getImage());
 			}
 
 		}
@@ -245,16 +248,16 @@ public class TransactionDialog extends JDialog {
 
 	/**
 	 * TransactionLayoutTableModel
-	 * 
+	 *
 	 * The table model to display transaactions
-	 * 
+	 *
 	 * @author Zaid Omer
 	 * @version 1.0
 	 * @date June 13, 2019
 	 */
 	class TransactionLayoutTableModel extends AbstractTableModel {
-		private final String[] transactionLayoutColumns = {"Date", "Total ($)", "Subtotal ($)"};
-		private final Class[] columnClasses = { String.class, Double.class , Double.class};
+		private final String[] transactionLayoutColumns = {"Date", "Transaction ID", "Total ($)", "Subtotal ($)"};
+		private final Class[] columnClasses = { String.class, String.class, Double.class , Double.class};
 		private List<TableOrder> transactionData = new ArrayList<>();
 
 		@Override
@@ -303,6 +306,8 @@ public class TransactionDialog extends JDialog {
 				case 0:
 					return transaction.getDate();
 				case 1:
+					return transaction.getTransactionID();
+				case 2:
 					return transaction.getTotal();
 				default:
 					return transaction.getSubtotal();
@@ -349,6 +354,9 @@ public class TransactionDialog extends JDialog {
 				case 1:
 					transaction.setTotal((double) value);
 					break;
+				case 2:
+					transaction.setTransactionID((String) value);
+					break;
 				default:
 					transaction.setSubtotal((double) value);
 			}
@@ -360,7 +368,7 @@ public class TransactionDialog extends JDialog {
 		 * updateRow when an table is modified, the row must be then updated
 		 *
 		 * @param transaction the transaction to place in the table and add to the current list
-		 *                 of transactions
+		 *                 of tables
 		 * @param row      the row that needs to be updated due to a change in the table
 		 */
 		public void updateRow(TableOrder transaction, int row) {
@@ -373,7 +381,7 @@ public class TransactionDialog extends JDialog {
 		 * insertRow inserts a row in the table with a table
 		 *
 		 * @param position the position to put the row
-		 * @param transaction the transaction to show on the table
+		 * @param transaction the food to show on the table
 		 */
 		public void insertRow(int position, TableOrder transaction) {
 			this.transactionData.add(transaction);
@@ -383,7 +391,7 @@ public class TransactionDialog extends JDialog {
 		/**
 		 * addRow adds a row at the bottom of the table with a new recipe
 		 *
-		 * @param transaction the transaction to be placed in the table
+		 * @param transaction the food to be placed in the table
 		 */
 		public void addRow(TableOrder transaction) {
 			insertRow(getRowCount(), transaction);
@@ -404,7 +412,7 @@ public class TransactionDialog extends JDialog {
 		/**
 		 * removeRow removes a specific row in the table
 		 *
-		 * @param position the position of the trqansaction to be removed
+		 * @param position the position of the recipe to be removed
 		 */
 		public void removeRow(int position) {
 			this.transactionData.remove(position);
@@ -412,7 +420,7 @@ public class TransactionDialog extends JDialog {
 		}
 
 		/**
-		 * getData gets the list of transactions
+		 * getData gets the list of tables
 		 *
 		 * @return the list of transaction items
 		 */
@@ -421,7 +429,7 @@ public class TransactionDialog extends JDialog {
 		}
 
 		/**
-		 * setData gets the list of transactions
+		 * setData gets the list of tables
 		 *
 		 * @param transactionData the list of transaction items
 		 */
@@ -430,6 +438,9 @@ public class TransactionDialog extends JDialog {
 			fireTableRowsInserted(0, getRowCount());
 		}
 
+		/**
+		 * clearData clears all rows from table
+		 */
 		public void clearAll() {
 			for (int i = transactionData.size() - 1; i >= 0 ; i--) {
 				removeRow(i);
@@ -439,9 +450,9 @@ public class TransactionDialog extends JDialog {
 
 	/**
 	 * OrderLayoutTableModel
-	 * 
+	 *
 	 * The table model to display order items
-	 * 
+	 *
 	 * @author Zaid Omer
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -582,6 +593,9 @@ public class TransactionDialog extends JDialog {
 			fireTableRowsDeleted(0, getRowCount());
 		}
 
+		/**
+		 * clearData clears all rows from table
+		 */
 		public void clearAll() {
 			for (int i = orderData.size() - 1; i >= 0 ; i--) {
 				removeRow(i);

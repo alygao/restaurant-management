@@ -33,32 +33,45 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.text.NumberFormatter;
 
+/**
+ * MenuDialog
+ * The dialog to add items to the menu
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
 public class MenuDialog extends JDialog {
 
+	//VARIABLES
 	private Restaurant restaurant;
 	private JTextField menuItemNameTextField;
 	private JFormattedTextField menuItemPriceTextField;
 	private JTextArea menuItemDescriptionTextArea;
 	private JLabel menuItemImageLabel;
 	private JComboBox menuItemCategoryChoice;
-
 	private JButton loadImageButton;
 	private JButton addItemButton;
 	private JButton deleteItemButton;
 	private JButton returnToHomepageButton;
-
 	private JPanel panel;
 	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
-
 	private MenuTableModel menuTableModel;
 	private JTable menuTable;
 
+	/**
+	 * MenuDialog constructor
+	 * initializes the restaurant and calls the initialize user interface method
+	 * @param restaurant the restaurant
+	 */
 	public MenuDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -173,7 +186,6 @@ public class MenuDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 * 
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
@@ -242,6 +254,13 @@ public class MenuDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * MenuTableModel
+	 * The table model to display the menu items
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class MenuTableModel extends AbstractTableModel {
 		private final String[] foodLayoutListColumns = { "Dish", "Price", "Category" };
 		private final Class[] columnClasses = { String.class, String.class, String.class };

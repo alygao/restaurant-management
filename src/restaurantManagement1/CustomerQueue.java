@@ -1,10 +1,18 @@
 package restaurantManagement1;
 
+/**
+ * CustomerQueue
+ * A queue of customers used for waiting list
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ * @param <T> generic value for the nodes
+ */
 public class CustomerQueue<T extends Customer> extends Queue<T> {
 
 	/**
+	 * dequeue
 	 * removes node from the queue
-	 * 
 	 * @return T the item in the node being removed
 	 */
 	public T dequeue(int numPeople) {
@@ -27,6 +35,11 @@ public class CustomerQueue<T extends Customer> extends Queue<T> {
 		return null;
 	}
 
+	/**
+	 * dequeue
+	 * Removes item from to the queue
+	 * @param customer the customer added to the queue
+	 */
 	public void dequeue(Customer customer) {
 		QueueNode<T> tempNode = head;
 		QueueNode<T> previousNode = null;

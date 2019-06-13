@@ -20,11 +20,18 @@ import javax.swing.table.AbstractTableModel;
 
 import restaurantManagement1.OrderDialog.RestaurantTablesTableModel;
 
+/**
+ * KitchenDialog
+ * The Dialog for the Kitchen to view orders to cook
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
 public class KitchenDialog extends JDialog {
 
+	//VARIABLES
 	private Restaurant restaurant;
 	private Chef chef;
-
 	private JPanel panel;
 	private JButton nextOrderButton;
 	private JButton returnToHomepageButton;
@@ -39,6 +46,12 @@ public class KitchenDialog extends JDialog {
 	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
 
+	/**
+	 * KitchenDialog constructor
+	 * initializes the restaurant, the chef and calls the initialize user interface method
+	 * @param restaurant the restaurant
+	 */
+
 	public KitchenDialog(Restaurant restaurant) {
 		if (!(restaurant.getCurrentUser() instanceof Chef)) {
 			JOptionPane.showMessageDialog(null, "Only a chef can access and use the kitchen button.", "Error",
@@ -50,6 +63,9 @@ public class KitchenDialog extends JDialog {
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -156,6 +172,13 @@ public class KitchenDialog extends JDialog {
 
 	}
 
+	/**
+	 * ButtonListener
+	 * Performs actions based on specific button
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 
 		/**
@@ -201,6 +224,13 @@ public class KitchenDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * KitchenOrdersTableModel
+	 * The table model to display kitchen orders
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class KitchenOrdersTableModel extends AbstractTableModel {
 		private final String[] foodLayoutListColumns = { "Dish", "Quantity" };
 		private final Class[] columnClasses = { String.class, int.class };
@@ -317,7 +347,7 @@ public class KitchenDialog extends JDialog {
 		 * insertRow inserts a row in the table with a table
 		 *
 		 * @param position the position to put the row
-		 * @param menuItem the food to show on the table
+		 * @param tableOrderItem the food to show on the table
 		 */
 		public void insertRow(int position, TableOrderItem tableOrderItem) {
 			this.tableOrderItems.add(tableOrderItem);
@@ -327,7 +357,7 @@ public class KitchenDialog extends JDialog {
 		/**
 		 * addRow adds a row at the bottom of the table with a new recipe
 		 *
-		 * @param menuItem the food to be placed in the table
+		 * @param tableOrderItem the food to be placed in the table
 		 */
 		public void addRow(TableOrderItem tableOrderItem) {
 			insertRow(getRowCount(), tableOrderItem);
@@ -336,7 +366,7 @@ public class KitchenDialog extends JDialog {
 		/**
 		 * addRows adds 2+ rows into the table
 		 * 
-		 * @param menuItemList the list of menu items that are to be put into the table
+		 * @param tableOrderItemList the list of menu items that are to be put into the table
 		 */
 		public void addRows(List<TableOrderItem> tableOrderItemList) {
 			for (TableOrderItem tableOrderItem : tableOrderItemList) {
@@ -366,13 +396,17 @@ public class KitchenDialog extends JDialog {
 		/**
 		 * setData gets the list of tables
 		 *
-		 * @param foodData the list of food items
+		 * @param orderedItems the list of food items
 		 */
 		public void setData(List<TableOrderItem> orderedItems) {
 			this.tableOrderItems = orderedItems;
 			fireTableRowsInserted(0, getRowCount());
 		}
 
+		/**
+		 * clearAll
+		 * clears all rows in the table
+		 */
 		public void clearAll() {
 			for (int i = tableOrderItems.size() - 1; i >= 0; i--) {
 				removeRow(i);

@@ -43,7 +43,7 @@ public class ReportingDialog extends JDialog {
 			return;
 		}
 		this.restaurant = restaurant;
-		revenue = restaurant.getTotalSales();
+		//revenue = this.restaurant.getTotalSales();
 		initUI();
 	}
 
@@ -134,7 +134,7 @@ public class ReportingDialog extends JDialog {
 	}
 
 	public void calculateAndDisplayRatios() {
-		revenuePerSeat = revenue / restaurant.getTotalSeats();
+		//revenuePerSeat = revenue / restaurant.getTotalSeats();
 		netIncome = revenue - expenses;
 		profitMargin = revenue/netIncome;
 		

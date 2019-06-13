@@ -6,15 +6,24 @@ import java.text.DecimalFormat;
 import javax.swing.Icon;
 
 public class MenuItem implements Serializable {
-	
+
+	//VARIABLES
 	private String name;
 	private String price;
 	private String description;
 	private Icon image;
 	private String category;
 	private final DecimalFormat currencyFormat = new DecimalFormat("##0.00");
-	
-	
+
+	/**
+	 * MenuItem constructor
+	 * Initializes the menu item assigning all appropriate values
+	 * @param name the dish's name
+	 * @param price the price of the item
+	 * @param description the description about the dish
+	 * @param image the image of the dish
+	 * @param category the food category (appetizers, entrees, desserts, beverages)
+	 */
 	public MenuItem(String name, double price, String description, Icon image, String category) {
 		this.name = name.toUpperCase();
 		this.price = currencyFormat.format(price);

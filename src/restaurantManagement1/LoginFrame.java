@@ -14,6 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+/**
+ * LoginFrame
+ * The Login Frame
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
 public class LoginFrame extends JFrame {
 
 	private Restaurant restaurant;
@@ -24,11 +31,19 @@ public class LoginFrame extends JFrame {
 	private JButton loginButton;
 	private ImageIcon background;
 
+	/**
+	 * LoginFrame constructor
+	 * initializes the restaurant and calls the initialize user interface method
+	 * @param restaurant the restaurant
+	 */
 	public LoginFrame(Restaurant restaurant) {
 		this.restaurant = restaurant;
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setUndecorated(true);
@@ -69,8 +84,6 @@ public class LoginFrame extends JFrame {
 			 * @param e the action that occurs
 			 */
 			public void actionPerformed(ActionEvent e) {
-//				System.out.println(restaurant.getEmployees().get(0).getUserID());
-//				System.out.println(restaurant.getEmployees().get(0).getPassword());
 				for (int i = 0; i < restaurant.getEmployees().size(); i++) {
 					if (restaurant.getEmployees().get(i).getUserID().equals(usernameTextField.getText())
 							&& restaurant.getEmployees().get(i).getPassword().equals(new String(passwordField.getPassword()))) {

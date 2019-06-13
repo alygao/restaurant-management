@@ -3,8 +3,10 @@ package restaurantManagement1;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class TableOrder implements Serializable {
+	private String transactionID;
 	private Table table;
 	private List<TableOrderItem> orderItems;
 	private Waiter waiter;
@@ -12,8 +14,6 @@ public class TableOrder implements Serializable {
 	private double subtotal;
 	private double total;
 	private boolean paid;
-
-	
 	
 	public TableOrder(Table table) {
 		this.table = table;
@@ -22,6 +22,18 @@ public class TableOrder implements Serializable {
 		this.setSubtotal(0);
 		this.setTotal(0);
 		this.paid = false;
+	}
+
+	public String generateTransactionID(){
+		return UUID.randomUUID().toString();
+	}
+
+	public String getTransactionID(){
+		return transactionID;
+	}
+
+	public void setTransactionID(String transactionID){
+		this.transactionID = transactionID;
 	}
 
 	public String getDate(){

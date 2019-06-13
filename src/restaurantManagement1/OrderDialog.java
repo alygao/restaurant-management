@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,7 +15,16 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * OrderDialog
+ * The dialog to see tables that can be filled fro customers
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
 public class OrderDialog extends JDialog {
+
+	//VARIABLES
 	private Restaurant restaurant;
 	private JPanel generalTablesPanel;
 	private JButton claimReservationButton;
@@ -30,11 +38,19 @@ public class OrderDialog extends JDialog {
 	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
 
+	/**
+	 * OrderDialog constructor
+	 * initializes the restaurant and calls the initialize user interface method
+	 * @param restaurant the restaurant
+	 */
 	public OrderDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -98,12 +114,18 @@ public class OrderDialog extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * ButtonListener
+	 * Performs actions based on specific button
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 * 
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
@@ -155,7 +177,14 @@ public class OrderDialog extends JDialog {
 			}
 		}
 	}
-	
+
+	/**
+	 * RestaurantTablesTableModel
+	 * The table model to display tables and the customers at them
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class RestaurantTablesTableModel extends AbstractTableModel{
 		/**
 		 * the names of each column in the table
@@ -308,27 +337,21 @@ public class OrderDialog extends JDialog {
 		/**
 		 * setData
 		 * gets the list of tables
-		 * @param data the list of tables
+		 * @param tablesData the list of tables
 		 */
 		public void setData(List<Table> tablesData) {
 			this.tablesData = tablesData;
 			fireTableRowsInserted(0, getRowCount());
 		}
-		
+
+		/**
+		 * refresh
+		 * refresh the elements in the table
+		 */
 		public void refresh() {
 			fireTableRowsUpdated(0, getRowCount());
 		}
-			
-			
-			//		/**
 
-//		 * clearAll
-//		 * clears all rows in the table
-//		 */
-//		public void clearAll() {
-//			setData(new List <Table>());
-//			fireTableDataChanged();
-//		}
 	}
 }
 

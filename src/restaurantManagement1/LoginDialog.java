@@ -12,21 +12,36 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+/**
+ * LoginDialog
+ * The dialog to display the login window
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
 public class LoginDialog extends JDialog {
 
+	//VARIABLES
 	private Restaurant restaurant;
 	private JPanel panel;
 	private JTextField usernameTextField;
 	private JPasswordField passwordField;
-
 	private JButton loginButton;
 	private ImageIcon background;
 
+	/**
+	 * login constructor
+	 * initializes the restaurant and calls the initialize user interface method
+	 * @param restaurant the restaurant
+	 */
 	public LoginDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);

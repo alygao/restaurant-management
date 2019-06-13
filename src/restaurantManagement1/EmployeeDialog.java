@@ -1,13 +1,5 @@
 package restaurantManagement1;
 
-/**
- * Project - Freshqo
- * EmployeeDialog.java
- * A File to Create the Employee Dialog Pop-up
- * @author Zaid Omer
- * @version June 14 2019
- */
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -38,6 +30,13 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import restaurantManagement1.AddReservationDialog.AvailableReservationTableModel;
 import restaurantManagement1.OrderDialog.ButtonListener;
 
+/**
+ * Project - Freshqo
+ * EmployeeDialog.java
+ * A File to Create the Employee Dialog Pop-up
+ * @author Zaid Omer && Alyssa Gao
+ * @version June 13, 2019
+ */
 public class EmployeeDialog extends JDialog {
 	private Restaurant restaurant;
 	private JPanel viewEmployeesPanel;
@@ -72,12 +71,21 @@ public class EmployeeDialog extends JDialog {
 	private JLabel homepageBackgroundLabel;
 	private JLabel homepageBackgroundLabel2;
 
+	/**
+	 * initializes the restaurant and calls the initialize user interface method
+	 * @param restaurant the restaurant
+	 */
 	EmployeeDialog(Restaurant restaurant) {
 		this.restaurant = restaurant;
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	public void initUI() {
+
+		//The Following up until indicated written by Zaid Omer
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
 		setUndecorated(true);
@@ -87,11 +95,9 @@ public class EmployeeDialog extends JDialog {
 
 		viewEmployeesPanel = new JPanel();
 		viewEmployeesPanel.setLayout(null);
-		//getContentPane().add(viewEmployeesPanel);
 
 		addEmployeesPanel = new JPanel();
 		addEmployeesPanel.setLayout(null);
-		//getContentPane().add(addEmployeesPanel);
 
 		// Tabs
 		JTabbedPane tabbedPane = new JTabbedPane();
@@ -167,7 +173,6 @@ public class EmployeeDialog extends JDialog {
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
 		datePicker = new DatePicker(dateSettings);
-//        dateSettings.setDateRangeLimits(null, LocalDate.now().minusDays( 60 )); //TODO: fix time range
 		datePicker.setBounds(525, 100, 200, 30);
 		datePicker.setDateToToday();
 		datePicker.getComponentDateTextField().setEditable(false);
@@ -211,7 +216,7 @@ public class EmployeeDialog extends JDialog {
 		returnToHomeButton1.addActionListener(new ButtonListener());
 		addEmployeesPanel.add(returnToHomeButton1);
 
-		// ========== View Employees Panel Setup ===============
+		// ========== View Employees Panel Setup =============== By: Alyssa Gao
 		searchChefRadioButton = new JRadioButton("View Chefs", true);
 		searchChefRadioButton.setBounds(150, 200, 200, 30);
 		viewEmployeesPanel.add(searchChefRadioButton);
@@ -271,7 +276,20 @@ public class EmployeeDialog extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * ButtonListener
+	 * Performs actions based on specific button
+	 * @author Zaid Omer && Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
+
+		/**
+		 * actionPerformed performs the action that is needed to be performed from
+		 * clicking a button
+		 * @param press used to determine which button is pressed
+		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == createEmployee) {
 				if ((employeeNameTextField.getText().isEmpty()) || (payTextField.getText().isEmpty())
@@ -377,6 +395,13 @@ public class EmployeeDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * ViewEmployeesTableModel
+	 * The table model to display employees
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ViewEmployeesTableModel extends AbstractTableModel {
 		/**
 		 * the names of each column in the table
@@ -518,7 +543,7 @@ public class EmployeeDialog extends JDialog {
 		/**
 		 * addRow adds a row at the bottom of the table with a new reservation
 		 * 
-		 * @param reservation the reservation to be placed in the table
+		 * @param employee the employee to be placed in the table
 		 */
 		public void addRow(Employee employee) {
 			insertRow(getRowCount(), employee);
@@ -527,7 +552,7 @@ public class EmployeeDialog extends JDialog {
 		/**
 		 * addRows adds 2+ rows into the table
 		 * 
-		 * @param tableList the list of tables that are to be put into the table
+		 * @param employeeList the list of employees that are to be put into the table
 		 */
 		public void addRows(List<Employee> employeeList) {
 			for (Employee employee : employeeList) {
@@ -538,7 +563,7 @@ public class EmployeeDialog extends JDialog {
 		/**
 		 * addRows adds 2+ rows into the table
 		 * 
-		 * @param tableList the list of tables that are to be put into the table
+		 * @param chefList the list of chefs that are to be put into the table
 		 */
 		public void addChefRows(List<Chef> chefList) {
 			for (Employee employee : chefList) {
@@ -549,7 +574,7 @@ public class EmployeeDialog extends JDialog {
 		/**
 		 * addRows adds 2+ rows into the table
 		 * 
-		 * @param tableList the list of tables that are to be put into the table
+		 * @param waiterList the list of waiters that are to be put into the table
 		 */
 		public void addWaiterRows(List<Waiter> waiterList) {
 			for (Employee employee : waiterList) {
@@ -560,7 +585,7 @@ public class EmployeeDialog extends JDialog {
 		/**
 		 * addRows adds 2+ rows into the table
 		 * 
-		 * @param tableList the list of tables that are to be put into the table
+		 * @param managerList the list of managers that are to be put into the table
 		 */
 		public void addManagerRows(List<Manager> managerList) {
 			for (Employee employee : managerList) {
@@ -597,6 +622,10 @@ public class EmployeeDialog extends JDialog {
 			fireTableRowsInserted(0, getRowCount());
 		}
 
+		/**
+		 * clearAll
+		 * clears all rows on the table
+		 */
 		public void clearAll() {
 			for (int i = employees.size() - 1; i >= 0; i--) {
 				removeRow(i);

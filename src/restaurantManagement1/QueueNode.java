@@ -7,7 +7,7 @@ import java.io.Serializable;
  * QueueNode.java
  * A File outlining the node for a queue
  * @author Zaid Omer
- * @version June 14, 2019
+ * @version June 13, 2019
  */
 class QueueNode<T> implements Serializable{
     private T item;

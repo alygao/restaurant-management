@@ -22,7 +22,16 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+/**
+ * AddFoodDialog
+ * The dialog used to select menu items fot a tale's order
+ * @author Zaid Omer && Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
 public class AddFoodDialog extends JDialog {
+
+	//VARIABLES
 	private Utils utils;
 	private Restaurant restaurant;
 	private ImageIcon homepageBackground;
@@ -62,6 +71,13 @@ public class AddFoodDialog extends JDialog {
 	private TableOrder currentOrder;
 	private final DecimalFormat currencyFormat = new DecimalFormat("##0.00");
 
+	/**
+	 * Initializes restaurant, calls the UI method, and uses
+	 * the selected row from previous dialog to find the table this order is for
+	 * @param restaurant
+	 * @param selectedRow
+	 * @author Zaid Omer
+	 */
 	public AddFoodDialog(Restaurant restaurant, int selectedRow) {
 		utils = new Utils();
 		this.restaurant = restaurant;
@@ -71,6 +87,10 @@ public class AddFoodDialog extends JDialog {
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 * @author Zaid Omer && Alyssa Gao
+	 */
 	public void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -82,31 +102,37 @@ public class AddFoodDialog extends JDialog {
 		tablesFoodPanel = new JPanel();
 		tablesFoodPanel.setLayout(null);
 
+		//Fire Order Button
 		fireOrderButton = new JButton(new ImageIcon(getClass().getResource("fire order button.JPG")));
 		fireOrderButton.setBounds(865, 75, 120, 75);
 		fireOrderButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(fireOrderButton);
 
+		//Pay Button
 		payButton = new JButton(new ImageIcon(getClass().getResource("pay button.JPG")));
 		payButton.setBounds(865, 165, 120, 75);
 		payButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(payButton);
 
+		//Release Table Button
 		releaseTableButton = new JButton(new ImageIcon(getClass().getResource("release table button.JPG")));
 		releaseTableButton.setBounds(865, 255, 120, 75);
 		releaseTableButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(releaseTableButton);
 
+		//Return to Home Button
 		returnToHomepageButton = new JButton(new ImageIcon(getClass().getResource("return button.JPG")));
 		returnToHomepageButton.setBounds(865, 435, 120, 75);
 		returnToHomepageButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(returnToHomepageButton);
 
+		//Delete Item Button
 		deleteItemButton = new JButton(new ImageIcon(getClass().getResource("delete button.JPG")));
 		deleteItemButton.setBounds(590, 410, 120, 50);
 		deleteItemButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(deleteItemButton);
 
+		//Basic Table Information Label
 		tableName = table.getTableName();
 		customerName = table.getCustomer().getName();
 		tableSize = table.getNumSeats();
@@ -117,7 +143,7 @@ public class AddFoodDialog extends JDialog {
 		tablesFoodPanel.add(tableInfoLabel);
 		tablesFoodPanel.add(returnToHomepageButton);
 
-		// Price Label
+		// Price Labels
 		subTotalLabel = new JLabel("Subtotal: ");
 		subTotalLabel.setBounds(500, 500, 100, 30);
 		tablesFoodPanel.add(subTotalLabel);
@@ -126,12 +152,15 @@ public class AddFoodDialog extends JDialog {
 		totalPriceLabel.setBounds(500, 530, 100, 30);
 		tablesFoodPanel.add(totalPriceLabel);
 
+		//Price Text Fields
 		subTotalTextField = new JTextField(currencyFormat.format(currentOrder.getSubtotal()));
 		subTotalTextField.setBounds(600, 500, 100, 30);
+		subTotalTextField.setEditable(false);
 		tablesFoodPanel.add(subTotalTextField);
 
 		totalPriceTextField = new JTextField(currencyFormat.format(currentOrder.getTotal()));
 		totalPriceTextField.setBounds(600, 530, 100, 30);
+		totalPriceTextField.setEditable(false);
 		tablesFoodPanel.add(totalPriceTextField);
 
 		tablesFoodPanel.setVisible(true);
@@ -222,17 +251,35 @@ public class AddFoodDialog extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * changeCost decreases total and subtotal based on the item selected
+	 * Used when item is removed from the order
+	 * @param tableOrderItem
+	 * @author Alyssa Gao
+	 */
 	public void changeCost(TableOrderItem tableOrderItem) {
 		currentOrder.setSubtotal(
 				currentOrder.getSubtotal() - tableOrderItem.getMenuItem().getPrice() * tableOrderItem.getQuantity());
 		currentOrder.setTotal(currentOrder.getSubtotal() * 1.13);
 	}
 
+	/**
+	 * refreshCosts
+	 * refreshes costs in text field when changes occur
+	 * @author Alyssa Gao
+	 */
 	public void refreshCosts() {
 		subTotalTextField.setText(currencyFormat.format(currentOrder.getSubtotal()));
 		totalPriceTextField.setText(currencyFormat.format(currentOrder.getTotal()));
 	}
 
+	/**
+	 * Button Listener
+	 * Performs Action Based On Specific Button
+	 * @author Zaid Omer && Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == returnToHomepageButton) {
@@ -249,6 +296,8 @@ public class AddFoodDialog extends JDialog {
 						currentOrder.setDate(todaysDate);
 
 						currentOrder.getOrderItems().get(i).setFired(true);
+						String transactionID = currentOrder.generateTransactionID();
+						currentOrder.setTransactionID(transactionID);
 					}
 				}
 				orderedItemsTableModel.clearAll();
@@ -327,6 +376,15 @@ public class AddFoodDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * MyMouseListener
+	 *
+	 * Performs actions based on specific mouse action
+	 *
+	 * @author Zaid Omer
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	public class MyMouseListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent press) {
@@ -393,6 +451,13 @@ public class AddFoodDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * FoodLayoutTableModel
+	 * The table model to display food items
+	 * @author Zaid Omer
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class FoodLayoutTableModel extends AbstractTableModel {
 		private final String[] foodLayoutListColumns = { "Dish", "Price" };
 		private final Class[] columnClasses = { String.class, String.class };
@@ -566,6 +631,13 @@ public class AddFoodDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * OrderedItemsTableModel
+	 * The table model to display ordered items
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class OrderedItemsTableModel extends AbstractTableModel {
 		private final String[] foodLayoutListColumns = { "Dish", "Quantity", "Fired", "Served" };
 		private final Class[] columnClasses = { String.class, int.class, boolean.class, boolean.class };

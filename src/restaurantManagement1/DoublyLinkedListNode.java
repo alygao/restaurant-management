@@ -7,7 +7,7 @@ import java.io.Serializable;
  * DoublyLinkedListNode.java
  * A File outlining the node for a doubly linked list
  * @author Zaid Omer
- * @version June 14, 2019
+ * @version June 13, 2019
  */
 class DoublyLinkedListNode<T> implements Serializable{
     private T item;

@@ -7,15 +7,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
+/**
+ * FoodQuantityDialog
+ * The Dialog used to select food quantity
+ * @author Zaid Omer
+ * @version 1.0
+ * @date June 13, 2019
+ */
 public class FoodQuantityDialog extends JDialog {
 
+	//VARIABLES
 	private TableOrderItem tableOrderItem;
 	private TableOrder tableOrder;
 	private JPanel panel;
@@ -24,6 +30,12 @@ public class FoodQuantityDialog extends JDialog {
 	private JSpinner quantitySpinner;
 	private JButton orderButton;
 
+	/**
+	 * FoodQuantityDialog constructor
+	 * @param menuItem the menu item ordered
+	 * @param waiter the waiter serving this order
+	 * @param tableOrder the table order variable
+	 */
 	public FoodQuantityDialog(MenuItem menuItem, Waiter waiter, TableOrder tableOrder) {
 		System.out.println(menuItem.getName());
 		this.tableOrderItem = new TableOrderItem(menuItem, waiter, tableOrder);
@@ -31,6 +43,9 @@ public class FoodQuantityDialog extends JDialog {
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);

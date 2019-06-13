@@ -8,19 +8,56 @@
       <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/AddFoodDialog$MyMouseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/AddFoodDialog$MyMouseListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/AddFoodDialog$OrderedItemsTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/AddFoodDialog$OrderedItemsTableModel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/AddFoodDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/AddFoodDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/CustomerQueue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/CustomerQueue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/EmployeeDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/EmployeeDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/KitchenDialog$ButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/KitchenDialog$ButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/KitchenDialog$KitchenOrdersTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/KitchenDialog$KitchenOrdersTableModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/KitchenDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/KitchenDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/LoginFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/LoginFrame$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/LoginFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/LoginFrame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/MenuDialog$ButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/MenuDialog$ButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/MenuDialog$MenuTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/MenuDialog$MenuTableModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/MenuDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/MenuDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/Queue$QueueIterator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/Queue$QueueIterator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/Queue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/Queue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TableOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TableOrder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog$ButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog$ButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog$MyMouseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog$MyMouseListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog$OrderLayoutTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog$OrderLayoutTableModel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog$TransactionLayoutTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog$TransactionLayoutTableModel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/TransactionDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/Utils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/ViewReservationsTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/ViewReservationsTableModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/Waiter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/Waiter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/WaitingListDialog$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/WaitingListDialog$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/WaitingListDialog$WaitingListTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/WaitingListDialog$WaitingListTableModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/WaitingListDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/WaitingListDialog.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/restaurant management.fqo" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/restaurant management.fqo" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/restaurant.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RestaurantManagement/restaurantManagement1/restaurant.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/AddFoodDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/AddFoodDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/AddReservationDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/AddReservationDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/ReservationBookDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/ReservationBookDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/TableOrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/TableOrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/Bill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/Chef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/Chef.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/CustomerQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/CustomerQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedListNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedListNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/EmployeeDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/EmployeeDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/FindTableDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/FindTableDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/FoodQuantityDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/FoodQuantityDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/KitchenDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/KitchenDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/LoginDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/LoginDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/MenuDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/MenuDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/OrderDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/OrderDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/Queue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/QueueNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/QueueNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/ReportingDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/ReportingDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/TableOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/TableOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/TransactionDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/TransactionDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/restaurant management.fqo" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/restaurant management.fqo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/restaurantManagement1/restaurant.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/restaurantManagement1/restaurant.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,24 +72,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/TransactionDialog.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-504">
-              <caret line="129" column="87" lean-forward="true" selection-start-line="129" selection-start-column="87" selection-end-line="129" selection-end-column="87" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#11517#11518#0" expanded="true" />
-                <element signature="e#11563#11564#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/MenuDialog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="86" column="61" lean-forward="true" selection-start-line="86" selection-start-column="61" selection-end-line="86" selection-end-column="61" />
+            <state relative-caret-position="-3190">
+              <caret line="259" column="25" lean-forward="true" selection-start-line="259" selection-start-column="25" selection-end-line="259" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -61,67 +84,100 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/AddFoodDialog.java">
+        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="147" column="64" lean-forward="true" selection-start-line="147" selection-start-column="64" selection-end-line="147" selection-end-column="64" />
+            <state relative-caret-position="252">
+              <caret line="24" column="83" selection-start-line="24" selection-start-column="83" selection-end-line="24" selection-end-column="83" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#773#774#0" expanded="true" />
+                <element signature="e#791#792#0" expanded="true" />
+                <element signature="e#827#828#0" expanded="true" />
+                <element signature="e#864#865#0" expanded="true" />
+                <element signature="e#892#893#0" expanded="true" />
+                <element signature="e#931#932#0" expanded="true" />
+                <element signature="e#968#969#0" expanded="true" />
+                <element signature="e#987#988#0" expanded="true" />
+                <element signature="e#1108#1109#0" expanded="true" />
+                <element signature="e#1133#1134#0" expanded="true" />
+                <element signature="e#1183#1184#0" expanded="true" />
+                <element signature="e#1220#1221#0" expanded="true" />
+                <element signature="e#1246#1247#0" expanded="true" />
+                <element signature="e#1265#1266#0" expanded="true" />
+                <element signature="e#1301#1302#0" expanded="true" />
+                <element signature="e#1326#1327#0" expanded="true" />
+                <element signature="e#1357#1358#0" expanded="true" />
+                <element signature="e#1379#1380#0" expanded="true" />
+                <element signature="e#1423#1424#0" expanded="true" />
+                <element signature="e#1454#1455#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/ReservationBookDialog.java">
+        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/OrderDialog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="199" column="87" selection-start-line="199" selection-start-column="87" selection-end-line="199" selection-end-column="87" />
+            <state relative-caret-position="233">
+              <caret line="348" column="44" selection-start-line="348" selection-start-column="44" selection-end-line="348" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#9846#9847#0" expanded="true" />
+                <element signature="e#9893#9894#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Utils.java">
+        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Queue.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="45" column="1" selection-start-line="45" selection-start-column="1" selection-end-line="45" selection-end-column="1" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#479#480#0" expanded="true" />
-                <element signature="e#541#542#0" expanded="true" />
-                <element signature="e#806#807#0" expanded="true" />
-                <element signature="e#868#869#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1323">
+              <caret line="64" column="11" lean-forward="true" selection-start-line="64" selection-start-column="11" selection-end-line="64" selection-end-column="11" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/AddReservationDialog.java">
+        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/QueueNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9429">
-              <caret line="449" column="1" selection-start-line="449" selection-start-column="1" selection-end-line="449" selection-end-column="1" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#9670#9671#0" expanded="true" />
-                <element signature="e#9720#9721#0" expanded="true" />
-                <element signature="e#9860#9861#0" expanded="true" />
-                <element signature="e#9900#9901#0" expanded="true" />
-                <element signature="e#10060#10061#0" expanded="true" />
-                <element signature="e#10108#10109#0" expanded="true" />
-                <element signature="e#10767#10768#0" expanded="true" />
-                <element signature="e#10806#10807#0" expanded="true" />
-                <element signature="e#11059#11060#0" expanded="true" />
-                <element signature="e#11080#11081#0" expanded="true" />
-                <element signature="e#12519#12520#0" expanded="true" />
-                <element signature="e#12559#12560#0" expanded="true" />
-                <element signature="e#13185#13186#0" expanded="true" />
-                <element signature="e#13218#13219#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="189">
+              <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/KitchenDialog.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="7875">
+              <caret line="407" column="39" lean-forward="true" selection-start-line="407" selection-start-column="39" selection-end-line="407" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/LoginDialog.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="693">
+              <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/LoginFrame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1069">
+              <caret line="45" column="7" selection-start-line="45" selection-start-column="7" selection-end-line="45" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Manager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="20" column="61" lean-forward="true" selection-start-line="20" selection-start-column="61" selection-end-line="20" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -137,20 +193,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>customerNameLabel</find>
-      <find>==</find>
-      <find>self</find>
-      <find>action</find>
-      <find>appet</find>
-      <find>round</find>
-      <find>textare</find>
-      <find>finalorderlabel</find>
-      <find>+=</find>
-      <find>JLabel</find>
-      <find>new JLabel</find>
       <find>tableInfoLabel</find>
       <find>totalPriceLabel</find>
-      <find>label</find>
       <find>returnTo</find>
       <find>settableord</find>
       <find>currentOrder</find>
@@ -167,6 +211,18 @@
       <find>look</find>
       <find>new my</find>
       <find>new m</find>
+      <find>pri</find>
+      <find>print</find>
+      <find>addRows</find>
+      <find>fire</find>
+      <find>textField</find>
+      <find>time</find>
+      <find>getTo</find>
+      <find>label</find>
+      <find>menuItemImageLabel</find>
+      <find>menuItemIma</find>
+      <find>image</find>
+      <find>orderTable</find>
     </findStrings>
     <replaceStrings>
       <replace>customer</replace>
@@ -183,11 +239,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/QueueNode.java" />
-        <option value="$PROJECT_DIR$/src/DoublyLinkedListNode.java" />
-        <option value="$PROJECT_DIR$/src/Queue.java" />
-        <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/src/DoublyLinkedList.java" />
         <option value="$PROJECT_DIR$/src/Bill.java" />
         <option value="$PROJECT_DIR$/src/Chef.java" />
         <option value="$PROJECT_DIR$/src/Customer.java" />
@@ -204,40 +255,46 @@
         <option value="$PROJECT_DIR$/src/ReserveTimePeriod.java" />
         <option value="$PROJECT_DIR$/src/MenuItem.java" />
         <option value="$PROJECT_DIR$/src/ReservationDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/Bill.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/Customer.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedList.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedListNode.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/Queue.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/QueueNode.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/Reservation.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/TableLayoutDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/Employee.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/ReserveTimePeriod.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/SetupDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/FindTableDialog.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/ReservationDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/MenuDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/Restaurant.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/OrderDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/FoodQuantityDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/Chef.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/Waiter.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/Table.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/TableOrder.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/EmployeeDialog.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/ReservationBookDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/AddFoodDialog.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/TableOrderItem.java" />
-        <option value="$PROJECT_DIR$/src/restaurantManagement1/TransactionDialog.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/Utils.java" />
         <option value="$PROJECT_DIR$/src/restaurantManagement1/AddReservationDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/TableOrderItem.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/TableOrder.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/ReportingDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/Restaurant.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/TransactionDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/Bill.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/AddFoodDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/Chef.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/Customer.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/CustomerQueue.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedList.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/Employee.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/EmployeeDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/FindTableDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/KitchenDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/LoginDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/LoginFrame.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/Manager.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/MenuDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedListNode.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/FoodQuantityDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/OrderDialog.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/Queue.java" />
+        <option value="$PROJECT_DIR$/src/restaurantManagement1/QueueNode.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="117" />
+    <option name="x" value="183" />
     <option name="y" value="-11" />
     <option name="width" value="1635" />
     <option name="height" value="960" />
@@ -332,7 +389,7 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17564403" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19672132" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -341,7 +398,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32857144" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.15714286" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -349,7 +406,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.325" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.21428572" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24939272" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24980484" />
@@ -363,18 +420,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java</url>
-          <line>47</line>
-          <properties />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java</url>
-          <line>41</line>
-          <properties />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/restaurantManagement1/Table.java</url>
           <line>85</line>
@@ -395,20 +440,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/javax/swing/ImageIcon.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="216" selection-start-line="216" selection-end-line="216" />
-          <folding>
-            <element signature="e#6742#6743#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TableLayoutDialog.java" />
-    <entry file="file://$PROJECT_DIR$/src/DoublyLinkedList.java" />
-    <entry file="file://$PROJECT_DIR$/src/Employee.java" />
-    <entry file="file://$PROJECT_DIR$/src/OrderDialog.java" />
     <entry file="file://$PROJECT_DIR$/src/EmployeeDialog.java" />
     <entry file="file://$PROJECT_DIR$/src/Waiter.java" />
     <entry file="file://$PROJECT_DIR$/src/Reservation.java" />
@@ -419,55 +450,8 @@
     <entry file="file://$PROJECT_DIR$/src/Restaurant.java" />
     <entry file="file://$PROJECT_DIR$/src/ReservationDialog.java" />
     <entry file="file://$PROJECT_DIR$/src/Bill.java" />
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Bill.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedListNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/employee button.JPG">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Queue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/QueueNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/lang/Double.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -476,46 +460,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Employee.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/ReserveTimePeriod.java" />
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/ReservationDialog.java" />
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/TableLayoutDialog.java" />
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/FindTableDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/OrderDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2310">
-          <caret line="125" column="62" selection-start-line="125" selection-start-column="62" selection-end-line="125" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/FoodQuantityDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1029">
-          <caret line="68" column="56" selection-start-line="68" selection-start-column="56" selection-end-line="68" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/SetupDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2919">
@@ -540,72 +487,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Chef.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
-          <folding>
-            <element signature="e#673#674#0" expanded="true" />
-            <element signature="e#703#704#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Customer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding>
-            <element signature="e#298#299#0" expanded="true" />
-            <element signature="e#316#317#0" expanded="true" />
-            <element signature="e#353#354#0" expanded="true" />
-            <element signature="e#376#377#0" expanded="true" />
-            <element signature="e#406#407#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Table.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/time/format/DateTimeFormatter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="87">
           <caret line="2045" selection-start-line="2045" selection-end-line="2045" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Restaurant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5040">
-          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
-          <folding>
-            <element signature="e#2545#2546#0" expanded="true" />
-            <element signature="e#2560#2561#0" expanded="true" />
-            <element signature="e#11478#11479#0" expanded="true" />
-            <element signature="e#11517#11518#0" expanded="true" />
-            <element signature="e#14212#14213#0" expanded="true" />
-            <element signature="e#14230#14231#0" expanded="true" />
-            <element signature="e#15318#15319#0" expanded="true" />
-            <element signature="e#15347#15348#0" expanded="true" />
-            <element signature="e#16139#16140#0" expanded="true" />
-            <element signature="e#16159#16160#0" expanded="true" />
-            <element signature="e#19821#19822#0" expanded="true" />
-            <element signature="e#19851#19852#0" expanded="true" />
-            <element signature="e#19892#19893#0" expanded="true" />
-            <element signature="e#19915#19916#0" expanded="true" />
-            <element signature="e#19952#19953#0" expanded="true" />
-            <element signature="e#19977#19978#0" expanded="true" />
-            <element signature="e#20030#20031#0" expanded="true" />
-            <element signature="e#20067#20068#0" expanded="true" />
-            <element signature="e#23584#23585#0" expanded="true" />
-            <element signature="e#23635#23636#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -637,42 +522,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/TableOrderItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="882">
-          <caret line="43" column="28" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/EmployeeDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4935">
-          <caret line="263" column="90" selection-start-line="263" selection-start-column="90" selection-end-line="263" selection-end-column="90" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/TableOrder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="44" selection-start-line="8" selection-start-column="44" selection-end-line="8" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#559#560#0" expanded="true" />
-            <element signature="e#577#578#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/ReservationDateTime.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="457">
@@ -694,73 +543,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/KitchenDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1407">
-          <caret line="98" column="55" selection-start-line="98" selection-start-column="55" selection-end-line="98" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/AddFoodDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="147" column="64" lean-forward="true" selection-start-line="147" selection-start-column="64" selection-end-line="147" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/MenuDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="86" column="61" lean-forward="true" selection-start-line="86" selection-start-column="61" selection-end-line="86" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/ReservationBookDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="199" column="87" selection-start-line="199" selection-start-column="87" selection-end-line="199" selection-end-column="87" />
+        <state relative-caret-position="399">
+          <caret line="42" column="29" selection-start-line="42" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/TransactionDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-504">
-          <caret line="129" column="87" lean-forward="true" selection-start-line="129" selection-start-column="87" selection-end-line="129" selection-end-column="87" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#11517#11518#0" expanded="true" />
-            <element signature="e#11563#11564#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Utils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="45" column="1" selection-start-line="45" selection-start-column="1" selection-end-line="45" selection-end-column="1" />
+        <state relative-caret-position="1533">
+          <caret line="81" column="1" selection-start-line="81" selection-start-column="1" selection-end-line="81" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#479#480#0" expanded="true" />
-            <element signature="e#541#542#0" expanded="true" />
-            <element signature="e#806#807#0" expanded="true" />
-            <element signature="e#868#869#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/AddReservationDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9429">
-          <caret line="449" column="1" selection-start-line="449" selection-start-column="1" selection-end-line="449" selection-end-column="1" />
+        <state relative-caret-position="1134">
+          <caret line="82" selection-start-line="82" selection-end-line="82" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#9670#9671#0" expanded="true" />
@@ -778,6 +584,343 @@
             <element signature="e#13185#13186#0" expanded="true" />
             <element signature="e#13218#13219#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/TableOrderItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/TableOrder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+          <folding>
+            <element signature="e#624#625#0" expanded="true" />
+            <element signature="e#666#667#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Restaurant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2545#2546#0" expanded="true" />
+            <element signature="e#2560#2561#0" expanded="true" />
+            <element signature="e#11478#11479#0" expanded="true" />
+            <element signature="e#11517#11518#0" expanded="true" />
+            <element signature="e#14212#14213#0" expanded="true" />
+            <element signature="e#14230#14231#0" expanded="true" />
+            <element signature="e#15318#15319#0" expanded="true" />
+            <element signature="e#15347#15348#0" expanded="true" />
+            <element signature="e#16139#16140#0" expanded="true" />
+            <element signature="e#16159#16160#0" expanded="true" />
+            <element signature="e#19821#19822#0" expanded="true" />
+            <element signature="e#19851#19852#0" expanded="true" />
+            <element signature="e#19892#19893#0" expanded="true" />
+            <element signature="e#19915#19916#0" expanded="true" />
+            <element signature="e#19952#19953#0" expanded="true" />
+            <element signature="e#19977#19978#0" expanded="true" />
+            <element signature="e#20030#20031#0" expanded="true" />
+            <element signature="e#20067#20068#0" expanded="true" />
+            <element signature="e#23584#23585#0" expanded="true" />
+            <element signature="e#23635#23636#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/TransactionDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="26" column="48" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/AddFoodDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#15648#15649#0" expanded="true" />
+            <element signature="e#15697#15698#0" expanded="true" />
+            <element signature="e#15837#15838#0" expanded="true" />
+            <element signature="e#15868#15869#0" expanded="true" />
+            <element signature="e#16028#16029#0" expanded="true" />
+            <element signature="e#16075#16076#0" expanded="true" />
+            <element signature="e#16750#16751#0" expanded="true" />
+            <element signature="e#16789#16790#0" expanded="true" />
+            <element signature="e#17042#17043#0" expanded="true" />
+            <element signature="e#17063#17064#0" expanded="true" />
+            <element signature="e#18451#18452#0" expanded="true" />
+            <element signature="e#18494#18495#0" expanded="true" />
+            <element signature="e#19144#19145#0" expanded="true" />
+            <element signature="e#19168#19169#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Bill.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-26">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Chef.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1134">
+          <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1176#1177#0" expanded="true" />
+            <element signature="e#1206#1207#0" expanded="true" />
+            <element signature="e#1399#1400#0" expanded="true" />
+            <element signature="e#1446#1447#0" expanded="true" />
+            <element signature="e#1610#1611#0" expanded="true" />
+            <element signature="e#1639#1640#0" expanded="true" />
+            <element signature="e#1840#1841#0" expanded="true" />
+            <element signature="e#1885#1886#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Customer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="28" column="27" lean-forward="true" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
+          <folding>
+            <element signature="e#644#645#0" expanded="true" />
+            <element signature="e#662#663#0" expanded="true" />
+            <element signature="e#777#778#0" expanded="true" />
+            <element signature="e#800#801#0" expanded="true" />
+            <element signature="e#830#831#0" expanded="true" />
+            <element signature="e#853#854#0" expanded="true" />
+            <element signature="e#897#898#0" expanded="true" />
+            <element signature="e#930#931#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/CustomerQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="819">
+          <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3885">
+          <caret line="186" column="51" lean-forward="true" selection-start-line="186" selection-start-column="51" selection-end-line="186" selection-end-column="51" />
+          <folding>
+            <element signature="e#1091#1092#0" expanded="true" />
+            <element signature="e#1125#1126#0" expanded="true" />
+            <element signature="e#3267#3268#0" expanded="true" />
+            <element signature="e#3304#3305#0" expanded="true" />
+            <element signature="e#3650#3651#0" expanded="true" />
+            <element signature="e#3677#3678#0" expanded="true" />
+            <element signature="e#3728#3729#0" expanded="true" />
+            <element signature="e#3763#3764#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Employee.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="168" column="60" selection-start-line="168" selection-start-column="60" selection-end-line="168" selection-end-column="60" />
+          <folding>
+            <element signature="e#1280#1281#0" expanded="true" />
+            <element signature="e#1298#1299#0" expanded="true" />
+            <element signature="e#1335#1336#0" expanded="true" />
+            <element signature="e#1358#1359#0" expanded="true" />
+            <element signature="e#1385#1386#0" expanded="true" />
+            <element signature="e#1402#1403#0" expanded="true" />
+            <element signature="e#1671#1672#0" expanded="true" />
+            <element signature="e#1692#1693#0" expanded="true" />
+            <element signature="e#1800#1801#0" expanded="true" />
+            <element signature="e#1820#1821#0" expanded="true" />
+            <element signature="e#1938#1939#0" expanded="true" />
+            <element signature="e#1965#1966#0" expanded="true" />
+            <element signature="e#2068#2069#0" expanded="true" />
+            <element signature="e#2090#2091#0" expanded="true" />
+            <element signature="e#2218#2219#0" expanded="true" />
+            <element signature="e#2249#2250#0" expanded="true" />
+            <element signature="e#2370#2371#0" expanded="true" />
+            <element signature="e#2393#2394#0" expanded="true" />
+            <element signature="e#2533#2534#0" expanded="true" />
+            <element signature="e#2566#2567#0" expanded="true" />
+            <element signature="e#2595#2596#0" expanded="true" />
+            <element signature="e#2614#2615#0" expanded="true" />
+            <element signature="e#2813#2814#0" expanded="true" />
+            <element signature="e#2838#2839#0" expanded="true" />
+            <element signature="e#2949#2950#0" expanded="true" />
+            <element signature="e#2972#2973#0" expanded="true" />
+            <element signature="e#3106#3107#0" expanded="true" />
+            <element signature="e#3134#3135#0" expanded="true" />
+            <element signature="e#3198#3199#0" expanded="true" />
+            <element signature="e#3220#3221#0" expanded="true" />
+            <element signature="e#3265#3266#0" expanded="true" />
+            <element signature="e#3296#3297#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/EmployeeDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12306">
+          <caret line="626" column="39" lean-forward="true" selection-start-line="626" selection-start-column="39" selection-end-line="626" selection-end-column="39" />
+          <folding>
+            <element signature="e#17686#17687#0" expanded="true" />
+            <element signature="e#17729#17730#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/FindTableDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="966">
+          <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/KitchenDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7875">
+          <caret line="407" column="39" lean-forward="true" selection-start-line="407" selection-start-column="39" selection-end-line="407" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/LoginDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="693">
+          <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/LoginFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1069">
+          <caret line="45" column="7" selection-start-line="45" selection-start-column="7" selection-end-line="45" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Manager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="20" column="61" lean-forward="true" selection-start-line="20" selection-start-column="61" selection-end-line="20" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/MenuDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3190">
+          <caret line="259" column="25" lean-forward="true" selection-start-line="259" selection-start-column="25" selection-end-line="259" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/ReportingDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2466">
+          <caret line="153" column="56" selection-start-line="153" selection-start-column="56" selection-end-line="153" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Table.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/MenuItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="24" column="83" selection-start-line="24" selection-start-column="83" selection-end-line="24" selection-end-column="83" />
+          <folding>
+            <element signature="e#773#774#0" expanded="true" />
+            <element signature="e#791#792#0" expanded="true" />
+            <element signature="e#827#828#0" expanded="true" />
+            <element signature="e#864#865#0" expanded="true" />
+            <element signature="e#892#893#0" expanded="true" />
+            <element signature="e#931#932#0" expanded="true" />
+            <element signature="e#968#969#0" expanded="true" />
+            <element signature="e#987#988#0" expanded="true" />
+            <element signature="e#1108#1109#0" expanded="true" />
+            <element signature="e#1133#1134#0" expanded="true" />
+            <element signature="e#1183#1184#0" expanded="true" />
+            <element signature="e#1220#1221#0" expanded="true" />
+            <element signature="e#1246#1247#0" expanded="true" />
+            <element signature="e#1265#1266#0" expanded="true" />
+            <element signature="e#1301#1302#0" expanded="true" />
+            <element signature="e#1326#1327#0" expanded="true" />
+            <element signature="e#1357#1358#0" expanded="true" />
+            <element signature="e#1379#1380#0" expanded="true" />
+            <element signature="e#1423#1424#0" expanded="true" />
+            <element signature="e#1454#1455#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/DoublyLinkedListNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/FoodQuantityDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="18" column="14" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/OrderDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="348" column="44" selection-start-line="348" selection-start-column="44" selection-end-line="348" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#9846#9847#0" expanded="true" />
+            <element signature="e#9893#9894#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/Queue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1323">
+          <caret line="64" column="11" lean-forward="true" selection-start-line="64" selection-start-column="11" selection-end-line="64" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/restaurantManagement1/QueueNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
         </state>
       </provider>
     </entry>
