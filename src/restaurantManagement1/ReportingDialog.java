@@ -1,9 +1,9 @@
 package restaurantManagement1;
 
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,6 +14,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
+
+/**
+ * ReportingDialog 
+ * 
+ * The dialog used to view financial ratios
+ * 
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
 
 public class ReportingDialog extends JDialog {
 
@@ -36,6 +46,11 @@ public class ReportingDialog extends JDialog {
 	private JLabel homepageBackgroundLabel;
 	private final DecimalFormat currencyFormat = new DecimalFormat("##0.00");
 
+	/**
+	 * constructor to initialize restaurant and user interface
+	 * 
+	 * @param restaurant the restaurant
+	 */
 	public ReportingDialog(Restaurant restaurant) {
 		if (!(restaurant.getCurrentUser() instanceof Manager)) {
 			JOptionPane.showMessageDialog(null, "Only a manager can access the reporting function.", "Error",
@@ -43,10 +58,14 @@ public class ReportingDialog extends JDialog {
 			return;
 		}
 		this.restaurant = restaurant;
-		//revenue = this.restaurant.getTotalSales();
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 * 
+	 * @author Alyssa Gao
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -74,7 +93,7 @@ public class ReportingDialog extends JDialog {
 		salesLabel.setBounds(25, 75, 100, 30);
 		panel.add(salesLabel);
 
-		revenueTextField = new JTextField("$ " + currencyFormat.format(revenue));
+		revenueTextField = new JTextField("$ " + currencyFormat.format(restaurant.getTotalSales()));
 		revenueTextField.setEditable(false);
 		revenueTextField.setBounds(200, 75, 150, 30);
 		panel.add(revenueTextField);
@@ -133,16 +152,27 @@ public class ReportingDialog extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * calculateAndDisplayRatios calculates and display ratios in the text fields
+	 */
 	public void calculateAndDisplayRatios() {
-		//revenuePerSeat = revenue / restaurant.getTotalSeats();
+		revenue = restaurant.getTotalSales();
 		netIncome = revenue - expenses;
-		profitMargin = revenue/netIncome;
-		
-		netIncomeTextField.setText("$ " + netIncome);
-		profitMarginTextField.setText(Double.toString(profitMargin));
-		revenuePerSeatTextField.setText("$ " + Double.toString(revenuePerSeat));
+		profitMargin = netIncome / revenue;
+		revenuePerSeat = revenue / restaurant.getTotalSeats();
+
+		netIncomeTextField.setText("$ " + currencyFormat.format(netIncome));
+		profitMarginTextField.setText(NumberFormat.getPercentInstance().format(profitMargin));
+		revenuePerSeatTextField.setText("$ " + currencyFormat.format(revenuePerSeat));
 	}
 
+	/**
+	 * Button Listener Performs Action Based On Specific Button
+	 * 
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 
 		/**
@@ -154,8 +184,8 @@ public class ReportingDialog extends JDialog {
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == generateFinancialRatiosButtons) {
 				if (enterExpensesTextField.getText().isEmpty()) {
-//					JOptionPane.showMessageDialog(null, "Please enter a value in expenses.", "Error",
-//							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please enter a value in expenses.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				expenses = Double.parseDouble(enterExpensesTextField.getText());

@@ -18,18 +18,18 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
-import restaurantManagement1.OrderDialog.RestaurantTablesTableModel;
-
 /**
- * KitchenDialog
+ * KitchenDialog 
+ * 
  * The Dialog for the Kitchen to view orders to cook
+ * 
  * @author Alyssa Gao
  * @version 1.0
  * @date June 13, 2019
  */
 public class KitchenDialog extends JDialog {
 
-	//VARIABLES
+	// VARIABLES
 	private Restaurant restaurant;
 	private Chef chef;
 	private JPanel panel;
@@ -47,8 +47,9 @@ public class KitchenDialog extends JDialog {
 	private JLabel homepageBackgroundLabel;
 
 	/**
-	 * KitchenDialog constructor
-	 * initializes the restaurant, the chef and calls the initialize user interface method
+	 * KitchenDialog constructor initializes the restaurant, the chef and calls the
+	 * initialize user interface method
+	 * 
 	 * @param restaurant the restaurant
 	 */
 
@@ -92,7 +93,7 @@ public class KitchenDialog extends JDialog {
 		finishButton.setBounds(600, 430, 120, 50);
 		finishButton.addActionListener(new ButtonListener());
 		panel.add(finishButton);
-		
+
 		List<TableOrderItem> kitchenOrders = new ArrayList<>();
 		Iterator<TableOrderItem> kitcherOrderIterator = restaurant.getKitchenOrders().iterator();
 		while (kitcherOrderIterator.hasNext()) {
@@ -140,7 +141,7 @@ public class KitchenDialog extends JDialog {
 		panel.add(quantityLabel);
 
 		itemImage = new JLabel();
-		
+
 		if (chef.getCurrentOrderItem() != null) {
 			itemNameTextField = new JTextField(chef.getCurrentOrderItem().getMenuItem().getName());
 			quantityTextField = new JTextField(Integer.toString(chef.getCurrentOrderItem().getQuantity()));
@@ -173,8 +174,8 @@ public class KitchenDialog extends JDialog {
 	}
 
 	/**
-	 * ButtonListener
-	 * Performs actions based on specific button
+	 * ButtonListener Performs actions based on specific button
+	 * 
 	 * @author Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -200,12 +201,12 @@ public class KitchenDialog extends JDialog {
 					itemImage.setIcon(orderItem.getMenuItem().getImage());
 					finishButton.setVisible(true);
 					nextOrderButton.setVisible(false);
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(null, "There are no items that need to be made.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-			}else if (press.getSource() == finishButton) {
+			} else if (press.getSource() == finishButton) {
 				TableOrderItem finishedOrderItem = chef.getCurrentOrderItem();
 				chef.getCompletedOrders().add(finishedOrderItem);
 				completeOrdersTableModel.addRow(finishedOrderItem);
@@ -214,7 +215,7 @@ public class KitchenDialog extends JDialog {
 				itemNameTextField.setText("");
 				quantityTextField.setText("");
 				itemImage.setIcon(null);
-				
+
 				finishButton.setVisible(false);
 				nextOrderButton.setVisible(true);
 
@@ -225,8 +226,8 @@ public class KitchenDialog extends JDialog {
 	}
 
 	/**
-	 * KitchenOrdersTableModel
-	 * The table model to display kitchen orders
+	 * KitchenOrdersTableModel The table model to display kitchen orders
+	 * 
 	 * @author Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -346,7 +347,7 @@ public class KitchenDialog extends JDialog {
 		/**
 		 * insertRow inserts a row in the table with a table
 		 *
-		 * @param position the position to put the row
+		 * @param position       the position to put the row
 		 * @param tableOrderItem the food to show on the table
 		 */
 		public void insertRow(int position, TableOrderItem tableOrderItem) {
@@ -366,7 +367,8 @@ public class KitchenDialog extends JDialog {
 		/**
 		 * addRows adds 2+ rows into the table
 		 * 
-		 * @param tableOrderItemList the list of menu items that are to be put into the table
+		 * @param tableOrderItemList the list of menu items that are to be put into the
+		 *                           table
 		 */
 		public void addRows(List<TableOrderItem> tableOrderItemList) {
 			for (TableOrderItem tableOrderItem : tableOrderItemList) {
@@ -404,8 +406,7 @@ public class KitchenDialog extends JDialog {
 		}
 
 		/**
-		 * clearAll
-		 * clears all rows in the table
+		 * clearAll clears all rows in the table
 		 */
 		public void clearAll() {
 			for (int i = tableOrderItems.size() - 1; i >= 0; i--) {

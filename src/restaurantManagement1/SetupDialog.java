@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -22,22 +21,24 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.AbstractTableModel;
 
-import restaurantManagement1.AddReservationDialog.ButtonListener;
-
 /**
+ * SetupDialog 
+ * 
+ * The Dialog to setup tables and number of seats/table
+ * 
  * @author Alyssa Gao
- *
+ * @version 1.0
+ * @date June 13, 2019
  */
 public class SetupDialog extends JDialog {
+	
+	//Variables
 	private Restaurant restaurant;
 	private List<Table> tables;
 	private List<Reservation> reservationBook;
 	private String numPeople;
 	private boolean canBeReserved;
-
-
 	private JPanel tableManagementPanel;
-//	private JPanel viewTablesPanel;
 	private JSpinner numSeatsSpinner;
 	private JTextField tableNameTextField;
 	private JCheckBox canBeReservedCheckBox;
@@ -46,17 +47,29 @@ public class SetupDialog extends JDialog {
 	private JButton returnButton;
 	private TableLayoutTableModel tableLayoutTableModel;
 	private JTable tableLayoutTable;
-
 	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
 
+	/**
+	 * constructor to initialize restaurant, tables, reservation book and user interface
+	 * @param restaurant
+	 */
 	public SetupDialog(Restaurant restaurant) {
+		if (!(restaurant.getCurrentUser() instanceof Manager)) {
+			JOptionPane.showMessageDialog(null, "Only a manager can access and use the setup button.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
 		this.restaurant = restaurant;
 		tables = restaurant.getTables();
 		reservationBook = restaurant.getReservationBook();
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -112,7 +125,7 @@ public class SetupDialog extends JDialog {
 		deleteTableButton.addActionListener(new ButtonListener());
 		tableManagementPanel.add(deleteTableButton);
 
-		returnButton = new JButton(new ImageIcon(getClass().getResource("return button.JPG")));
+		returnButton = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
 		returnButton.setBounds(865, 435, 120, 75);
 		returnButton.addActionListener(new ButtonListener());
 		tableManagementPanel.add(returnButton);
@@ -126,6 +139,13 @@ public class SetupDialog extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * ButtonListener Performs actions based on specific button
+	 * 
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 
 		/**
@@ -183,7 +203,6 @@ public class SetupDialog extends JDialog {
 					}
 					tableLayoutTableModel.removeRow(selectedRow);
 					tables.remove(selectedRow);
-					System.out.println("The table size is " + tables.size());
 				}
 			} else if (press.getSource() == returnButton) {
 				dispose();
@@ -191,6 +210,13 @@ public class SetupDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * TableLayoutTableModel The table model to display tables
+	 * 
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class TableLayoutTableModel extends AbstractTableModel {
 		/**
 		 * the names of each column in the table
@@ -310,7 +336,7 @@ public class SetupDialog extends JDialog {
 		/**
 		 * updateRow when an table is modified, the row must be then updated
 		 * 
-		 * @param table the recipe to place in the table and add to the current list of
+		 * @param table the table to place in the table and add to the current list of
 		 *              tables
 		 * @param row   the row that needs to be updated due to a change in the table
 		 */
@@ -379,14 +405,5 @@ public class SetupDialog extends JDialog {
 			this.tablesData = tablesData;
 			fireTableRowsInserted(0, getRowCount());
 		}
-
-//		/**
-//		 * clearAll
-//		 * clears all rows in the table
-//		 */
-//		public void clearAll() {
-//			setData(new List <Table>());
-//			fireTableDataChanged();
-//		}
 	}
 }

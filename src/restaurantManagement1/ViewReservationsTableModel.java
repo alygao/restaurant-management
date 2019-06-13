@@ -15,6 +15,14 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * ViewReservationsTableModel The table model to view reservations
+ * 
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
+
 public class ViewReservationsTableModel extends AbstractTableModel {
 	/**
 	 * the names of each column in the table

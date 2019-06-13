@@ -3,15 +3,17 @@ package restaurantManagement1;
 import java.io.Serializable;
 
 /**
- * Employee
+ * Employee 
+ * 
  * Abstract class for an employee
+ * 
  * @author Zaid Omer
  * @version 1.0
  * @date June 13, 2019
  */
 public abstract class Employee implements Serializable {
 
-	//VARIABLES
+	// VARIABLES
 	private String name;
 	private double pay;
 	private String userID;
@@ -23,29 +25,32 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * Employee constructor - assigns all values to variables
-	 * @param name employee name
-	 * @param pay employee pay
-	 * @param userID employee username for login
-	 * @param password employee password to login
+	 * 
+	 * @param name      employee name
+	 * @param pay       employee pay
+	 * @param userID    employee username for login
+	 * @param password  employee password to login
 	 * @param dateHired date employee is hired
-	 * @param email employee email
+	 * @param email     employee email
 	 * @param SINNumber employee Social Insurance Number
-	 * @param position specific employee position
+	 * @param position  specific employee position
 	 */
-    public Employee(String name, double pay, String userID, String password,  String dateHired, String email, String SINNumber, String position){
-    	this.name = name;
-    	this.pay = pay;
-    	this.userID = userID;
-    	this.password = password;
-    	this.dateHired = dateHired;
-    	this.email = email;
-    	this.SINNumber= SINNumber;
-    	this.setPosition(position);
-        
-    }
+	public Employee(String name, double pay, String userID, String password, String dateHired, String email,
+			String SINNumber, String position) {
+		this.name = name;
+		this.pay = pay;
+		this.userID = userID;
+		this.password = password;
+		this.dateHired = dateHired;
+		this.email = email;
+		this.SINNumber = SINNumber;
+		this.setPosition(position);
+
+	}
 
 	/**
 	 * Name getter
+	 * 
 	 * @return String the name of the employee
 	 */
 	public String getName() {
@@ -54,6 +59,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * Name setter
+	 * 
 	 * @param name value of employee name to set variable to
 	 */
 	public void setName(String name) {
@@ -62,6 +68,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * Pay getter
+	 * 
 	 * @return double - the hourly pay of the employee
 	 */
 	public double getPay() {
@@ -70,6 +77,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * Pay setter
+	 * 
 	 * @param pay the new value to set the pay variable to
 	 */
 	public void setPay(double pay) {
@@ -78,6 +86,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * UserID getter
+	 * 
 	 * @return String - the employee's userID
 	 */
 	public String getUserID() {
@@ -86,6 +95,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * UserID setter
+	 * 
 	 * @param userID the value to set the userID to
 	 */
 	public void setUserID(String userID) {
@@ -94,6 +104,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * password getter
+	 * 
 	 * @return String - the employee's password
 	 */
 	public String getPassword() {
@@ -102,6 +113,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * password setter
+	 * 
 	 * @param password the new value to set the employee password to
 	 */
 	public void setPassword(String password) {
@@ -110,6 +122,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * DateHired getter
+	 * 
 	 * @return String - the date the employee was hired
 	 */
 	public String getDateHired() {
@@ -118,6 +131,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * DateHired setter
+	 * 
 	 * @param dateHired the value to set the dateHired variable to
 	 */
 	public void setDateHired(String dateHired) {
@@ -126,6 +140,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * Email getter
+	 * 
 	 * @return String - the employee's email
 	 */
 	public String getEmail() {
@@ -134,6 +149,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * Email setter
+	 * 
 	 * @param email the value to set the email variable to
 	 */
 	public void setEmail(String email) {
@@ -142,6 +158,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * SINNumber getter
+	 * 
 	 * @return String - the employee's SIN Number
 	 */
 	public String getSINNumber() {
@@ -150,6 +167,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * SINNumber setter
+	 * 
 	 * @param SINNumber the value to set the SINNumber value to
 	 */
 	public void setSINNumber(String SINNumber) {
@@ -158,6 +176,7 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * Position getter
+	 * 
 	 * @return String the employee's specific position
 	 */
 	public String getPosition() {
@@ -166,11 +185,11 @@ public abstract class Employee implements Serializable {
 
 	/**
 	 * Position setter
+	 * 
 	 * @param position the value to set position variable to
 	 */
 	public void setPosition(String position) {
 		this.position = position;
 	}
-	
-	
+
 }

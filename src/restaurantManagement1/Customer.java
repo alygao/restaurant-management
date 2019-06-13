@@ -3,21 +3,24 @@ package restaurantManagement1;
 import java.io.Serializable;
 
 /**
- * Customer
+ * Customer 
+ * 
  * The class to hold all customer information
- * @author Alyysa Gao
+ * 
+ * @author Alyssa Gao
  * @version 1.0
  * @date June 13, 2019
  */
-public class Customer implements Serializable{
+public class Customer implements Serializable {
 
-	//VARIABLES
+	// VARIABLES
 	private String name;
 	private int numPeople;
 
 	/**
 	 * initializes the customer object, assigns values to name and numPeople
-	 * @param name the name of the customer
+	 * 
+	 * @param name      the name of the customer
 	 * @param numPeople the number of people in the party
 	 */
 	public Customer(String name, int numPeople) {
@@ -27,6 +30,7 @@ public class Customer implements Serializable{
 
 	/**
 	 * customer name getter
+	 * 
 	 * @return String the customer's name
 	 */
 	public String getName() {
@@ -35,6 +39,7 @@ public class Customer implements Serializable{
 
 	/**
 	 * customer name setter
+	 * 
 	 * @param name the new name of the customer to assign
 	 */
 	public void setName(String name) {
@@ -43,6 +48,7 @@ public class Customer implements Serializable{
 
 	/**
 	 * numPoeple getter
+	 * 
 	 * @return int the number of people at the table
 	 */
 	public int getNumPeople() {
@@ -51,6 +57,7 @@ public class Customer implements Serializable{
 
 	/**
 	 * numPeople setter
+	 * 
 	 * @param numPeople the new value for the number of people in the table
 	 */
 	public void setNumPeople(int numPeople) {

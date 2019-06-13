@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 /**
- * Project - RestaurantManagement Queue.java A File to make the queue
+ * Queue 
+ * 
+ * A File to make the queue
+ * 
  * @author Zaid Omer && Alyssa Gao
  * @version 1.0
  * @date June 13, 2019
@@ -13,8 +16,8 @@ class Queue<T> implements Serializable {
 	protected QueueNode<T> head;
 
 	/**
-	 * enqueue
-	 * adds node to the queue
+	 * enqueue adds node to the queue
+	 * 
 	 * @param nodeToAdd the node to add to the queue, of type QueueNode
 	 * @author Zaid Omer
 	 */
@@ -31,8 +34,8 @@ class Queue<T> implements Serializable {
 	}
 
 	/**
-	 * enqueue
-	 * adds the item passed through to the queue (as a node)
+	 * enqueue adds the item passed through to the queue (as a node)
+	 * 
 	 * @param item , the item to add to the queue, of type T
 	 * @author Zaid Omer
 	 */
@@ -50,8 +53,8 @@ class Queue<T> implements Serializable {
 	}
 
 	/**
-	 * dequeue
-	 * removes node from the queue
+	 * dequeue removes node from the queue
+	 * 
 	 * @return T the item in the node being removed
 	 * @author Zaid Omer
 	 */
@@ -62,8 +65,8 @@ class Queue<T> implements Serializable {
 	}
 
 	/**
-	 * size
-	 * finds the size of the queue
+	 * size finds the size of the queue
+	 * 
 	 * @author Zaid Omer
 	 * @return int the size calculated
 	 */
@@ -83,9 +86,10 @@ class Queue<T> implements Serializable {
 
 	/**
 	 * creates a queue iterator
+	 * 
 	 * @author Alyssa Gao
 	 * @return Iterator the queue iterator
-	 */	
+	 */
 	public Iterator iterator() {
 		return new QueueIterator();
 	}
@@ -93,7 +97,8 @@ class Queue<T> implements Serializable {
 	/**
 	 * QueueIterator
 	 * 
-	 * The queue iterator that contains methods to help convert a queue to an arraylist
+	 * The queue iterator that contains methods to help convert a queue to an
+	 * arraylist
 	 * 
 	 * @author Alyssa Gao
 	 * @version 1.0

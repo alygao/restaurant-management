@@ -13,15 +13,17 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
 /**
- * FoodQuantityDialog
+ * FoodQuantityDialog 
+ * 
  * The Dialog used to select food quantity
- * @author Zaid Omer
+ * 
+ * @author Zaid Omer && Alyssa Gao
  * @version 1.0
  * @date June 13, 2019
  */
 public class FoodQuantityDialog extends JDialog {
 
-	//VARIABLES
+	// VARIABLES
 	private TableOrderItem tableOrderItem;
 	private TableOrder tableOrder;
 	private JPanel panel;
@@ -32,12 +34,12 @@ public class FoodQuantityDialog extends JDialog {
 
 	/**
 	 * FoodQuantityDialog constructor
-	 * @param menuItem the menu item ordered
-	 * @param waiter the waiter serving this order
+	 * 
+	 * @param menuItem   the menu item ordered
+	 * @param waiter     the waiter serving this order
 	 * @param tableOrder the table order variable
 	 */
 	public FoodQuantityDialog(MenuItem menuItem, Waiter waiter, TableOrder tableOrder) {
-		System.out.println(menuItem.getName());
 		this.tableOrderItem = new TableOrderItem(menuItem, waiter, tableOrder);
 		this.tableOrder = tableOrder;
 		initUI();
@@ -87,8 +89,8 @@ public class FoodQuantityDialog extends JDialog {
 
 					boolean orderBefore = false;
 					for (int i = 0; i < tableOrder.getOrderItems().size(); i++) {
-						if (tableOrder.getOrderItems().get(i).getMenuItem().equals(tableOrderItem.getMenuItem())
-								&& !tableOrder.getOrderItems().get(i).isFired()) {
+						if ((tableOrder.getOrderItems().get(i).getMenuItem().equals(tableOrderItem.getMenuItem()))
+								&& (!tableOrder.getOrderItems().get(i).isFired())) {
 							tableOrder.getOrderItems().get(i)
 									.setQuantity(tableOrder.getOrderItems().get(i).getQuantity() + quantity);
 							orderBefore = true;

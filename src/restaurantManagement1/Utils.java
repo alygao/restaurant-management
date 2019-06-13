@@ -18,65 +18,68 @@ import java.util.List;
 
 public class Utils {
 
-	//Variables
+	// Variables
 	public static String DateFormatPattern = "MMMM d, yyyy";
 	public static String TimeFormatPattern = "h:ma";
-//	public static String DateFormatPattern = "yyyy-MM-dd";
-//	public static String TimeFormatPattern = "HH:mm";
 
 	/**
 	 * gets the date formatted
+	 * 
 	 * @return the date formatted
 	 */
-	public static DateTimeFormatter getDateFormatter ( ) {
-		return DateTimeFormatter.ofPattern( DateFormatPattern );
+	public static DateTimeFormatter getDateFormatter() {
+		return DateTimeFormatter.ofPattern(DateFormatPattern);
 	}
 
 	/**
 	 * gets the list of dates formatted
+	 * 
 	 * @return the list of dates formatted
 	 */
-	public static ArrayList<DateTimeFormatter> getDateFormatters ( ) {
+	public static ArrayList<DateTimeFormatter> getDateFormatters() {
 		ArrayList<DateTimeFormatter> dateFormatters = new ArrayList<>();
-		dateFormatters.add( getDateFormatter() );
+		dateFormatters.add(getDateFormatter());
 		return dateFormatters;
 	}
 
 	/**
 	 * gets the time formatted
+	 * 
 	 * @return the time formatted
 	 */
-	public static DateTimeFormatter getTimeFormatter ( ) {
-		return DateTimeFormatter.ofPattern( TimeFormatPattern );
+	public static DateTimeFormatter getTimeFormatter() {
+		return DateTimeFormatter.ofPattern(TimeFormatPattern);
 	}
 
 	/**
 	 * gets the list of times formatted
+	 * 
 	 * @return the list of times formatted
 	 */
-	public static List<DateTimeFormatter> getTimeFormatters ( ) {
+	public static List<DateTimeFormatter> getTimeFormatters() {
 		List<DateTimeFormatter> dateFormatters = new ArrayList<>();
-		dateFormatters.add( getTimeFormatter() );
+		dateFormatters.add(getTimeFormatter());
 		return dateFormatters;
 	}
 
 	/**
 	 * converts a string to local date
+	 * 
 	 * @param dateString the date in string format
 	 * @return the date in LocalDate format
 	 */
-	public static LocalDate convertToLocalDate ( String dateString ) {
-		return LocalDate.parse( dateString, getDateFormatter() );
+	public static LocalDate convertToLocalDate(String dateString) {
+		return LocalDate.parse(dateString, getDateFormatter());
 	}
 
 	/**
 	 * converts a string to local time
+	 * 
 	 * @param timeString the date in string format
 	 * @return the time in LocalTime format
 	 */
-	public static LocalTime convertToLocalTime ( String timeString ) {
-		return LocalTime.parse( timeString.toUpperCase(), DateTimeFormatter.ofPattern( TimeFormatPattern ));
+	public static LocalTime convertToLocalTime(String timeString) {
+		return LocalTime.parse(timeString.toUpperCase(), DateTimeFormatter.ofPattern(TimeFormatPattern));
 	}
-
 
 }

@@ -2,37 +2,56 @@ package restaurantManagement1;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.AbstractTableModel;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.AbstractTableModel;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
- * AddFoodDialog
- * The dialog used to select menu items fot a tale's order
+ * AddFoodDialog 
+ * 
+ * The dialog used to select menu items for a table's order
+ * 
  * @author Zaid Omer && Alyssa Gao
  * @version 1.0
  * @date June 13, 2019
  */
+
 public class AddFoodDialog extends JDialog {
 
-	//VARIABLES
-	private Utils utils;
+	// VARIABLES
 	private Restaurant restaurant;
 	private ImageIcon homepageBackground;
 	private String tableName;
@@ -72,23 +91,37 @@ public class AddFoodDialog extends JDialog {
 	private final DecimalFormat currencyFormat = new DecimalFormat("##0.00");
 
 	/**
-	 * Initializes restaurant, calls the UI method, and uses
-	 * the selected row from previous dialog to find the table this order is for
+	 * Initializes restaurant, calls the UI method, and uses the selected row from
+	 * previous dialog to find the table this order is for
+	 * 
 	 * @param restaurant
 	 * @param selectedRow
-	 * @author Zaid Omer
+	 * @author Zaid Omer && Alyssa Gao
 	 */
 	public AddFoodDialog(Restaurant restaurant, int selectedRow) {
-		utils = new Utils();
+		if (!(restaurant.getCurrentUser() instanceof Waiter)) {
+			JOptionPane.showMessageDialog(null, "Only a waiter can view tables and add orders.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
 		this.restaurant = restaurant;
 		this.tables = restaurant.getTables();
 		table = tables.get(selectedRow);
 		this.currentOrder = table.getCurrentOrder();
+		
+		if (restaurant.getCurrentUser() != table.getCurrentAssignedWaiter()) {
+			JOptionPane.showMessageDialog(null, "Only the assigned waiter can serve and take orders.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
 		initUI();
 	}
 
 	/**
 	 * initializes the user interface
+	 * 
 	 * @author Zaid Omer && Alyssa Gao
 	 */
 	public void initUI() {
@@ -102,44 +135,44 @@ public class AddFoodDialog extends JDialog {
 		tablesFoodPanel = new JPanel();
 		tablesFoodPanel.setLayout(null);
 
-		//Fire Order Button
+		// Fire Order Button
 		fireOrderButton = new JButton(new ImageIcon(getClass().getResource("fire order button.JPG")));
 		fireOrderButton.setBounds(865, 75, 120, 75);
 		fireOrderButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(fireOrderButton);
 
-		//Pay Button
+		// Pay Button
 		payButton = new JButton(new ImageIcon(getClass().getResource("pay button.JPG")));
 		payButton.setBounds(865, 165, 120, 75);
 		payButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(payButton);
 
-		//Release Table Button
+		// Release Table Button
 		releaseTableButton = new JButton(new ImageIcon(getClass().getResource("release table button.JPG")));
 		releaseTableButton.setBounds(865, 255, 120, 75);
 		releaseTableButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(releaseTableButton);
 
-		//Return to Home Button
+		// Return to Home Button
 		returnToHomepageButton = new JButton(new ImageIcon(getClass().getResource("return button.JPG")));
 		returnToHomepageButton.setBounds(865, 435, 120, 75);
 		returnToHomepageButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(returnToHomepageButton);
 
-		//Delete Item Button
+		// Delete Item Button
 		deleteItemButton = new JButton(new ImageIcon(getClass().getResource("delete button.JPG")));
 		deleteItemButton.setBounds(590, 410, 120, 50);
 		deleteItemButton.addActionListener(new ButtonListener());
 		tablesFoodPanel.add(deleteItemButton);
 
-		//Basic Table Information Label
+		// Basic Table Information Label
 		tableName = table.getTableName();
 		customerName = table.getCustomer().getName();
 		tableSize = table.getNumSeats();
 		waiter = table.getCurrentAssignedWaiter();
 		tableInfoLabel = new JLabel("<html>Table " + tableName + "<p>" + "Customer: " + customerName + "<p>"
 				+ "Table Size: " + tableSize + "<p>" + "Served by: " + waiter.getName() + "</html>");
-		tableInfoLabel.setBounds(25, -200, 100, 600);
+		tableInfoLabel.setBounds(25, -200, 200, 600);
 		tablesFoodPanel.add(tableInfoLabel);
 		tablesFoodPanel.add(returnToHomepageButton);
 
@@ -152,7 +185,7 @@ public class AddFoodDialog extends JDialog {
 		totalPriceLabel.setBounds(500, 530, 100, 30);
 		tablesFoodPanel.add(totalPriceLabel);
 
-		//Price Text Fields
+		// Price Text Fields
 		subTotalTextField = new JTextField(currencyFormat.format(currentOrder.getSubtotal()));
 		subTotalTextField.setBounds(600, 500, 100, 30);
 		subTotalTextField.setEditable(false);
@@ -252,8 +285,9 @@ public class AddFoodDialog extends JDialog {
 	}
 
 	/**
-	 * changeCost decreases total and subtotal based on the item selected
-	 * Used when item is removed from the order
+	 * changeCost decreases total and subtotal based on the item selected Used when
+	 * item is removed from the order
+	 * 
 	 * @param tableOrderItem
 	 * @author Alyssa Gao
 	 */
@@ -264,8 +298,8 @@ public class AddFoodDialog extends JDialog {
 	}
 
 	/**
-	 * refreshCosts
-	 * refreshes costs in text field when changes occur
+	 * refreshCosts refreshes costs in text field when changes occur
+	 * 
 	 * @author Alyssa Gao
 	 */
 	public void refreshCosts() {
@@ -274,8 +308,92 @@ public class AddFoodDialog extends JDialog {
 	}
 
 	/**
-	 * Button Listener
-	 * Performs Action Based On Specific Button
+	 * Generate invoice in PDF format.
+	 * 
+	 * @param tableOrder the TableOrder object to generate the invoice PDF file.
+	 * @param file       the File object to save the invoice
+	 * @author Alyssa Gao
+	 */
+	public void generateInvoice(TableOrder tableOrder, File file) {
+
+		Document document = new Document();
+
+		try (FileOutputStream fos = new FileOutputStream(file)) {
+
+			PdfWriter.getInstance(document, fos);
+
+			// open
+			document.open();
+
+			Image img = Image.getInstance(getClass().getResource("freshqo logo - small.JPG"));
+
+			document.add(img);
+
+			Font titleFont = new Font();
+			titleFont.setStyle(Font.BOLD);
+			titleFont.setSize(18);
+
+			Paragraph p = new Paragraph();
+			p.add("Freshqo Restaurant - Invoice\n\n");
+			p.setAlignment(Element.ALIGN_CENTER);
+			p.setFont(titleFont);
+
+			document.add(p);
+
+			Font infoFont = new Font();
+			infoFont.setStyle(Font.NORMAL);
+			infoFont.setSize(12);
+
+			Paragraph p2 = new Paragraph();
+			p2.add("Customer Name: " + tableOrder.getTable().getCustomer().getName() + "\n");
+			p2.add("# of people: " + tableOrder.getTable().getCustomer().getNumPeople() + "\n");
+			p2.add("Table: " + tableOrder.getTable().getTableName() + "\n");
+			p2.add("Date & Time: " + Utils.getDateFormatter().format(LocalDate.now()) + " "
+					+ Utils.getTimeFormatter().format(LocalTime.now()) + "\n");
+			p2.add("---------------------------------------------------------------------------------------------------\n");
+			p2.setFont(infoFont);
+
+			document.add(p2);
+
+			Font itemFont = new Font();
+			itemFont.setStyle(Font.NORMAL);
+			itemFont.setSize(10);
+			Paragraph p3 = new Paragraph();
+			for (TableOrderItem tableOrderItem : tableOrder.getOrderItems()) {
+				double price = tableOrderItem.getMenuItem().getPrice() * tableOrderItem.getQuantity();
+				p3.add(tableOrderItem.getMenuItem().getName() + ":   $" + price + " ( $"
+						+ tableOrderItem.getMenuItem().getPriceFormatted() + " @ " + tableOrderItem.getQuantity()
+						+ " )\n");
+			}
+			p3.setFont(itemFont);
+
+			document.add(p3);
+
+			Paragraph p6 = new Paragraph();
+			p6.add("---------------------------------------------------------------------------------------------------\n");
+			p6.add("Sub-total: $" + currencyFormat.format(tableOrder.getSubtotal()) + "\n");
+			p6.add("Tax: $" + (currencyFormat.format(tableOrder.getTotal() - tableOrder.getSubtotal())) + "\n");
+			p6.add("Total: $" + currencyFormat.format(tableOrder.getTotal()) + "\n");
+
+			Font totalFont = new Font();
+			totalFont.setStyle(Font.BOLD);
+			totalFont.setSize(12);
+			p6.setFont(totalFont);
+
+			document.add(p6);
+
+			document.close();
+
+		} catch (FileNotFoundException | DocumentException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Button Listener Performs Action Based On Specific Button
+	 * 
 	 * @author Zaid Omer && Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -289,7 +407,7 @@ public class AddFoodDialog extends JDialog {
 					if (!currentOrder.getOrderItems().get(i).isFired()) {
 						restaurant.getKitchenOrders().enqueue(currentOrder.getOrderItems().get(i));
 
-						//Add today's date to transaction
+						// Add today's date to transaction
 						String pattern = "yyyy-MM-dd";
 						SimpleDateFormat dateFormatting = new SimpleDateFormat(pattern);
 						String todaysDate = dateFormatting.format(new Date());
@@ -302,6 +420,8 @@ public class AddFoodDialog extends JDialog {
 				}
 				orderedItemsTableModel.clearAll();
 				orderedItemsTableModel.addRows(currentOrder.getOrderItems());
+				JOptionPane.showMessageDialog(null, "The order has been sent to the kitchen.");
+
 
 			} else if (press.getSource() == payButton) {
 				// add to past transactions
@@ -319,27 +439,42 @@ public class AddFoodDialog extends JDialog {
 				payButton.setVisible(false);
 				deleteItemButton.setVisible(false);
 
+				int ret = JOptionPane.showConfirmDialog(null, "Would you like to generate an invoice?",
+						"Generate Invoice", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					JFileChooser filesave = new JFileChooser();
+					FileFilter filter = new FileNameExtensionFilter("Invoice file", "pdf");
+					filesave.addChoosableFileFilter(filter);
+
+					ret = filesave.showDialog(null, "Save invoice file");
+					if (ret == JFileChooser.APPROVE_OPTION) {
+						File file = filesave.getSelectedFile();
+						generateInvoice(currentOrder, file);
+					}
+				}
+
 			} else if (press.getSource() == releaseTableButton) {
-//				boolean allServed;
-				
 				for (int i = 0; i < currentOrder.getOrderItems().size(); i++) {
-				if(!currentOrder.getOrderItems().get(i).isFired()){
-					JOptionPane.showMessageDialog(null, "Please remove all items that will not be fired to the kitchen.",
-							"Error", JOptionPane.ERROR_MESSAGE);
-					return;
-				}else if (currentOrder.getOrderItems().get(i).isFired() && currentOrder.getOrderItems().get(i).isServedToCustomer() == false) {
+					if (!currentOrder.getOrderItems().get(i).isFired()) {
+						JOptionPane.showMessageDialog(null,
+								"Please remove all items that will not be fired to the kitchen.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else if ((currentOrder.getOrderItems().get(i).isFired())
+							&& (currentOrder.getOrderItems().get(i).isServedToCustomer() == false)) {
 						JOptionPane.showMessageDialog(null, "Not all items have been served to the customer yet.",
 								"Error", JOptionPane.ERROR_MESSAGE);
 						return;
-					}else {
+					} else {
 						if (!currentOrder.hasPaid()) {
-							JOptionPane.showMessageDialog(null, "Items that have been served to the customer have not been paid yet.",
-									"Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null,
+									"Items that have been served to the customer have not been paid yet.", "Error",
+									JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 					}
 				}
-				
+
 				int response = JOptionPane.showConfirmDialog(null,
 						"Are you sure you want to release this table and set as unoccupied now?", "Release Table",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -392,26 +527,26 @@ public class AddFoodDialog extends JDialog {
 				JOptionPane.showMessageDialog(null, "Customer has now paid. You can't order any more items.", "Error",
 						JOptionPane.ERROR_MESSAGE);
 				return;
-			} else if (press.getClickCount() == 2 && appetizersTable.getSelectedRow() != -1) {
+			} else if ((press.getClickCount() == 2) && (appetizersTable.getSelectedRow() != -1)) {
 				appetizersTable = (JTable) press.getSource();
 				int row = appetizersTable.getSelectedRow();
 				appetizerOrdered = restaurant.getAppetizerMenu().get(row);
 				FoodQuantityDialog appetizerQuantityDialog = new FoodQuantityDialog(appetizerOrdered, waiter,
 						currentOrder);
 
-			} else if (press.getClickCount() == 2 && entreesTable.getSelectedRow() != -1) {
+			} else if ((press.getClickCount() == 2) && (entreesTable.getSelectedRow() != -1)) {
 				entreesTable = (JTable) press.getSource();
 				int row = entreesTable.getSelectedRow();
 				entreeOrdered = restaurant.getEntreeMenu().get(row);
 				FoodQuantityDialog entreeQuantityDialog = new FoodQuantityDialog(entreeOrdered, waiter, currentOrder);
 
-			} else if (press.getClickCount() == 2 && dessertsTable.getSelectedRow() != -1) {
+			} else if ((press.getClickCount() == 2) && (dessertsTable.getSelectedRow() != -1)) {
 				dessertsTable = (JTable) press.getSource();
 				int row = dessertsTable.getSelectedRow();
 				dessertOrdered = restaurant.getDessertMenu().get(row);
 				FoodQuantityDialog dessertQuantityDialog = new FoodQuantityDialog(dessertOrdered, waiter, currentOrder);
 
-			} else if (press.getClickCount() == 2 && beveragesTable.getSelectedRow() != -1) {
+			} else if ((press.getClickCount() == 2) && (beveragesTable.getSelectedRow() != -1)) {
 				beveragesTable = (JTable) press.getSource();
 				int row = beveragesTable.getSelectedRow();
 				beverageOrdered = restaurant.getBeverageMenu().get(row);
@@ -452,8 +587,8 @@ public class AddFoodDialog extends JDialog {
 	}
 
 	/**
-	 * FoodLayoutTableModel
-	 * The table model to display food items
+	 * FoodLayoutTableModel The table model to display food items
+	 * 
 	 * @author Zaid Omer
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -561,8 +696,8 @@ public class AddFoodDialog extends JDialog {
 		/**
 		 * updateRow when an table is modified, the row must be then updated
 		 *
-		 * @param menuItem the recipe to place in the table and add to the current list
-		 *                 of tables
+		 * @param menuItem the menu item to place in the table and add to the current list
+		 *                 of menu items
 		 * @param row      the row that needs to be updated due to a change in the table
 		 */
 		public void updateRow(MenuItem menuItem, int row) {
@@ -574,7 +709,7 @@ public class AddFoodDialog extends JDialog {
 		 * insertRow inserts a row in the table with a table
 		 *
 		 * @param position the position to put the row
-		 * @param menuItem the food to show on the table
+		 * @param menuItem the menu item to show on the table
 		 */
 		public void insertRow(int position, MenuItem menuItem) {
 			this.foodData.add(menuItem);
@@ -582,9 +717,9 @@ public class AddFoodDialog extends JDialog {
 		}
 
 		/**
-		 * addRow adds a row at the bottom of the table with a new recipe
+		 * addRow adds a row at the bottom of the table with a new menu item
 		 *
-		 * @param menuItem the food to be placed in the table
+		 * @param menuItem the menu item to be placed in the table
 		 */
 		public void addRow(MenuItem menuItem) {
 			insertRow(getRowCount(), menuItem);
@@ -621,9 +756,9 @@ public class AddFoodDialog extends JDialog {
 		}
 
 		/**
-		 * setData gets the list of tables
+		 * setData gets the list of menu items
 		 *
-		 * @param foodData the list of food items
+		 * @param foodData the list of menu item
 		 */
 		public void setData(List<MenuItem> foodData) {
 			this.foodData = foodData;
@@ -632,8 +767,8 @@ public class AddFoodDialog extends JDialog {
 	}
 
 	/**
-	 * OrderedItemsTableModel
-	 * The table model to display ordered items
+	 * OrderedItemsTableModel The table model to display ordered items
+	 * 
 	 * @author Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -751,8 +886,8 @@ public class AddFoodDialog extends JDialog {
 		/**
 		 * updateRow when an table is modified, the row must be then updated
 		 *
-		 * @param tableOrderItem the recipe to place in the table and add to the current
-		 *                       list of tables
+		 * @param tableOrderItem the table order item to place in the table and add to the current
+		 *                       list of table order items
 		 * @param row            the row that needs to be updated due to a change in the
 		 *                       table
 		 */
@@ -765,7 +900,7 @@ public class AddFoodDialog extends JDialog {
 		 * insertRow inserts a row in the table with a table
 		 *
 		 * @param position the position to put the row
-		 * @param menuItem the food to show on the table
+		 * @param tableOrderItem the table order item to show on the table
 		 */
 		public void insertRow(int position, TableOrderItem tableOrderItem) {
 			this.orderedItems.add(tableOrderItem);
@@ -775,7 +910,7 @@ public class AddFoodDialog extends JDialog {
 		/**
 		 * addRow adds a row at the bottom of the table with a new recipe
 		 *
-		 * @param menuItem the food to be placed in the table
+		 * @param tableOrderItem the table order item to be placed in the table
 		 */
 		public void addRow(TableOrderItem tableOrderItem) {
 			insertRow(getRowCount(), tableOrderItem);
@@ -784,7 +919,7 @@ public class AddFoodDialog extends JDialog {
 		/**
 		 * addRows adds 2+ rows into the table
 		 * 
-		 * @param menuItemList the list of menu items that are to be put into the table
+		 * @param tableOrderItemList the list of table order item that are to be put into the table
 		 */
 		public void addRows(List<TableOrderItem> tableOrderItemList) {
 			for (TableOrderItem tableOrderItem : tableOrderItemList) {
@@ -803,24 +938,27 @@ public class AddFoodDialog extends JDialog {
 		}
 
 		/**
-		 * getData gets the list of tables
+		 * getData gets the list of table order items
 		 *
-		 * @return the list of menu items
+		 * @return the list of table order items
 		 */
 		public List<TableOrderItem> getData() {
 			return orderedItems;
 		}
 
 		/**
-		 * setData gets the list of tables
+		 * setData gets the list of table order items
 		 *
-		 * @param foodData the list of food items
+		 * @param foodData the list of ftable order items
 		 */
 		public void setData(List<TableOrderItem> orderedItems) {
 			this.orderedItems = orderedItems;
 			fireTableRowsInserted(0, getRowCount());
 		}
 
+		/**
+		 * clearAll clears the table
+		 */
 		public void clearAll() {
 			for (int i = orderedItems.size() - 1; i >= 0; i--) {
 				removeRow(i);

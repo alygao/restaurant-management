@@ -2,8 +2,6 @@ package restaurantManagement1;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +25,11 @@ import javax.swing.table.AbstractTableModel;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
-import restaurantManagement1.AddReservationDialog.AvailableReservationTableModel;
-import restaurantManagement1.OrderDialog.ButtonListener;
-
 /**
- * Project - Freshqo
- * EmployeeDialog.java
+ * EmployeeDialog 
+ * 
  * A File to Create the Employee Dialog Pop-up
+ * 
  * @author Zaid Omer && Alyssa Gao
  * @version June 13, 2019
  */
@@ -46,7 +42,6 @@ public class EmployeeDialog extends JDialog {
 	private JTextField userIDTextField;
 	private JPasswordField passwordTextField;
 	private JButton createEmployee;
-	private JTextField phoneNumberTextField;
 	private JTextField emailTextField;
 	private JTextField SINNumberTextField;
 	private DatePicker datePicker;
@@ -54,9 +49,6 @@ public class EmployeeDialog extends JDialog {
 	private JRadioButton waiterRadioButton;
 	private JRadioButton managerRadioButton;
 	private boolean numeric = true;
-	private Chef newChef;
-	private Waiter newWaiter;
-	private Manager newManager;
 	private ViewEmployeesTableModel viewEmployeesTableModel;
 	private JTable viewEmployeesTable;
 	private JButton searchButton;
@@ -73,9 +65,15 @@ public class EmployeeDialog extends JDialog {
 
 	/**
 	 * initializes the restaurant and calls the initialize user interface method
+	 * 
 	 * @param restaurant the restaurant
 	 */
 	EmployeeDialog(Restaurant restaurant) {
+		if (!(restaurant.getCurrentUser() instanceof Manager)) {
+			JOptionPane.showMessageDialog(null, "Only a manager can access the employee button.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		this.restaurant = restaurant;
 		initUI();
 	}
@@ -85,7 +83,7 @@ public class EmployeeDialog extends JDialog {
 	 */
 	public void initUI() {
 
-		//The Following up until indicated written by Zaid Omer
+		// The Following up until indicated written by Zaid Omer
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
 		setUndecorated(true);
@@ -103,7 +101,6 @@ public class EmployeeDialog extends JDialog {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Add Employee", null, addEmployeesPanel);
 		tabbedPane.addTab("View Employees", null, viewEmployeesPanel);
-
 
 		// Add Employee Panel Setup
 
@@ -178,35 +175,26 @@ public class EmployeeDialog extends JDialog {
 		datePicker.getComponentDateTextField().setEditable(false);
 		addEmployeesPanel.add(datePicker);
 
-		// Phone Number
-		JLabel phoneNumberLabel = new JLabel("Phone Number:");
-		phoneNumberLabel.setBounds(400, 150, 200, 30);
-		addEmployeesPanel.add(phoneNumberLabel);
-
-		phoneNumberTextField = new JTextField();
-		phoneNumberTextField.setBounds(525, 150, 200, 30);
-		addEmployeesPanel.add(phoneNumberTextField);
-
 		// Email
 		JLabel emailLabel = new JLabel("Email:");
-		emailLabel.setBounds(400, 200, 200, 30);
+		emailLabel.setBounds(400, 150, 200, 30);
 		addEmployeesPanel.add(emailLabel);
 
 		emailTextField = new JTextField();
-		emailTextField.setBounds(525, 200, 200, 30);
+		emailTextField.setBounds(525, 150, 200, 30);
 		addEmployeesPanel.add(emailTextField);
 
 		// SIN Number
 		JLabel SINNumberLabel = new JLabel("SIN Number:");
-		SINNumberLabel.setBounds(400, 250, 200, 30);
+		SINNumberLabel.setBounds(400, 200, 200, 30);
 		addEmployeesPanel.add(SINNumberLabel);
 
 		SINNumberTextField = new JTextField();
-		SINNumberTextField.setBounds(525, 250, 200, 30);
+		SINNumberTextField.setBounds(525, 200, 200, 30);
 		addEmployeesPanel.add(SINNumberTextField);
 
 		// Submit data, make employee
-		createEmployee = new JButton("Add Employee");
+		createEmployee = new JButton(new ImageIcon(getClass().getResource("add employee button.JPG")));
 		createEmployee.setBounds(865, 75, 120, 75);
 		createEmployee.addActionListener(new ButtonListener());
 		addEmployeesPanel.add(createEmployee);
@@ -234,12 +222,12 @@ public class EmployeeDialog extends JDialog {
 		employeeTypeGroup.add(searchWaiterRadioButton);
 		employeeTypeGroup.add(searchManagerRadioButton);
 
-		searchButton = new JButton("Search");
+		searchButton = new JButton(new ImageIcon(getClass().getResource("search employee button.JPG")));
 		searchButton.setBounds(865, 75, 120, 75);
 		searchButton.addActionListener(new ButtonListener());
 		viewEmployeesPanel.add(searchButton);
 
-		deleteEmployeeButton = new JButton("Delete Employee");
+		deleteEmployeeButton = new JButton(new ImageIcon(getClass().getResource("delete employee button.JPG")));
 		deleteEmployeeButton.setBounds(865, 165, 120, 75);
 		deleteEmployeeButton.addActionListener(new ButtonListener());
 		viewEmployeesPanel.add(deleteEmployeeButton);
@@ -277,8 +265,8 @@ public class EmployeeDialog extends JDialog {
 	}
 
 	/**
-	 * ButtonListener
-	 * Performs actions based on specific button
+	 * ButtonListener Performs actions based on specific button
+	 * 
 	 * @author Zaid Omer && Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -288,14 +276,15 @@ public class EmployeeDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
+		 * 
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
 			if (press.getSource() == createEmployee) {
 				if ((employeeNameTextField.getText().isEmpty()) || (payTextField.getText().isEmpty())
 						|| (userIDTextField.getText().isEmpty()) || (passwordTextField.getText().isEmpty())
-						|| (datePicker.getText().isEmpty()) || (phoneNumberTextField.getText().isEmpty())
-						|| (emailTextField.getText().isEmpty()) || (SINNumberTextField.getText().isEmpty())) {
+						|| (datePicker.getText().isEmpty()) || (emailTextField.getText().isEmpty())
+						|| (SINNumberTextField.getText().isEmpty())) {
 					JOptionPane.showMessageDialog(null, "Please enter all required info.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
@@ -315,9 +304,10 @@ public class EmployeeDialog extends JDialog {
 								JOptionPane.ERROR_MESSAGE);
 						numeric = false;
 					}
-					
-					if (restaurant.getEmployees().size() == 0 && !managerRadioButton.isSelected()) {
-						JOptionPane.showMessageDialog(null, "Please first create a manager before creating other employees.", "Error",
+
+					if ((restaurant.getEmployees().size() == 0) && (!managerRadioButton.isSelected())) {
+						JOptionPane.showMessageDialog(null,
+								"Please first create a manager before creating other employees.", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
 					if (numeric) {
@@ -327,30 +317,30 @@ public class EmployeeDialog extends JDialog {
 						String password = new String(passwordTextField.getPassword());
 
 						String dateHired = datePicker.getText();
-						String phoneNumber = phoneNumberTextField.getText();
 						String email = emailTextField.getText();
 						String SINNumber = SINNumberTextField.getText();
 
 						if (chefRadioButton.isSelected()) {
-							newChef = new Chef(employeeName, pay, userID, password, dateHired, email, SINNumber,
-									"Chef");
+							Employee newChef = new Chef(employeeName, pay, userID, password, dateHired, email,
+									SINNumber, "Chef");
 							restaurant.addEmployee(newChef);
+							viewEmployeesTableModel.addRow(newChef);
 
 						} else if (waiterRadioButton.isSelected()) {
-							newWaiter = new Waiter(employeeName, pay, userID, password, dateHired, email, SINNumber,
-									"Waiter");
+							Employee newWaiter = new Waiter(employeeName, pay, userID, password, dateHired, email,
+									SINNumber, "Waiter");
 							restaurant.addEmployee(newWaiter);
+							viewEmployeesTableModel.addRow(newWaiter);
 						} else {
-							newManager = new Manager(employeeName, pay, userID, password, dateHired, email, SINNumber,
-									"Manager");
+							Employee newManager = new Manager(employeeName, pay, userID, password, dateHired, email,
+									SINNumber, "Manager");
 							restaurant.addEmployee(newManager);
+							viewEmployeesTableModel.addRow(newManager);
 						}
 						JOptionPane.showMessageDialog(null, employeeName + " has been added.");
-						dispose();
 					}
 				}
 			} else if (press.getSource() == searchButton) {
-				System.out.println(restaurant.getEmployees().size());
 				if (searchWaiterRadioButton.isSelected()) {
 					viewEmployeesTableModel.clearAll();
 					viewEmployeesTableModel.addWaiterRows((restaurant.getWaiters()));
@@ -380,7 +370,7 @@ public class EmployeeDialog extends JDialog {
 					}
 				}
 
-				if (employee instanceof Manager && restaurant.getManagers().size() == 1) {
+				if ((employee instanceof Manager) && (restaurant.getManagers().size() == 1)) {
 					JOptionPane.showMessageDialog(null, "You must have at least one maanger at all times.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
@@ -389,15 +379,15 @@ public class EmployeeDialog extends JDialog {
 				viewEmployeesTableModel.removeRow(selectedRow);
 				restaurant.getEmployees().remove(employee);
 
-			} else if (press.getSource() == returnToHomeButton1 || press.getSource() == returnToHomeButton2) {
+			} else if ((press.getSource() == returnToHomeButton1) || (press.getSource() == returnToHomeButton2)) {
 				dispose();
 			}
 		}
 	}
 
 	/**
-	 * ViewEmployeesTableModel
-	 * The table model to display employees
+	 * ViewEmployeesTableModel The table model to display employees
+	 * 
 	 * @author Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -520,7 +510,7 @@ public class EmployeeDialog extends JDialog {
 		 * updateRow when an table is modified, the row must be then updated
 		 * 
 		 * @param employee the employee to place in the table and add to the current
-		 *                 list of tables
+		 *                 list of employees
 		 * @param row      the row that needs to be updated due to a change in the table
 		 */
 		public void updateRow(Employee employee, int row) {
@@ -533,7 +523,7 @@ public class EmployeeDialog extends JDialog {
 		 * 
 		 * @param position the position to put the row
 		 * @param employee the employee to place in the table and add to the current
-		 *                 list of tables
+		 *                 list of employees
 		 */
 		public void insertRow(int position, Employee employee) {
 			this.employees.add(employee);
@@ -541,7 +531,7 @@ public class EmployeeDialog extends JDialog {
 		}
 
 		/**
-		 * addRow adds a row at the bottom of the table with a new reservation
+		 * addRow adds a row at the bottom of the table
 		 * 
 		 * @param employee the employee to be placed in the table
 		 */
@@ -596,7 +586,7 @@ public class EmployeeDialog extends JDialog {
 		/**
 		 * removeRow removes a specific row in the table
 		 * 
-		 * @param position the position of the reservation to be removed
+		 * @param position the position of the employee to be removed
 		 */
 		public void removeRow(int position) {
 			this.employees.remove(position);
@@ -613,9 +603,9 @@ public class EmployeeDialog extends JDialog {
 		}
 
 		/**
-		 * setData gets the list of reservations
+		 * setData gets the list of employees
 		 * 
-		 * @param employees the list of tables
+		 * @param employees the list of employees
 		 */
 		public void setData(List<Employee> employees) {
 			this.employees = employees;
@@ -623,8 +613,7 @@ public class EmployeeDialog extends JDialog {
 		}
 
 		/**
-		 * clearAll
-		 * clears all rows on the table
+		 * clearAll clears all rows on the table
 		 */
 		public void clearAll() {
 			for (int i = employees.size() - 1; i >= 0; i--) {

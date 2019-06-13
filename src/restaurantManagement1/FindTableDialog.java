@@ -15,15 +15,17 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
 /**
- * FindTableDialog
+ * FindTableDialog 
+ * 
  * The dialog used to find a table
+ * 
  * @author Alyssa Gao
  * @version 1.0
  * @date June 13, 2019
  */
 public class FindTableDialog extends JDialog {
 
-	//VARIABLES
+	// VARIABLES
 	private Restaurant restaurant;
 	private JPanel panel;
 	private ImageIcon background;
@@ -34,6 +36,7 @@ public class FindTableDialog extends JDialog {
 
 	/**
 	 * initializes the restaurant and calls the initialize user interface method
+	 * 
 	 * @param restaurant the restaurant
 	 */
 	public FindTableDialog(Restaurant restaurant) {
@@ -120,5 +123,4 @@ public class FindTableDialog extends JDialog {
 
 		setVisible(true);
 	}
-
 }

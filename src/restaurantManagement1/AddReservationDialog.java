@@ -30,39 +30,53 @@ import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 
+/**
+ * AddReservationDialog 
+ * 
+ * The dialog used to add a reservation
+ * 
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
+
 public class AddReservationDialog extends JDialog {
 
+	// Variables
 	private Restaurant restaurant;
 	private ViewReservationsTableModel viewReservationsTableModel;
-
 	private List<Table> availableTableForReservation;
 	private ReservationDateTime reserveTimePeriod;
 	private Reservation reservation;
-
 	private JTextField reserveNameTextField;
 	private JSpinner numPeopleSpinner;
 	private DatePicker datePicker;
 	private TimePicker timePicker;
-
 	private JPanel panel;
 	private JButton findAvailabilityButton;
 	private JButton bookReservationButton;
 	private JButton returnToViewReservationsButton;
-
 	private AvailableReservationTableModel reserveTableModel;
 	private JTable possibleReserveTablesTable;
-
 	private ImageIcon homepageBackground;
 	private JLabel homepageBackgroundLabel;
-
 	private AddReservationDialog self = this;
 
+	/**
+	 * initializes restaurant and table model and user interface
+	 * 
+	 * @param restaurant
+	 * @param viewReservationsTableModel
+	 */
 	public AddReservationDialog(Restaurant restaurant, ViewReservationsTableModel viewReservationsTableModel) {
 		this.restaurant = restaurant;
 		this.viewReservationsTableModel = viewReservationsTableModel;
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -101,7 +115,7 @@ public class AddReservationDialog extends JDialog {
 		panel.add(timeLabel);
 		TimePickerSettings timeSettings = new TimePickerSettings();
 		timeSettings.setColor(TimeArea.TimePickerTextValidTime, Color.black);
-		timeSettings.setFormatForDisplayTime( Utils.TimeFormatPattern );
+		timeSettings.setFormatForDisplayTime(Utils.TimeFormatPattern);
 		LocalTime now = LocalTime.now();
 		int hour = now.getHour();
 		int minute = now.getMinute();
@@ -132,7 +146,7 @@ public class AddReservationDialog extends JDialog {
 		panel.add(dateLabel);
 		DatePickerSettings dateSettings = new DatePickerSettings();
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		dateSettings.setFormatForDatesCommonEra( Utils.getDateFormatter() );
+		dateSettings.setFormatForDatesCommonEra(Utils.getDateFormatter());
 		datePicker = new DatePicker(dateSettings);
 		dateSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusDays(60));
 		datePicker.setBounds(150, 250, 200, 30);
@@ -190,30 +204,29 @@ public class AddReservationDialog extends JDialog {
 		homepageBackgroundLabel.setBounds(0, 0, 1000, 600);
 		panel.add(homepageBackgroundLabel);
 
-
 		setVisible(true);
 
 	}
 
+	/**
+	 * displayAvailableTables displays a table of available tables for reservation
+	 * 
+	 * @param availableTableForReservation available tables for reservation
+	 */
 	public void displayAvailableTables(List<Table> availableTableForReservation) {
 
 		bookReservationButton.setVisible(true);
 		possibleReserveTablesTable.setVisible(true);
-
 		reserveTableModel.setData(availableTableForReservation);
-
-//		reserveTableModel = new AvailableReservationTableModel();
-//		possibleReserveTablesTable = new JTable(reserveTableModel);
-//		possibleReserveTablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		possibleReserveTablesTable.setBounds(500, 50, 200, 400);
-//		reserveTableModel.addRows(availableTableForReservation);
-//
-//		JScrollPane tableListScrollPane = new JScrollPane(possibleReserveTablesTable);
-//		tableListScrollPane.setBounds(500, 50, 200, 400);
-//		panel.add(tableListScrollPane);
-
 	}
 
+	/**
+	 * Button Listener Performs Action Based On Specific Button
+	 * 
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 
 		/**
@@ -238,7 +251,7 @@ public class AddReservationDialog extends JDialog {
 				self.displayAvailableTables(availableTableForReservation);
 			} else if (press.getSource() == bookReservationButton) {
 				String reservationName = reserveNameTextField.getText();
-				if (reservationName == null || reservationName.trim().length() == 0) {
+				if ((reservationName == null) || (reservationName.trim().length() == 0)) {
 					JOptionPane.showMessageDialog(null, "Please input a reservation name.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
@@ -321,10 +334,10 @@ public class AddReservationDialog extends JDialog {
 
 			Table table = this.reserveTablesData.get(row);
 			switch (col) {
-				case 0:
-					return table.getTableName();
-				default:
-					return table.getNumSeats();
+			case 0:
+				return table.getTableName();
+			default:
+				return table.getNumSeats();
 			}
 		}
 
@@ -362,11 +375,11 @@ public class AddReservationDialog extends JDialog {
 		public void setValueAt(Object value, int row, int col) {
 			Table table = this.reserveTablesData.get(row);
 			switch (col) {
-				case 0:
-					table.setTableName((String) value);
-					break;
-				default:
-					table.setNumSeats((int) value);
+			case 0:
+				table.setTableName((String) value);
+				break;
+			default:
+				table.setNumSeats((int) value);
 			}
 
 			fireTableCellUpdated(row, col);
@@ -375,7 +388,7 @@ public class AddReservationDialog extends JDialog {
 		/**
 		 * updateRow when an table is modified, the row must be then updated
 		 *
-		 * @param table the recipe to place in the table and add to the current list of
+		 * @param table the table to place in the table and add to the current list of
 		 *              tables
 		 * @param row   the row that needs to be updated due to a change in the table
 		 */
@@ -419,7 +432,7 @@ public class AddReservationDialog extends JDialog {
 		/**
 		 * removeRow removes a specific row in the table
 		 *
-		 * @param position the position of the recipe to be removed
+		 * @param position the position of the table to be removed
 		 */
 		public void removeRow(int position) {
 			this.reserveTablesData.remove(position);

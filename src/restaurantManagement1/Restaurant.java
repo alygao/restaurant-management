@@ -1,10 +1,10 @@
 package restaurantManagement1;
 
-import java.awt.Toolkit;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,19 +24,26 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import restaurantManagement1.OrderDialog.ButtonListener;
+/**
+ * Restaurant 
+ * 
+ * The main class that stores all variables from reservations,
+ * tables, menu, waiting list, etc.
+ * 
+ * @author Zaid Omer && Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
 
 public class Restaurant extends JFrame {
 
+	// Variables
 	private List<Table> tables = new DoublyLinkedList<>();
 	private List<Reservation> reservationBook = new DoublyLinkedList<>();
 	private List<MenuItem> menu = new DoublyLinkedList<>();
@@ -44,7 +51,6 @@ public class Restaurant extends JFrame {
 	private Queue<TableOrderItem> kitchenOrders = new Queue<>();
 	private List<Employee> employees = new DoublyLinkedList<>();
 	private List<TableOrder> historicalTransactions = new DoublyLinkedList<>();
-	private double revenue = 0;
 	private Employee currentUser;
 	private Restaurant self = this;
 	private JPanel mainPanel;
@@ -67,6 +73,11 @@ public class Restaurant extends JFrame {
 	private JButton closeFileButton;
 	private JLabel employeeNameLabel;
 
+	/**
+	 * main the entry point (main method) of the restaurant management program
+	 * 
+	 * @param args command-line argument. It is not used in the app.
+	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -77,10 +88,16 @@ public class Restaurant extends JFrame {
 		});
 	}
 
+	/**
+	 * initializes user interface
+	 */
 	public Restaurant() {
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		mainPanel = new JPanel();
@@ -172,18 +189,7 @@ public class Restaurant extends JFrame {
 		});
 
 		loadConfigurationAndData();
-		if (employees.size() == 0) {
-			JOptionPane.showMessageDialog(null,
-					"Welcome to Freshqo! As there are currently no employees added, there will be an already set username and password to login.");
-			JOptionPane.showMessageDialog(null,
-					"Once logged in, please add a manager to the database before creating any other employees.");
-			String newPassword = JOptionPane.showInputDialog(
-					"A default user is created for you. UserID: manager. Please enter a new password.");
-			System.out.println(newPassword);
-
-			Manager newManager = new Manager("Manager", 0.0, "manager", newPassword, "", "", "", "Manager");
-			addEmployee(newManager);
-		}
+		login();
 
 		disableButtons();
 
@@ -243,7 +249,7 @@ public class Restaurant extends JFrame {
 
 	/**
 	 * loadDataFile load the RecipeDatabase from the file specified by the filename.
-	 *
+	 * 
 	 * @param filename the file name of the database file.
 	 * @throws FileNotFoundException  if the file cannot be found
 	 * @throws IOException            if there is an error in reading the file
@@ -258,7 +264,7 @@ public class Restaurant extends JFrame {
 
 	/**
 	 * loadDataFile load the RecipeDatabase from the file specified.
-	 *
+	 * 
 	 * @param file the File object defining the database file.
 	 * @throws FileNotFoundException  if the file cannot be found
 	 * @throws IOException            if there is an error in reading the file
@@ -269,7 +275,6 @@ public class Restaurant extends JFrame {
 	@SuppressWarnings("unchecked")
 	private void loadDataFile(File file)
 			throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException {
-		System.out.println(file.getAbsolutePath());
 		this.configuration.setProperty("database.filename", file.getAbsolutePath());
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
 			tables = (List<Table>) ois.readObject();
@@ -299,7 +304,7 @@ public class Restaurant extends JFrame {
 
 	/**
 	 * saveDataFile converts the String filename into a file
-	 *
+	 * 
 	 * @param filename the name of the file to be saved
 	 */
 	private void saveDataFile(String filename) {
@@ -308,7 +313,7 @@ public class Restaurant extends JFrame {
 
 	/**
 	 * saveDataFile saves the data into a file
-	 *
+	 * 
 	 * @param file the file which will hold the saved data
 	 */
 	private void saveDataFile(File file) {
@@ -375,10 +380,20 @@ public class Restaurant extends JFrame {
 		}
 	}
 
+	/**
+	 * getMenu gets the menu
+	 * 
+	 * @return the menu
+	 */
 	public List<MenuItem> getMenu() {
 		return menu;
 	}
 
+	/**
+	 * getAppetizerMenu gets the appetizer menu
+	 * 
+	 * @return the appetizer menu
+	 */
 	public List<MenuItem> getAppetizerMenu() {
 		List<MenuItem> appetizerMenu = new ArrayList<>();
 		for (int i = 0; i < menu.size(); i++) {
@@ -389,6 +404,11 @@ public class Restaurant extends JFrame {
 		return appetizerMenu;
 	}
 
+	/**
+	 * getEntreeMenu gets the entree menu
+	 * 
+	 * @return the entree menu
+	 */
 	public List<MenuItem> getEntreeMenu() {
 		List<MenuItem> entreeMenu = new ArrayList<>();
 		for (int i = 0; i < menu.size(); i++) {
@@ -399,6 +419,11 @@ public class Restaurant extends JFrame {
 		return entreeMenu;
 	}
 
+	/**
+	 * getDessertMenu gets the desserts menu
+	 * 
+	 * @return the desserts menu
+	 */
 	public List<MenuItem> getDessertMenu() {
 		List<MenuItem> dessertMenu = new ArrayList<>();
 		for (int i = 0; i < menu.size(); i++) {
@@ -409,6 +434,11 @@ public class Restaurant extends JFrame {
 		return dessertMenu;
 	}
 
+	/**
+	 * getBeverageMenu gets the beverage menu
+	 * 
+	 * @return the beverage menu
+	 */
 	public List<MenuItem> getBeverageMenu() {
 		List<MenuItem> beverageMenu = new ArrayList<>();
 		for (int i = 0; i < menu.size(); i++) {
@@ -419,10 +449,20 @@ public class Restaurant extends JFrame {
 		return beverageMenu;
 	}
 
+	/**
+	 * getReservationBook gets the reservation book
+	 * 
+	 * @return the reservation book
+	 */
 	public List<Reservation> getReservationBook() {
 		return reservationBook;
 	}
 
+	/**
+	 * getWaiters gets the list of waiters
+	 * 
+	 * @return the list of waiters
+	 */
 	public List<Waiter> getWaiters() {
 		List<Waiter> waiters = new DoublyLinkedList<>();
 		for (int i = 0; i < employees.size(); i++) {
@@ -434,6 +474,11 @@ public class Restaurant extends JFrame {
 		return waiters;
 	}
 
+	/**
+	 * getChefs gets the list of chefs
+	 * 
+	 * @return the list of chefs
+	 */
 	public List<Chef> getChefs() {
 		List<Chef> chefs = new DoublyLinkedList<>();
 		for (int i = 0; i < employees.size(); i++) {
@@ -441,10 +486,14 @@ public class Restaurant extends JFrame {
 				chefs.add((Chef) employees.get(i));
 			}
 		}
-
 		return chefs;
 	}
 
+	/**
+	 * getManagers gets the list of managers
+	 * 
+	 * @return the list of managers
+	 */
 	public List<Manager> getManagers() {
 		List<Manager> managers = new DoublyLinkedList<>();
 		for (int i = 0; i < employees.size(); i++) {
@@ -452,14 +501,23 @@ public class Restaurant extends JFrame {
 				managers.add((Manager) employees.get(i));
 			}
 		}
-
 		return managers;
 	}
 
+	/**
+	 * getTables gets the list of tables
+	 * 
+	 * @return the list of tables
+	 */
 	public List<Table> getTables() {
 		return tables;
 	}
 
+	/**
+	 * getReservableTables gets the list of reservable tables
+	 * 
+	 * @return the list of reservable tables
+	 */
 	public List<Table> getReservableTables() {
 		List<Table> reservableTables = new ArrayList<>();
 		for (int i = 0; i < tables.size(); i++) {
@@ -470,12 +528,20 @@ public class Restaurant extends JFrame {
 		return reservableTables;
 	}
 
+	/**
+	 * getReservableTables gets the list of reservable tables for time period and
+	 * number of people
+	 * 
+	 * @param numPeople         the number of people
+	 * @param reserveTimePeriod the date and time of the reservation
+	 * @return the list of reservable tables tables
+	 */
 	public List<Table> getReservableTables(int numPeople, ReservationDateTime reserveTimePeriod) {
 		List<Table> reservableTables = new ArrayList<>();
 		for (int i = 0; i < tables.size(); i++) {
-			if (tables.get(i).canBeReserved() && tables.get(i).getNumSeats() >= numPeople) {
-				if (!reserveTimePeriod.getSecuredTimePeriodFrom().isBefore(LocalTime.now())
-						|| !tables.get(i).isOccupied()) {
+			if ((tables.get(i).canBeReserved()) && (tables.get(i).getNumSeats() >= numPeople)) {
+				if ((!reserveTimePeriod.getSecuredTimePeriodFrom().isBefore(LocalTime.now()))
+						|| (!tables.get(i).isOccupied())) {
 					reservableTables.add(tables.get(i));
 				}
 			}
@@ -483,6 +549,13 @@ public class Restaurant extends JFrame {
 		return reservableTables;
 	}
 
+	/**
+	 * findAvailableTableForReservation findsa available tables for reservations
+	 * 
+	 * @param numPeople         the number of people
+	 * @param reserveTimePeriod the reservation's time and date
+	 * @return the list of available tables
+	 */
 	public List<Table> findAvailableTableForReservation(int numPeople, ReservationDateTime reserveTimePeriod) {
 		// save reserve tables to an array
 		// check date and save "already made" reservations to an array
@@ -499,12 +572,12 @@ public class Restaurant extends JFrame {
 			}
 		}
 		for (int i = 0; i < savedReservationsForDate.size(); i++) {
-			if (!savedReservationsForDate.get(i).isClaimed()
-					&& availableTableForReservation.contains(savedReservationsForDate.get(i).getTable())) {
-				if (savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodFrom()
-						.isBefore(reserveTimePeriod.getLocalTime())
-						&& savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodTo()
-						.isAfter(reserveTimePeriod.getLocalTime())) {
+			if ((!savedReservationsForDate.get(i).isClaimed())
+					&& (availableTableForReservation.contains(savedReservationsForDate.get(i).getTable()))) {
+				if ((savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodFrom()
+						.isBefore(reserveTimePeriod.getLocalTime()))
+						&& (savedReservationsForDate.get(i).getReservationDateTime().getSecuredTimePeriodTo()
+								.isAfter(reserveTimePeriod.getLocalTime()))) {
 					availableTableForReservation.remove(savedReservationsForDate.get(i).getTable());
 				}
 
@@ -513,11 +586,21 @@ public class Restaurant extends JFrame {
 		return availableTableForReservation;
 	}
 
+	/**
+	 * bookReservation books reservation
+	 * 
+	 * @param reservation the reservation to be added to the reservation book
+	 */
 	public void bookReservation(Reservation reservation) {
 		reservationBook.add(reservation);
 		JOptionPane.showMessageDialog(null, "Reservation has been added.");
 	}
 
+	/**
+	 * claimReservation claims reservation
+	 * 
+	 * @param customerName the customer name
+	 */
 	public void claimReservation(String customerName) {
 		boolean found = false;
 		Reservation reservation = null;
@@ -525,7 +608,7 @@ public class Restaurant extends JFrame {
 		Waiter waiter = findAvailableWaiter();
 		for (int i = 0; i < reservationBook.size(); i++) {
 			if ((!reservationBook.get(i).isClaimed())
-					&& reservationBook.get(i).getCustomer().getName().equals(customerName)) {
+					&& (reservationBook.get(i).getCustomer().getName().equals(customerName))) {
 				found = true;
 				reservation = reservationBook.get(i);
 				break;
@@ -554,28 +637,312 @@ public class Restaurant extends JFrame {
 
 	}
 
+	/**
+	 * addEmployee adds an employee
+	 * 
+	 * @param employee the employee to be added
+	 */
 	public void addEmployee(Employee employee) {
 		employees.add(employee);
 	}
 
+	/**
+	 * getEmployees gets employees
+	 * 
+	 * @return the list of employees
+	 */
 	public List<Employee> getEmployees() {
 		return employees;
 	}
 
+	/**
+	 * getCurrentUser gets the current user
+	 * 
+	 * @return the employee currently logged in
+	 */
 	public Employee getCurrentUser() {
 		return currentUser;
 	}
 
+	/**
+	 * setCurrentUser sets the current user
+	 * 
+	 * @param currentUser the employee currently logged in
+	 */
 	public void setCurrentUser(Employee currentUser) {
 		this.currentUser = currentUser;
 	}
 
+	/**
+	 * findAvailableTableForWalkInCustomer find an available table for walk-in
+	 * customer
+	 * 
+	 * @param customer the customer to be placed at the table if found
+	 * @return a table that the customer can be seated at
+	 */
+	public Table findAvailableTableForWalkInCustomer(Customer customer) {
+
+		List<Table> availableTables = new ArrayList<>();
+
+		for (int i = 0; i < tables.size(); i++) {
+			if (!tables.get(i).isOccupied()) {
+				availableTables.add(tables.get(i));
+			}
+		}
+
+		for (int i = 0; i < reservationBook.size(); i++) {
+			if ((reservationBook.get(i).getReservationDateTime().getLocalDate().equals(LocalDate.now()))
+					&& (LocalTime.now()
+							.isBefore(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodTo()))
+					&& (LocalTime.now()
+							.isAfter(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodFrom()))) {
+				availableTables.remove(reservationBook.get(i).getTable());
+			}
+		}
+
+		if (availableTables.size() > 0) {
+			return getAppropriateTable(availableTables, customer.getNumPeople());
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * checkWaitingList checks the waiting list to see if someone can now be seated
+	 * at a table
+	 */
+	public void checkWaitingList() {
+		if ((waitingList.size() == 0) || (getWaiters().size() == 0)) {
+			return;
+		}
+
+		for (int i = 0; i < tables.size(); i++) {
+			if (!tables.get(i).isOccupied()) {
+				Table table = tables.get(i);
+				int numSeats = table.getNumSeats();
+				Customer customer = waitingList.dequeue(numSeats);
+				tables.get(i).setCustomer(customer);
+				if (tables.get(i).getCustomer() != null) {
+					JOptionPane.showMessageDialog(null,
+							"From the waiting list, " + customer.getName() + " has been placed at a table.");
+					table.setOccupied(true);
+					Waiter waiter = findAvailableWaiter();
+					table.setCurrentAssignedWaiter(waiter);
+					table.setCurrentOrder(new TableOrder(table));
+					table.getCurrentOrder().setWaiter(waiter);
+					waiter.getAssignedTables().add(table);
+				}
+			}
+		}
+	}
+
+	/**
+	 * login setups login and asks user to create a default password in the
+	 * beginning
+	 */
+	public void login() {
+		if (employees.size() == 0) {
+			JOptionPane.showMessageDialog(null,
+					"Welcome to Freshqo! As there are currently no employees added, there will be an already set username and password to login.");
+			JOptionPane.showMessageDialog(null,
+					"Once logged in, please add a manager to the database before creating any other employees.");
+			String newPassword = JOptionPane.showInputDialog(
+					"A default user is created for you. UserID: manager. Please enter a new password.");
+			if (newPassword != null) {
+				Manager newManager = new Manager("MANAGER", 0.0, "manager", newPassword, "", "", "", "Manager");
+				addEmployee(newManager);
+				LoginFrame loginFrame = new LoginFrame(self);
+			}
+		}
+		LoginFrame loginFrame = new LoginFrame(self);
+	}
+
+	/**
+	 * initializeSuccessfulLogin initializes successful login
+	 */
+	public void initializeSuccessfulLogin() {
+		if (currentUser != null) {
+			homepageBackgroundLabelLocked.setVisible(false);
+
+			employeeNameLabel = new JLabel("Hello " + currentUser.getName());
+			employeeNameLabel.setBounds(700, 15, 200, 30);
+			employeeNameLabel.setForeground(Color.white);
+			employeeNameLabel.setFont(new Font("Century Gothic", Font.BOLD, 14));
+			mainPanel.add(employeeNameLabel);
+			mainPanel.add(homepageBackgroundLabel);
+			enableButtons();
+		}
+	}
+
+	/**
+	 * logout logs current user out
+	 */
+	private void logout() {
+		mainPanel.remove(employeeNameLabel);
+		mainPanel.remove(homepageBackgroundLabel);
+		homepageBackgroundLabelLocked.setVisible(true);
+		disableButtons();
+		currentUser = null;
+	}
+
+	/**
+	 * when logged in, main buttons become visible
+	 */
+	private void enableButtons() {
+
+		orderButton.setVisible(true);
+		transactionButton.setVisible(true);
+		kitchenButton.setVisible(true);
+		menuButton.setVisible(true);
+		reservationButton.setVisible(true);
+		employeeButton.setVisible(true);
+		reportingButton.setVisible(true);
+		setupButton.setVisible(true);
+		loginButton.setVisible(false);
+		logoutButton.setVisible(true);
+
+	}
+
+	/**
+	 * when logged out, main buttons become invisible
+	 */
+	private void disableButtons() {
+		orderButton.setVisible(false);
+		transactionButton.setVisible(false);
+		kitchenButton.setVisible(false);
+		menuButton.setVisible(false);
+		reservationButton.setVisible(false);
+		employeeButton.setVisible(false);
+		reportingButton.setVisible(false);
+		setupButton.setVisible(false);
+		loginButton.setVisible(true);
+		logoutButton.setVisible(false);
+
+	}
+
+	/**
+	 * getAppropriateTable gets the table that has a number of seats closest to
+	 * number of people
+	 * 
+	 * @param availableTables the list of available table
+	 * @param numPeople       the number of people
+	 * @return the best table for the customer
+	 */
+	private Table getAppropriateTable(List<Table> availableTables, int numPeople) {
+		int minDifference = Integer.MAX_VALUE;
+		Table bestTable = null;
+		for (int i = 0; i < availableTables.size(); i++) {
+			if (availableTables.get(i).getNumSeats() - numPeople >= 0
+					&& availableTables.get(i).getNumSeats() - numPeople < minDifference) {
+				bestTable = availableTables.get(i);
+				minDifference = availableTables.get(i).getNumSeats();
+			}
+		}
+		return bestTable;
+	}
+
+	/**
+	 * getWaitingList ge4ts waiting list
+	 * 
+	 * @return the waiting list
+	 */
+	public CustomerQueue<Customer> getWaitingList() {
+		return waitingList;
+	}
+
+	/**
+	 * findAvailableWaiter finds available waiters ensures that each waiter has
+	 * about the same number of tables
+	 * 
+	 * @return the waiter for the table
+	 */
+	public Waiter findAvailableWaiter() {
+		int minTables = Integer.MAX_VALUE;
+		Waiter waiter = null;
+		for (int i = 0; i < getWaiters().size(); i++) {
+			if (getWaiters().get(i).getAssignedTables().size() < minTables) {
+				waiter = getWaiters().get(i);
+				minTables = getWaiters().get(i).getAssignedTables().size();
+			}
+		}
+		return waiter;
+	}
+
+	/**
+	 * getTotalSales gets total sales
+	 * 
+	 * @return the total sales
+	 */
+	public double getTotalSales() {
+		double totalSales = 0;
+		for (int i = 0; i < historicalTransactions.size(); i++) {
+			totalSales = historicalTransactions.get(i).getTotal();
+		}
+		return totalSales;
+	}
+
+	/**
+	 * getTotalSeats gets total seats
+	 * 
+	 * @return the total number of seats
+	 */
+	public int getTotalSeats() {
+		int totalSeats = 0;
+		for (int i = 0; i < tables.size(); i++) {
+			totalSeats = tables.get(i).getNumSeats();
+		}
+		return totalSeats;
+	}
+
+	/**
+	 * getHistoricalTransactions gets historical transactions
+	 * 
+	 * @return the historical transactions
+	 */
+	public List<TableOrder> getHistoricalTransactions() {
+		return historicalTransactions;
+	}
+
+	/**
+	 * setHistoricalTransactions sets historical transactions
+	 * 
+	 * @param historicalTransactions the historical transactions
+	 */
+	public void setHistoricalTransactions(List<TableOrder> historicalTransactions) {
+		this.historicalTransactions = historicalTransactions;
+	}
+
+	/**
+	 * getKitchenOrders gets kitchen orders
+	 * 
+	 * @return the kitchen orders
+	 */
+	public Queue<TableOrderItem> getKitchenOrders() {
+		return kitchenOrders;
+	}
+
+	/**
+	 * setKitchenOrders sets kitchen orders
+	 * 
+	 * @param kitchenOrders the kitchen orders
+	 */
+	public void setKitchenOrders(Queue<TableOrderItem> kitchenOrders) {
+		this.kitchenOrders = kitchenOrders;
+	}
+
+	/**
+	 * Button Listener Performs Action Based On Specific Button
+	 * 
+	 * @author Zaid Omer && Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
-		 *
+		 * 
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
@@ -605,6 +972,9 @@ public class Restaurant extends JFrame {
 				}
 				EmployeeDialog employeeDialog = new EmployeeDialog(self);
 
+			} else if (press.getSource() == reportingButton) {
+				ReportingDialog reportingDialog = new ReportingDialog(self);
+
 			} else if (press.getSource() == logoutButton) {
 				logout();
 			} else if (press.getSource() == openFileButton) {
@@ -617,175 +987,7 @@ public class Restaurant extends JFrame {
 				login();
 			}
 		}
-	}
 
-	public Table findAvailableTableForWalkInCustomer(Customer customer) {
-
-		List<Table> availableTables = new ArrayList<>();
-
-		for (int i = 0; i < tables.size(); i++) {
-			if (!tables.get(i).isOccupied()) {
-				availableTables.add(tables.get(i));
-			}
-		}
-
-		for (int i = 0; i < reservationBook.size(); i++) {
-			if (reservationBook.get(i).getReservationDateTime().getLocalDate().equals(LocalDate.now())
-					&& LocalTime.now()
-					.isBefore(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodTo())
-					&& LocalTime.now()
-					.isAfter(reservationBook.get(i).getReservationDateTime().getSecuredTimePeriodFrom())) {
-				availableTables.remove(reservationBook.get(i).getTable());
-			}
-		}
-
-		if (availableTables.size() > 0) {
-			return getAppropriateTable(availableTables, customer.getNumPeople());
-		} else {
-			return null;
-		}
-	}
-
-	public void checkWaitingList() {
-		if (waitingList.size() == 0) {
-			return;
-		}
-		for (int i = 0; i < tables.size(); i++) {
-			if (!tables.get(i).isOccupied()) {
-				Table table = tables.get(i);
-				int numSeats = table.getNumSeats();
-				Customer customer = waitingList.dequeue(numSeats);
-				tables.get(i).setCustomer(customer);
-				if (tables.get(i).getCustomer() != null) {
-					JOptionPane.showMessageDialog(null,
-							"From the waiting list, " + customer.getName() + " has been placed at a table.");
-					table.setOccupied(true);
-					Waiter waiter = findAvailableWaiter();
-					table.setCurrentAssignedWaiter(waiter);
-					table.setCurrentOrder(new TableOrder(table));
-					table.getCurrentOrder().setWaiter(waiter);
-					waiter.getAssignedTables().add(table);
-				}
-			}
-		}
-	}
-
-//	public void changeAccess() {
-//		if (currentUser instanceof Chef) {
-//			reservationButton.disable();
-//			employeeButton.disable();
-//			setupButton.disable();
-//
-//		}
-//	}
-
-	public void login() {
-		LoginFrame loginFrame = new LoginFrame(self);
-	}
-
-	public void initializeSuccessfulLogin() {
-		if (currentUser != null) {
-			homepageBackgroundLabelLocked.setVisible(false);
-
-			employeeNameLabel = new JLabel("Hello " + currentUser.getName());
-			employeeNameLabel.setBounds(700, 20, 100, 30);
-			employeeNameLabel.setForeground(Color.white);
-			mainPanel.add(employeeNameLabel);
-			mainPanel.add(homepageBackgroundLabel);
-			enableButtons();
-		}
-	}
-
-	private void logout() {
-		mainPanel.remove(employeeNameLabel);
-//		employeeNameLabel = null;
-		mainPanel.remove(homepageBackgroundLabel);
-		homepageBackgroundLabelLocked.setVisible(true);
-		disableButtons();
-		currentUser = null;
-	}
-
-	private void enableButtons() {
-
-		orderButton.setVisible(true);
-		transactionButton.setVisible(true);
-		kitchenButton.setVisible(true);
-		menuButton.setVisible(true);
-		reservationButton.setVisible(true);
-		employeeButton.setVisible(true);
-		reportingButton.setVisible(true);
-		setupButton.setVisible(true);
-		loginButton.setVisible(false);
-		logoutButton.setVisible(true);
-
-	}
-
-	private void disableButtons() {
-		orderButton.setVisible(false);
-		transactionButton.setVisible(false);
-		kitchenButton.setVisible(false);
-		menuButton.setVisible(false);
-		reservationButton.setVisible(false);
-		employeeButton.setVisible(false);
-		reportingButton.setVisible(false);
-		setupButton.setVisible(false);
-		loginButton.setVisible(true);
-		logoutButton.setVisible(false);
-
-	}
-
-	private Table getAppropriateTable(List<Table> availableTables, int numPeople) {
-		int minDifference = Integer.MAX_VALUE;
-		Table bestTable = null;
-		for (int i = 0; i < availableTables.size(); i++) {
-			if (availableTables.get(i).getNumSeats() - numPeople >= 0
-					&& availableTables.get(i).getNumSeats() - numPeople < minDifference) {
-				bestTable = availableTables.get(i);
-				minDifference = availableTables.get(i).getNumSeats();
-			}
-		}
-		return bestTable;
-	}
-
-	public CustomerQueue<Customer> getWaitingList() {
-		return waitingList;
-	}
-
-	public List<Customer> getWaitingListInListForm() {
-//		Queue<Customer>
-		List<Customer> waitingListForm = new ArrayList<>();
-//		waitingList.toArray();
-
-		return waitingListForm;
-	}
-
-	public Waiter findAvailableWaiter() {
-		int minTables = Integer.MAX_VALUE;
-		Waiter waiter = null;
-		for (int i = 0; i < getWaiters().size(); i++) {
-			if (getWaiters().get(i).getAssignedTables().size() < minTables) {
-				waiter = getWaiters().get(i);
-				minTables = getWaiters().get(i).getAssignedTables().size();
-				System.out.println(waiter.getName() + minTables);
-			}
-		}
-		return waiter;
-	}
-
-	public List<TableOrder> getHistoricalTransactions() {
-		return historicalTransactions;
-	}
-
-	public void setHistoricalTransactions(List<TableOrder> historicalTransactions) {
-		this.historicalTransactions = historicalTransactions;
-	}
-
-	public Queue<TableOrderItem> getKitchenOrders() {
-		return kitchenOrders;
-	}
-
-	public void setKitchenOrders(Queue<TableOrderItem> kitchenOrders) {
-		this.kitchenOrders = kitchenOrders;
 	}
 
 }

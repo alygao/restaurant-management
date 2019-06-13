@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,15 +17,17 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * OrderDialog
- * The dialog to see tables that can be filled fro customers
+ * OrderDialog 
+ * 
+ * The dialog to see tables that can be filled for customers
+ * 
  * @author Alyssa Gao
  * @version 1.0
  * @date June 13, 2019
  */
 public class OrderDialog extends JDialog {
 
-	//VARIABLES
+	// VARIABLES
 	private Restaurant restaurant;
 	private JPanel generalTablesPanel;
 	private JButton claimReservationButton;
@@ -39,11 +42,17 @@ public class OrderDialog extends JDialog {
 	private JLabel homepageBackgroundLabel;
 
 	/**
-	 * OrderDialog constructor
-	 * initializes the restaurant and calls the initialize user interface method
+	 * OrderDialog constructor initializes the restaurant and calls the initialize
+	 * user interface method
+	 * 
 	 * @param restaurant the restaurant
 	 */
 	public OrderDialog(Restaurant restaurant) {
+		if (restaurant.getCurrentUser() instanceof Chef) {
+			JOptionPane.showMessageDialog(null, "Only a waiter or manager can access the orders button.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		this.restaurant = restaurant;
 		initUI();
 	}
@@ -60,11 +69,11 @@ public class OrderDialog extends JDialog {
 		setLocationRelativeTo(null);
 		setResizable(false);
 
-		//Table's Order Panel
+		// Table's Order Panel
 		tablesFoodPanel = new JPanel();
 		tablesFoodPanel.setLayout(null);
 
-		//General Tables Panel		
+		// General Tables Panel
 		generalTablesPanel = new JPanel();
 		generalTablesPanel.setLayout(null);
 
@@ -82,17 +91,17 @@ public class OrderDialog extends JDialog {
 		viewTableButton.setBounds(865, 255, 120, 75);
 		viewTableButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(viewTableButton);
-		
+
 		viewWaitingListButton = new JButton(new ImageIcon(getClass().getResource("view waiting list button.JPG")));
 		viewWaitingListButton.setBounds(865, 345, 120, 75);
 		viewWaitingListButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(viewWaitingListButton);
-		
+
 		returnToHomepageButton = new JButton(new ImageIcon(getClass().getResource("return home button.JPG")));
 		returnToHomepageButton.setBounds(865, 435, 120, 75);
 		returnToHomepageButton.addActionListener(new ButtonListener());
 		generalTablesPanel.add(returnToHomepageButton);
-		
+
 		restaurantTablesTableModel = new RestaurantTablesTableModel();
 		restaurantTablesTable = new JTable(restaurantTablesTableModel);
 		restaurantTablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -102,9 +111,9 @@ public class OrderDialog extends JDialog {
 		JScrollPane tableListScrollPane = new JScrollPane(restaurantTablesTable);
 		tableListScrollPane.setBounds(25, 100, 400, 400);
 		generalTablesPanel.add(tableListScrollPane);
-		
+
 		getContentPane().add(generalTablesPanel);
-		
+
 		// background image
 		homepageBackground = new ImageIcon(getClass().getResource("freshqo background.JPG"));
 		homepageBackgroundLabel = new JLabel(homepageBackground);
@@ -115,8 +124,8 @@ public class OrderDialog extends JDialog {
 	}
 
 	/**
-	 * ButtonListener
-	 * Performs actions based on specific button
+	 * ButtonListener Performs actions based on specific button
+	 * 
 	 * @author Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -126,6 +135,7 @@ public class OrderDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
+		 * 
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
@@ -147,64 +157,65 @@ public class OrderDialog extends JDialog {
 					restaurant.claimReservation(customerNameUnderReservation.toUpperCase());
 					restaurantTablesTableModel.refresh();
 				}
-			}else if (press.getSource() == viewTableButton) {
+			} else if (press.getSource() == viewTableButton) {
 				int selectedRow = restaurantTablesTable.getSelectedRow();
 				if (selectedRow < 0) {
 					JOptionPane.showMessageDialog(null, "Please choose a table to view.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
-				}else if (restaurantTablesTable.getValueAt(selectedRow, 1).equals(("Not Occupied"))) {
+				} else if (restaurantTablesTable.getValueAt(selectedRow, 1).equals(("Not Occupied"))) {
 					JOptionPane.showMessageDialog(null, "This table is currently not occupied.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
-				}else {
+				} else {
 					AddFoodDialog addFoodDialog = new AddFoodDialog(restaurant, selectedRow);
 					restaurantTablesTableModel.refresh();
 				}
-			}else if (press.getSource() == findTableButton) {
+			} else if (press.getSource() == findTableButton) {
 				if (restaurant.getTables().size() == 0) {
 					JOptionPane.showMessageDialog(null, "Your restaurant currently has no tables.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				FindTableDialog findTableDialog = new FindTableDialog (restaurant);
+				FindTableDialog findTableDialog = new FindTableDialog(restaurant);
 				restaurantTablesTableModel.refresh();
-			}else if (press.getSource() == viewWaitingListButton) {
-				WaitingListDialog waitingListDialog = new WaitingListDialog(restaurant); 
-			
-			}else if (press.getSource() == returnToHomepageButton) {
+			} else if (press.getSource() == viewWaitingListButton) {
+				WaitingListDialog waitingListDialog = new WaitingListDialog(restaurant);
+
+			} else if (press.getSource() == returnToHomepageButton) {
 				dispose();
 			}
 		}
 	}
 
 	/**
-	 * RestaurantTablesTableModel
-	 * The table model to display tables and the customers at them
+	 * RestaurantTablesTableModel The table model to display tables and the
+	 * customers at them
+	 * 
 	 * @author Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
 	 */
-	class RestaurantTablesTableModel extends AbstractTableModel{
+	class RestaurantTablesTableModel extends AbstractTableModel {
 		/**
 		 * the names of each column in the table
 		 */
 		private final String[] tableListColumns = { "Table Name", "Occupied" };
-	
+
 		/**
 		 * the class type for each column
 		 */
-		private final Class[] columnClasses = { String.class, String.class};
-	
+		private final Class[] columnClasses = { String.class, String.class };
+
 		/**
 		 * the list of recipes that are to be displayed within the table
 		 */
 		private List<Table> tablesData = new ArrayList<>();
-		
+
 		@Override
 		/**
-		 * getColumnCount
-		 * the number of columns in the table
+		 * getColumnCount the number of columns in the table
+		 * 
 		 * @return the number of columns
 		 */
 		public int getColumnCount() {
@@ -213,8 +224,8 @@ public class OrderDialog extends JDialog {
 
 		@Override
 		/**
-		 * getRowCount
-		 * the number of rows in the table
+		 * getRowCount the number of rows in the table
+		 * 
 		 * @return the number of rows
 		 */
 		public int getRowCount() {
@@ -224,6 +235,7 @@ public class OrderDialog extends JDialog {
 		@Override
 		/**
 		 * getColumnName
+		 * 
 		 * @param col the column number
 		 * @return the name of the column
 		 */
@@ -233,8 +245,8 @@ public class OrderDialog extends JDialog {
 
 		@Override
 		/**
-		 * getValueAt
-		 * finds the value at the specific row and column number
+		 * getValueAt finds the value at the specific row and column number
+		 * 
 		 * @param row the row number
 		 * @param col the column number
 		 * @return the value at the specific row and column
@@ -252,8 +264,8 @@ public class OrderDialog extends JDialog {
 
 		@Override
 		/**
-		 * getColumnClass
-		 * finds the class type for a specific column
+		 * getColumnClass finds the class type for a specific column
+		 * 
 		 * @param col the column number
 		 * @return the class type for the specific column
 		 */
@@ -263,8 +275,8 @@ public class OrderDialog extends JDialog {
 
 		@Override
 		/**
-		 * isCellEditable
-		 * checks if the user can edit the cell
+		 * isCellEditable checks if the user can edit the cell
+		 * 
 		 * @param row the row number
 		 * @param col the column number
 		 * @return whether or not the cell is editable
@@ -272,23 +284,25 @@ public class OrderDialog extends JDialog {
 		public boolean isCellEditable(int row, int col) {
 			return false;
 		}
-	
+
 		/**
-		 * updateRow
-		 * when an table is modified, the row must be then updated
-		 * @param table the table to place in the table and add to the current list of tables
-		 * @param row the row that needs to be updated due to a change in the table
+		 * updateRow when an table is modified, the row must be then updated
+		 * 
+		 * @param table the table to place in the table and add to the current list of
+		 *              tables
+		 * @param row   the row that needs to be updated due to a change in the table
 		 */
-		public void updateRow ( Table table, int row ) {
-			this.tablesData.set( row, table );
-			fireTableRowsUpdated( row, row );
+		public void updateRow(Table table, int row) {
+			this.tablesData.set(row, table);
+			fireTableRowsUpdated(row, row);
 		}
 
 		/**
-		 * insertRow
-		 * inserts a row in the table with a table
-		 * @param position the position to put the row 
-		 * @param table the table to place in the table and add to the current list of tables
+		 * insertRow inserts a row in the table with a table
+		 * 
+		 * @param position the position to put the row
+		 * @param table    the table to place in the table and add to the current list
+		 *                 of tables
 		 */
 		public void insertRow(int position, Table table) {
 			this.tablesData.add(table);
@@ -296,8 +310,8 @@ public class OrderDialog extends JDialog {
 		}
 
 		/**
-		 * addRow
-		 * adds a row at the bottom of the table with a new recipe
+		 * addRow adds a row at the bottom of the table with a new table
+		 * 
 		 * @param table the table to be placed in the table
 		 */
 		public void addRow(Table table) {
@@ -305,8 +319,8 @@ public class OrderDialog extends JDialog {
 		}
 
 		/**
-		 * addRows
-		 * adds 2+ rows into the table
+		 * addRows adds 2+ rows into the table
+		 * 
 		 * @param tableList the list of tables that are to be put into the table
 		 */
 		public void addRows(List<Table> tableList) {
@@ -316,9 +330,9 @@ public class OrderDialog extends JDialog {
 		}
 
 		/**
-		 * removeRow
-		 * removes a specific row in the table
-		 * @param position the position of the recipe to be removed
+		 * removeRow removes a specific row in the table
+		 * 
+		 * @param position the position of the table to be removed
 		 */
 		public void removeRow(int position) {
 			this.tablesData.remove(position);
@@ -326,8 +340,8 @@ public class OrderDialog extends JDialog {
 		}
 
 		/**
-		 * getData
-		 * gets the list of tables
+		 * getData gets the list of tables
+		 * 
 		 * @return the list of tables
 		 */
 		public List<Table> getData() {
@@ -335,8 +349,8 @@ public class OrderDialog extends JDialog {
 		}
 
 		/**
-		 * setData
-		 * gets the list of tables
+		 * setData gets the list of tables
+		 * 
 		 * @param tablesData the list of tables
 		 */
 		public void setData(List<Table> tablesData) {
@@ -345,8 +359,7 @@ public class OrderDialog extends JDialog {
 		}
 
 		/**
-		 * refresh
-		 * refresh the elements in the table
+		 * refresh refresh the elements in the table
 		 */
 		public void refresh() {
 			fireTableRowsUpdated(0, getRowCount());
@@ -354,5 +367,3 @@ public class OrderDialog extends JDialog {
 
 	}
 }
-
-

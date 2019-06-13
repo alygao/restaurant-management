@@ -25,8 +25,19 @@ import javax.swing.ListSelectionModel;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
+/**
+ * KitchenDialog 
+ * 
+ * The Dialog for the Kitchen to view orders to cook
+ * 
+ * @author Alyssa Gao
+ * @version 1.0
+ * @date June 13, 2019
+ */
+
 public class ReservationBookDialog extends JDialog {
 
+	// Variables
 	private Restaurant restaurant;
 	private JPanel panel;
 	private DatePicker datePicker;
@@ -45,11 +56,23 @@ public class ReservationBookDialog extends JDialog {
 	private ViewReservationsTableModel viewReservationsTableModel;
 	private JTable viewReservationsTable;
 
+	/**
+	 * constructor to initialize restaurant and user interface
+	 * @param restaurant
+	 */
 	public ReservationBookDialog(Restaurant restaurant) {
+		if (restaurant.getCurrentUser() instanceof Chef) {
+			JOptionPane.showMessageDialog(null, "Only a manager or waiter can access the reservation button.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		this.restaurant = restaurant;
 		initUI();
 	}
 
+	/**
+	 * initializes the user interface
+	 */
 	private void initUI() {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -143,6 +166,10 @@ public class ReservationBookDialog extends JDialog {
 		searchNameTextField.setVisible(false);
 	}
 
+	/**
+	 * If user selects to search by date, then certain things are now set as visible
+	 * and vice versa
+	 */
 	private void displaySearchByDateCriteriaComponents() {
 		dateLabel.setVisible(true);
 		datePicker.setVisible(true);
@@ -150,6 +177,10 @@ public class ReservationBookDialog extends JDialog {
 		searchNameTextField.setVisible(false);
 	}
 
+	/**
+	 * If user selects to search by name, then certain things are now set as visible
+	 * and vice versa
+	 */
 	private void displaySearchByNameCriteriaComponents() {
 		dateLabel.setVisible(false);
 		datePicker.setVisible(false);
@@ -157,6 +188,13 @@ public class ReservationBookDialog extends JDialog {
 		searchNameTextField.setVisible(true);
 	}
 
+	/**
+	 * RadioListener Performs an action based on the radio button
+	 * 
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class RadioListener implements ItemListener {
 
 		/**
@@ -166,16 +204,23 @@ public class ReservationBookDialog extends JDialog {
 		 * @param press used to determine which button is pressed
 		 */
 		public void itemStateChanged(ItemEvent e) {
-			if (e.getSource() == searchByDateButton && e.getStateChange() == ItemEvent.SELECTED) {
+			if ((e.getSource() == searchByDateButton) && (e.getStateChange() == ItemEvent.SELECTED)) {
 				displaySearchByDateCriteriaComponents();
 
-			} else if (e.getSource() == searchByNameButton && e.getStateChange() == ItemEvent.SELECTED) {
+			} else if ((e.getSource() == searchByNameButton) && (e.getStateChange() == ItemEvent.SELECTED)) {
 				displaySearchByNameCriteriaComponents();
 			}
 
 		}
 	}
 
+	/**
+	 * ButtonListener Performs actions based on specific button
+	 * 
+	 * @author Alyssa Gao
+	 * @version 1.0
+	 * @date June 13, 2019
+	 */
 	class ButtonListener implements ActionListener {
 
 		/**
@@ -225,10 +270,10 @@ public class ReservationBookDialog extends JDialog {
 					return;
 				}
 				for (int i = 0; i < restaurant.getReservationBook().size(); i++) {
-					if (restaurant.getReservationBook().get(i).getReservationDateTime().getDate()
-							.equals(viewReservationsTableModel.getValueAt(selectedRow, 0))
-							&& restaurant.getReservationBook().get(i).getReservationDateTime().getTime()
-							.equals(viewReservationsTableModel.getValueAt(selectedRow, 1))) {
+					if ((restaurant.getReservationBook().get(i).getReservationDateTime().getDate()
+							.equals(viewReservationsTableModel.getValueAt(selectedRow, 0)))
+							&& (restaurant.getReservationBook().get(i).getReservationDateTime().getTime()
+									.equals(viewReservationsTableModel.getValueAt(selectedRow, 1)))) {
 						reservation = restaurant.getReservationBook().get(i);
 					}
 				}
@@ -244,5 +289,4 @@ public class ReservationBookDialog extends JDialog {
 			}
 		}
 	}
-
 }

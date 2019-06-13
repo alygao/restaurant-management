@@ -34,15 +34,17 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.text.NumberFormatter;
 
 /**
- * MenuDialog
+ * MenuDialog 
+ * 
  * The dialog to add items to the menu
+ * 
  * @author Alyssa Gao
  * @version 1.0
  * @date June 13, 2019
  */
 public class MenuDialog extends JDialog {
 
-	//VARIABLES
+	// VARIABLES
 	private Restaurant restaurant;
 	private JTextField menuItemNameTextField;
 	private JFormattedTextField menuItemPriceTextField;
@@ -60,11 +62,17 @@ public class MenuDialog extends JDialog {
 	private JTable menuTable;
 
 	/**
-	 * MenuDialog constructor
-	 * initializes the restaurant and calls the initialize user interface method
+	 * MenuDialog constructor initializes the restaurant and calls the initialize
+	 * user interface method
+	 * 
 	 * @param restaurant the restaurant
 	 */
 	public MenuDialog(Restaurant restaurant) {
+		if (!(restaurant.getCurrentUser() instanceof Manager)) {
+			JOptionPane.showMessageDialog(null, "Only a manager can access and use the setup button.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		this.restaurant = restaurant;
 		initUI();
 	}
@@ -186,6 +194,7 @@ public class MenuDialog extends JDialog {
 		/**
 		 * actionPerformed performs the action that is needed to be performed from
 		 * clicking a button
+		 * 
 		 * @param press used to determine which button is pressed
 		 */
 		public void actionPerformed(ActionEvent press) {
@@ -227,8 +236,8 @@ public class MenuDialog extends JDialog {
 				dispose();
 			} else if (press.getSource() == addItemButton) {
 				for (int i = 0; i < restaurant.getMenu().size(); i++) {
-					if ((restaurant.getMenu().get(i).getName()
-							.equals((menuItemNameTextField.getText().toUpperCase())))) {
+					if ((restaurant.getMenu().get(i).getName())
+							.equals((menuItemNameTextField.getText().toUpperCase()))) {
 						JOptionPane.showMessageDialog(null, "You already have added an item with the same name.",
 								"Error", JOptionPane.ERROR_MESSAGE);
 						return;
@@ -247,16 +256,15 @@ public class MenuDialog extends JDialog {
 						menuItemDescriptionTextArea.getText(), menuItemImageLabel.getIcon(),
 						menuItemCategoryChoice.getSelectedItem().toString());
 				restaurant.getMenu().add(menuItem);
-//				recipeListTableModel.addRow(recipe);
-				dispose();
+				menuTableModel.addRow(menuItem);
 
 			}
 		}
 	}
 
 	/**
-	 * MenuTableModel
-	 * The table model to display the menu items
+	 * MenuTableModel The table model to display the menu items
+	 * 
 	 * @author Alyssa Gao
 	 * @version 1.0
 	 * @date June 13, 2019
@@ -369,8 +377,8 @@ public class MenuDialog extends JDialog {
 		/**
 		 * updateRow when an table is modified, the row must be then updated
 		 *
-		 * @param menuItem the recipe to place in the table and add to the current list
-		 *                 of tables
+		 * @param menuItem the menu item to place in the table and add to the current
+		 *                 list of menu items
 		 * @param row      the row that needs to be updated due to a change in the table
 		 */
 		public void updateRow(MenuItem menuItem, int row) {
@@ -382,7 +390,7 @@ public class MenuDialog extends JDialog {
 		 * insertRow inserts a row in the table with a table
 		 *
 		 * @param position the position to put the row
-		 * @param menuItem the food to show on the table
+		 * @param menuItem the menu item to show on the table
 		 */
 		public void insertRow(int position, MenuItem menuItem) {
 			this.menu.add(menuItem);
@@ -390,9 +398,9 @@ public class MenuDialog extends JDialog {
 		}
 
 		/**
-		 * addRow adds a row at the bottom of the table with a new recipe
+		 * addRow adds a row at the bottom of the table with a new menu item
 		 *
-		 * @param menuItem the food to be placed in the table
+		 * @param menuItem the menu item to be placed in the table
 		 */
 		public void addRow(MenuItem menuItem) {
 			insertRow(getRowCount(), menuItem);
@@ -412,7 +420,7 @@ public class MenuDialog extends JDialog {
 		/**
 		 * removeRow removes a specific row in the table
 		 *
-		 * @param position the position of the recipe to be removed
+		 * @param position the position of the menu item to be removed
 		 */
 		public void removeRow(int position) {
 			this.menu.remove(position);
@@ -431,12 +439,11 @@ public class MenuDialog extends JDialog {
 		/**
 		 * setData gets the list of tables
 		 *
-		 * @param foodData the list of food items
+		 * @param foodData the list of menu item
 		 */
 		public void setData(List<MenuItem> foodData) {
 			this.menu = foodData;
 			fireTableRowsInserted(0, getRowCount());
 		}
 	}
-
 }
